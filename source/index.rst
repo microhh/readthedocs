@@ -1,15 +1,29 @@
-.. MicroHH documentation master file, created by
-   sphinx-quickstart on Thu Apr 16 14:14:37 2020.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. _topics-index:
 
-Welcome to MicroHH's documentation!
-===================================
+MicroHH documentation
+=====================
+
+These pages provide a documentation for MicroHH 2.0
+
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Getting started:
 
+   getting_started/code_and_compilation
+   getting_started/running_first_case
+   getting_started/merging_statistics
+   getting_started/converting_binaries
+
+.. toctree::
+   :maxdepth: 2
+   :caption: The code:
+
+   the_code/main_code_structure
+
+
+
+   
 
 
 Indices and tables
