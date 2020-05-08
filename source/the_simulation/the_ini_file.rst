@@ -1,5 +1,5 @@
 The ``.ini`` file
-===========================
+=================
 
 .. toctree::
    :maxdepth: 2
@@ -25,5 +25,7 @@ Below the block name are the options consisting of names and values separated by
 Option cheat sheet
 ------------------
 
-[grid]
+.. math::
+   
+    z = \sqrt{x^2 + y^2}
 

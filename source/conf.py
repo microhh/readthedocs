@@ -32,6 +32,7 @@ release = '2.0'
 # ones.
 extensions = [
     'sphinx_rtd_theme',
+    'sphinx.ext.imgmath',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

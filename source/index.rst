@@ -14,17 +14,18 @@ These pages provide a documentation for MicroHH 2.0
    getting_started/running_first_case
    getting_started/merging_statistics
    getting_started/converting_binaries
-   getting_started/the_ini_file
+
+.. toctree::
+   :maxdepth: 2
+   :caption: The simulation:
+
+   the_simulation/the_ini_file
 
 .. toctree::
    :maxdepth: 2
    :caption: The code:
 
    the_code/main_code_structure
-
-
-
-   
 
 
 Indices and tables
