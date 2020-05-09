@@ -29,7 +29,7 @@ The ``Advec`` class computes the advection tendencies using the chosen scheme.
 +---------------------------------+--------------------+-------------------------------------------------+
 | Name                            | Default            | Description and options                         |
 +=================================+====================+=================================================+
-| ``swadvec``                     | swspatialorder     | | Advection scheme                              |
+| ``swadvec``                     | ``swspatialorder`` | | Advection scheme                              |
 |                                 |                    | | ``2``:   2nd-order                            |
 |                                 |                    | | ``2i4``: 2nd-order (4th-order interpolation)  |
 |                                 |                    | | ``4``:   4th-order (high accuracy)            |
@@ -37,6 +37,29 @@ The ``Advec`` class computes the advection tendencies using the chosen scheme.
 +---------------------------------+--------------------+-------------------------------------------------+
 | ``cflmax``                      | ``1.0``            | Maximum CFL for adaptive time stepping          |
 +---------------------------------+--------------------+-------------------------------------------------+
+
+
+Boundary conditions ``[boundary]``
+---------------------------------
+
+The ``Boundary`` class computes the boundary conditions. It has a derived class ``Boundary_surface`` that extends the base class in case the surface model is enabled.
+
++---------------------------------+--------------------+--------------------------------------------------------+
+| Name                            | Default            | Description and options                                |
++=================================+====================+========================================================+
+| ``swboundary``                  | *None*             | | Boundary discretization                              |
+|                                 |                    | | ``default``: resolved boundaries                     |
+|                                 |                    | | ``surface``: MOST-based surface model                |
++---------------------------------+--------------------+--------------------------------------------------------+
+| ``mbcbot``                      | *None*             | | Bottom boundary type for momentum variables          |
+|                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``           |
+|                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``   |
+|                                 |                    | | ``ustar``: Fixed ustar at bottom                     |
++---------------------------------+--------------------+--------------------------------------------------------+
+| ``mbctop``                      | *None*             | | Top boundary type for momentum variables             |
+|                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``           |
+|                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``   |
++---------------------------------+--------------------+--------------------------------------------------------+
 
 
 Grid ``[grid]``
