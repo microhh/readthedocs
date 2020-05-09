@@ -42,11 +42,9 @@ The ``Grid`` class contains the grid configuration.
 +---------------------------------+--------------------+-------------------------------------------------+
 | ``zsize``                       |                    | Size of the domain in z (m)                     |
 +---------------------------------+--------------------+-------------------------------------------------+
-| ``swspatialorder``              |                    | Spatial order of the finite differences (-)     |
-|                                 |                    |                                                 |
-|                                 |                    | ``2``: Second-order grid                        |
-|                                 |                    |                                                 |
-|                                 |                    | ``4``: Fourth-order grid                        |
+| ``swspatialorder``              |                    | | Spatial order of the finite differences (-)   |
+|                                 |                    | | ``2``: Second-order grid                      |
+|                                 |                    | | ``4``: Fourth-order grid                      |
 +---------------------------------+--------------------+-------------------------------------------------+
 | ``utrans``                      | ``0.``             | Galilean translation velocity in x (m s-1)      |
 +---------------------------------+--------------------+-------------------------------------------------+
