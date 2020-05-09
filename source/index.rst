@@ -17,9 +17,10 @@ These pages provide a documentation for MicroHH 2.0
 
 .. toctree::
    :maxdepth: 2
-   :caption: The simulation:
+   :caption: Setting up a case:
 
-   the_simulation/the_ini_file
+   setting_up_a_case/the_ini_file
+   setting_up_a_case/the_input_file
 
 .. toctree::
    :maxdepth: 2
