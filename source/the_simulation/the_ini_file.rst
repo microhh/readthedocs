@@ -22,6 +22,22 @@ The name ``[advec]`` refers to the ``Advec`` class that uses the settings. This 
 Below the block name are the options consisting of names and values separated by ``=``.
 
 
+Master ``[master]``
+---------------
+
+The ``Master`` class contains the configuration for parallel runs.
+
++---------------------------------+--------------------+-------------------------------------------------+
+| Name                            | Default            | Description and options                         |
++=================================+====================+=================================================+
+| ``npx``                         | ``1``              | Numbers of processes in x (-)                   |
++---------------------------------+--------------------+-------------------------------------------------+
+| ``npy``                         | ``1``              | Numbers of processes in y (-)                   |
++---------------------------------+--------------------+-------------------------------------------------+
+| ``wallclocklimit``              | ``1.E8``           | Maximum run duration in wall clock time (h)     |
++---------------------------------+--------------------+-------------------------------------------------+
+
+
 Grid ``[grid]``
 ---------------
 
