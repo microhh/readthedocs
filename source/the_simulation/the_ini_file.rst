@@ -85,10 +85,12 @@ The ``Boundary`` class computes the boundary conditions. It has a derived class 
 | ``sbot_2d_list``                | *Empty list*       | | Comma-separate list of scalars that provide a binary |
 |                                 |                    | | file (``sbot_thl.0000000``) with 2D slice            |
 +---------------------------------+--------------------+--------------------------------------------------------+
+| ``z0m``                         | *None*             | Roughness length of momentum (m)                       |
 +---------------------------------+--------------------+--------------------------------------------------------+
-
-
-
+| ``z0h``                         | *None*             | Roughness length of scalars (m)                        |
++---------------------------------+--------------------+--------------------------------------------------------+
+| ``ustar``                       | *None*             | Value of the friction velocity (m s-1)                 |
++---------------------------------+--------------------+--------------------------------------------------------+
 
 
 Grid ``[grid]``
