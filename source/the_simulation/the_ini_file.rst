@@ -14,9 +14,13 @@ The ``.ini`` is consists of blocks like
 .. code-block:: ini
    :linenos:
 
-   [advec]
-   swadvec=2
-   cflmax=1.0
+    [master]
+    npx=2
+    npy=4
+
+    [advec]
+    swadvec=2
+    cflmax=1.0
 
 The name ``[advec]`` refers to the ``Advec`` class that uses the settings. This class is found in the source file with the corresponding name (``advec.cxx``).
 Below the block name are the options consisting of names and values separated by ``=``.
@@ -40,7 +44,7 @@ The ``Advec`` class computes the advection tendencies using the chosen scheme.
 
 
 Boundary conditions ``[boundary]``
----------------------------------
+----------------------------------
 
 The ``Boundary`` class computes the boundary conditions. It has a derived class ``Boundary_surface`` that extends the base class in case the surface model is enabled.
 
@@ -60,6 +64,31 @@ The ``Boundary`` class computes the boundary conditions. It has a derived class 
 |                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``           |
 |                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``   |
 +---------------------------------+--------------------+--------------------------------------------------------+
+| ``sbcbot``                      | *None*             | | Bottom boundary type for scalar variables. Types     |
+|                                 |                    | | can be specified per scalar (``sbot[thl]=flux``)     |
+|                                 |                    | | ``dirchlet``: Dirichlet BC                           |
+|                                 |                    | | ``neumann``: Neumann BC                              |
+|                                 |                    | | ``flux``: Fixed-flux BC                              |
++---------------------------------+--------------------+--------------------------------------------------------+
+| ``sbctop``                      | *None*             | | Top boundary type for scalar variables. Types        |
+|                                 |                    | | can be specified per scalar (``stop[qt]=neumann``)   |
+|                                 |                    | | ``dirchlet``: Dirichlet BC                           |
+|                                 |                    | | ``neumann``: Neumann BC                              |
+|                                 |                    | | ``flux``: Fixed-flux BC                              |
++---------------------------------+--------------------+--------------------------------------------------------+
+| ``sbot``                        | *None*             | | Bottom boundary value for scalar variables. Values   |
+|                                 |                    | | can be specified per scalar (``sbot[thl]=300``)      |
++---------------------------------+--------------------+--------------------------------------------------------+
+| ``stop``                        | *None*             | | Top boundary value for scalar variables. Values      |
+|                                 |                    | | can be specified per scalar (``stop[s]=4.``)         |
++---------------------------------+--------------------+--------------------------------------------------------+
+| ``sbot_2d_list``                | *Empty list*       | | Comma-separate list of scalars that provide a binary |
+|                                 |                    | | file (``sbot_thl.0000000``) with 2D slice            |
++---------------------------------+--------------------+--------------------------------------------------------+
++---------------------------------+--------------------+--------------------------------------------------------+
+
+
+
 
 
 Grid ``[grid]``
