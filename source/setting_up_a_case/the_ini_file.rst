@@ -347,6 +347,8 @@ Fields ``[fields]``
 ----------------------------
 
 The ``Fields`` class initializes and contains the 3D fields that are passed around in the model.
+This class generates passive scalars, which are prognostic variables that are not initialized by other classes.
+It is also responsible for the generation of the random perturbation in the init.
 
 +---------------------------------+--------------------+----------------------------------------------------------+
 | Name                            | Default            | Description and options                                  |
