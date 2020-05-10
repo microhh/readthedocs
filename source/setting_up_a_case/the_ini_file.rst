@@ -22,7 +22,8 @@ The ``.ini`` is consists of blocks like
     swadvec=2
     cflmax=1.0
 
-The name ``[advec]`` refers to the ``Advec`` class that uses the settings. This class is found in the source file with the corresponding name (``advec.cxx``).
+The name ``[advec]`` refers for instance to the ``Advec`` class that uses the settings.
+This class is found in the source file with the corresponding name (``advec.cxx``).
 Below the block name are the options consisting of names and values separated by ``=``.
 
 Advection ``[advec]``
@@ -112,7 +113,8 @@ Setting ``swboundary=surface_bulk`` requires ``bulk_cm`` and ``bulk_cs`` to be s
 Budget statistics ``[budget]``
 ------------------------------
 
-The ``Budget`` class contains the computation of the statistics of the budgets of the second order moments. It contains the entire Reynolds-stress tensor, the variances of the buoyancy variable, and the budget of the buoyancy flux.
+The ``Budget`` class contains the computation of the statistics of the budgets of the second order moments.
+It contains the entire Reynolds-stress tensor, the variances of the buoyancy variable, and the budget of the buoyancy flux.
 The switch ``swbudget`` can only be set to ``4`` if ``[grid]`` has ``swspatialorder=4``.
 
 +---------------------------------+--------------------+--------------------------------------------------------+
@@ -122,6 +124,34 @@ The switch ``swbudget`` can only be set to ``4`` if ``[grid]`` has ``swspatialor
 |                                 |                    | | ``2``: Budget statistics with second-order accuracy  |
 |                                 |                    | | ``4``: Budget statistics with fourth-order accuracy  |
 +---------------------------------+--------------------+--------------------------------------------------------+
+
+
+Buffer layer ``[buffer]``
+------------------------------
+
+The ``Buffer`` class contains the implementation of the buffer layer in the top of the domain that prevents the reflection of gravity waves back into the domain.
+The strength of the buffering is defined per layer as
+:math:`\sigma ( (z - z_\textrm{start}) / ( z_\textrm{size} - z_\textrm{start}) )^\beta`.
+A logical choice for ``sigma`` is :math:`(2 \pi) / N`, where :math:`N` is the Brunt-Vaisala frequency in the sponge layer.
+
++---------------------------------+--------------------+--------------------------------------------------------------------+
+| Name                            | Default            | Description and options                                            |
++=================================+====================+====================================================================+
+| ``swbuffer``                    | ``0``              | | Switch for buffer layer                                          |
+|                                 |                    | | ``0``: Buffer layer disabled                                     |
+|                                 |                    | | ``1``: Buffer layer enabled                                      |
++---------------------------------+--------------------+--------------------------------------------------------------------+
+| ``swupdate``                    | ``0``              | | Switch whether to update the buffer with actual mean profiles    |
+|                                 |                    | | ``0``: Updating disabled                                         |
+|                                 |                    | | ``1``: Updating enabled                                          |
++---------------------------------+--------------------+--------------------------------------------------------------------+
+| ``zstart``                      | *None*             | Height in domain at which the buffer layer starts (m)              |
++---------------------------------+--------------------+--------------------------------------------------------------------+
+| ``sigma``                       | *None*             | Damping frequency of buffer layer (rad s-1)                        |
++---------------------------------+--------------------+--------------------------------------------------------------------+
+| ``beta``                        | ``2.``             | Exponent of strength reduction function (-)                        |
++---------------------------------+--------------------+--------------------------------------------------------------------+
+
 
 
 Grid ``[grid]``
@@ -157,7 +187,7 @@ The ``Grid`` class contains the grid configuration.
 Master ``[master]``
 -------------------
 
-The ``Master`` class contains the configuration for parallel runs.
+The ``Master`` class contains the configuration settings for parallel runs.
 
 +---------------------------------+--------------------+-------------------------------------------------+
 | Name                            | Default            | Description and options                         |
