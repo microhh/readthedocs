@@ -26,6 +26,9 @@ The name ``[advec]`` refers for instance to the ``Advec`` class that uses the se
 This class is found in the source file with the corresponding name (``advec.cxx``).
 Below the block name are the options consisting of names and values separated by ``=``.
 
+----
+
+
 Advection ``[advec]``
 ---------------------
 
@@ -43,6 +46,8 @@ The ``Advec`` class computes the advection tendencies using the chosen scheme.
 +---------------------------------+--------------------+-------------------------------------------------+
 | ``cflmax``                      | ``1.0``            | Max. CFL for adaptive time stepping             |
 +---------------------------------+--------------------+-------------------------------------------------+
+
+----
 
 
 Boundary conditions ``[boundary]``
@@ -110,6 +115,8 @@ Setting ``swboundary=surface_bulk`` requires ``bulk_cm`` and ``bulk_cs`` to be s
 | ``bulk_cs``                     | *None*             | Drag coefficient for scalars (-)                                |
 +---------------------------------+--------------------+-----------------------------------------------------------------+
 
+----
+
 
 Budget statistics ``[budget]``
 ------------------------------
@@ -125,6 +132,8 @@ The switch ``swbudget`` can only be set to ``4`` if ``[grid]`` has ``swspatialor
 |                                 |                    | | ``2``: Budget statistics with second-order accuracy  |
 |                                 |                    | | ``4``: Budget statistics with fourth-order accuracy  |
 +---------------------------------+--------------------+--------------------------------------------------------+
+
+----
 
 
 Buffer layer ``[buffer]``
@@ -152,6 +161,8 @@ A logical choice for ``sigma`` is :math:`(2 \pi) / N`, where :math:`N` is the Br
 +---------------------------------+--------------------+--------------------------------------------------------------------+
 | ``beta``                        | ``2.``             | Exponent of strength reduction function (-)                        |
 +---------------------------------+--------------------+--------------------------------------------------------------------+
+
+----
 
 
 Cross sections ``[cross]``
@@ -265,6 +276,8 @@ If a wildcard ``*`` is used, variables can be filled in according to the descrip
 | ``w500hpa``                | Vertical velocity at the 500 hPa level (m s-1)                                  |
 +----------------------------+---------------------------------------------------------------------------------+
 
+----
+
 
 Diffusion ``[diff]``
 --------------------
@@ -287,6 +300,8 @@ If ``swdiff=smag2``, LES mode is enabled and the user can choose ``cs`` and/or `
 +---------------------------------+--------------------+------------------------------------------------------------+
 | ``tPr``                         | ``1./3.``          | Turbulent Prandtl number                                   |
 +---------------------------------+--------------------+------------------------------------------------------------+
+
+----
 
 
 Grid ``[grid]``
@@ -318,6 +333,8 @@ The ``Grid`` class contains the grid configuration.
 | ``vtrans``                      | ``0.``             | Galilean translation velocity in y (m s-1)      |
 +---------------------------------+--------------------+-------------------------------------------------+
 
+----
+
 
 Master ``[master]``
 -------------------
@@ -334,3 +351,4 @@ The ``Master`` class contains the configuration settings for parallel runs.
 | ``wallclocklimit``              | ``1.E8``           | Maximum run duration in wall clock time (h)     |
 +---------------------------------+--------------------+-------------------------------------------------+
 
+----
