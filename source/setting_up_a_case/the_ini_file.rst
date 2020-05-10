@@ -396,13 +396,13 @@ The ``Force`` class provides the tendencies for all forms of large-scale forcing
 |                                 |          | | ``dpdx``: Fixed pressure gradient in x                                 |
 |                                 |          | | ``uflux``: Fixed volume flux through domain                            |
 +---------------------------------+----------+--------------------------------------------------------------------------+
-| ``swtimedep_geo``               | ``0``    | | Use time-dependent geostrophic wind (if ``swlspres=geo``)              |
+| ``swtimedep_geo``               | ``0``    | | Time-dependent geostrophic wind (if ``swlspres=geo``)                  |
 |                                 |          | | ``0``: Disabled                                                        |
 |                                 |          | | ``1``: Enabled                                                         |
 +---------------------------------+----------+--------------------------------------------------------------------------+
-| ``fc``                          | *None*   | Fixed pressure gradient in x (if ``swlspres=geo``)                       |
+| ``fc``                          | *None*   | Coriolis parameter (s-1) (if ``swlspres=geo``)                           |
 +---------------------------------+----------+--------------------------------------------------------------------------+
-| ``dpdx``                        | *None*   | Fixed pressure gradient in x (if ``swlspres=dpdx``)                      |
+| ``dpdx``                        | *None*   | Fixed pressure gradient in x (Pa m-1) (if ``swlspres=dpdx``)             |
 +---------------------------------+----------+--------------------------------------------------------------------------+
 | ``uflux``                       | *None*   | Fixed volume-mean velocity (m s-1)                                       |
 |                                 |          | (if ``swlspres=uflux``)                                                  |
@@ -413,7 +413,7 @@ The ``Force`` class provides the tendencies for all forms of large-scale forcing
 +---------------------------------+----------+--------------------------------------------------------------------------+
 | ``lslist``                      | ``0``    | List of variables for which tendencies are given                         |
 +---------------------------------+----------+--------------------------------------------------------------------------+
-| ``swtimedep_ls``                | ``0``    | | Use time-dependent large-scale forcings (if ``swls=1``)                |
+| ``swtimedep_ls``                | ``0``    | | Time-dependent large-scale forcings (if ``swls=1``)                    |
 |                                 |          | | ``0``: Disabled                                                        |
 |                                 |          | | ``1``: Enabled                                                         |
 +---------------------------------+----------+--------------------------------------------------------------------------+
@@ -424,13 +424,23 @@ The ``Force`` class provides the tendencies for all forms of large-scale forcing
 |                                 |          | | ``0``: Disabled                                                        |
 |                                 |          | | ``1``: Enabled                                                         |
 +---------------------------------+----------+--------------------------------------------------------------------------+
-| ``swtimedep_wls``               | ``0``    | | Use time-dependent large-scale vertical velocity (if ``swwls=1``)      |
+| ``swtimedep_wls``               | ``0``    | | Time-dependent large-scale vertical velocity (if ``swwls=1``)          |
 |                                 |          | | ``0``: Disabled                                                        |
 |                                 |          | | ``1``: Enabled                                                         |
 +---------------------------------+----------+--------------------------------------------------------------------------+
 | ``swnudge``                     | ``0``    | | Switch for nudging                                                     |
 |                                 |          | | ``0``: Disabled                                                        |
 |                                 |          | | ``1``: Enabled                                                         |
++---------------------------------+----------+--------------------------------------------------------------------------+
+| ``nudgelist``                   | ``0``    | List of variables to which nudging is applied                            |
++---------------------------------+----------+--------------------------------------------------------------------------+
+| ``scalednudgelist``             | ``0``    | List of variables to which a nudging scale is applied                    |
++---------------------------------+----------+--------------------------------------------------------------------------+
+| ``swtimedep_nudge``             | ``0``    | | Time-dependent nudging (if ``swnudge=1``)                              |
+|                                 |          | | ``0``: Disabled                                                        |
+|                                 |          | | ``1``: Enabled                                                         |
++---------------------------------+----------+--------------------------------------------------------------------------+
+| ``timedeplist_nudge``           | *None*   | List of variables with time-dependent nudging                            |
 +---------------------------------+----------+--------------------------------------------------------------------------+
 
 ----
