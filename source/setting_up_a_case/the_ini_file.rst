@@ -46,59 +46,82 @@ The ``Advec`` class computes the advection tendencies using the chosen scheme.
 Boundary conditions ``[boundary]``
 ----------------------------------
 
-The ``Boundary`` class computes the boundary conditions. It has a derived class ``Boundary_surface`` that extends the base class in case the surface model is enabled.
+The ``Boundary`` class computes the boundary conditions.
+It has a derived class ``Boundary_surface`` that extends the base class in case the surface model is enabled.
+Setting ``swboundary=surface`` requires ``z0m`` and ``z0h`` to be set.
+Setting ``swboundary=surface_bulk`` requires ``bulk_cm`` and ``bulk_cs`` to be set.
 
-+---------------------------------+--------------------+----------------------------------------------------------+
-| Name                            | Default            | Description and options                                  |
-+=================================+====================+==========================================================+
-| ``swboundary``                  | *None*             | | Boundary discretization                                |
-|                                 |                    | | ``default``: resolved boundaries                       |
-|                                 |                    | | ``surface``: MOST-based surface model                  |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``mbcbot``                      | *None*             | | Bottom boundary type for momentum variables            |
-|                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``             |
-|                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``     |
-|                                 |                    | | ``ustar``: Fixed ustar at bottom                       |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``mbctop``                      | *None*             | | Top boundary type for momentum variables               |
-|                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``             |
-|                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``     |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``sbcbot``                      | *None*             | | Bottom boundary type for scalar variables. Types       |
-|                                 |                    | | can be specified per scalar (``sbot[thl]=flux``)       |
-|                                 |                    | | ``dirchlet``: Dirichlet BC                             |
-|                                 |                    | | ``neumann``: Neumann BC                                |
-|                                 |                    | | ``flux``: Fixed-flux BC                                |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``sbctop``                      | *None*             | | Top boundary type for scalar variables. Types          |
-|                                 |                    | | can be specified per scalar (``stop[qt]=neumann``)     |
-|                                 |                    | | ``dirchlet``: Dirichlet BC                             |
-|                                 |                    | | ``neumann``: Neumann BC                                |
-|                                 |                    | | ``flux``: Fixed-flux BC                                |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``ubot``                        | ``0.``             | | Bottom boundary value for east-west velocity (m s-1)   |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``utop``                        | ``0.``             | | Top boundary value for east-west velocity (m s-1)      |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``vbot``                        | ``0.``             | | Bottom boundary value for north-south velocity (m s-1) |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``vtop``                        | ``0.``             | | Bottom boundary value for north-south velocity (m s-1) |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``sbot``                        | *None*             | | Bottom boundary value for scalar variables. Values     |
-|                                 |                    | | can be specified per scalar (``sbot[thl]=300``)        |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``stop``                        | *None*             | | Top boundary value for scalar variables. Values        |
-|                                 |                    | | can be specified per scalar (``stop[s]=4.``)           |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``sbot_2d_list``                | *Empty list*       | | Comma-separate list of scalars that provide a binary   |
-|                                 |                    | | file (``sbot_thl.0000000``) with 2D slice              |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``z0m``                         | *None*             | Roughness length of momentum (m)                         |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``z0h``                         | *None*             | Roughness length of scalars (m)                          |
-+---------------------------------+--------------------+----------------------------------------------------------+
-| ``ustar``                       | *None*             | Value of the friction velocity (m s-1)                   |
-+---------------------------------+--------------------+----------------------------------------------------------+
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| Name                            | Default            | Description and options                                         |
++=================================+====================+=================================================================+
+| ``swboundary``                  | *None*             | | Boundary discretization                                       |
+|                                 |                    | | ``default``: resolved boundaries                              |
+|                                 |                    | | ``surface``: MOST-based surface model                         |
+|                                 |                    | | ``surface_bulk``: Surface model with prescribed drag coefs    |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``mbcbot``                      | *None*             | | Bottom boundary type for momentum variables                   |
+|                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``                    |
+|                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``            |
+|                                 |                    | | ``ustar``: Fixed ustar at bottom                              |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``mbctop``                      | *None*             | | Top boundary type for momentum variables                      |
+|                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``                    |
+|                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``            |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``sbcbot``                      | *None*             | | Bottom boundary type for scalar variables. Types              |
+|                                 |                    | | can be specified per scalar (``sbot[thl]=flux``)              |
+|                                 |                    | | ``dirchlet``: Dirichlet BC                                    |
+|                                 |                    | | ``neumann``: Neumann BC                                       |
+|                                 |                    | | ``flux``: Fixed-flux BC                                       |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``sbctop``                      | *None*             | | Top boundary type for scalar variables. Types                 |
+|                                 |                    | | can be specified per scalar (``stop[qt]=neumann``)            |
+|                                 |                    | | ``dirchlet``: Dirichlet BC                                    |
+|                                 |                    | | ``neumann``: Neumann BC                                       |
+|                                 |                    | | ``flux``: Fixed-flux BC                                       |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``ubot``                        | ``0.``             | | Bottom boundary value for east-west velocity (m s-1)          |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``utop``                        | ``0.``             | | Top boundary value for east-west velocity (m s-1)             |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``vbot``                        | ``0.``             | | Bottom boundary value for north-south velocity (m s-1)        |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``vtop``                        | ``0.``             | | Bottom boundary value for north-south velocity (m s-1)        |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``sbot``                        | *None*             | | Bottom boundary value for scalar variables. Values            |
+|                                 |                    | | can be specified per scalar (``sbot[thl]=300``)               |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``stop``                        | *None*             | | Top boundary value for scalar variables. Values               |
+|                                 |                    | | can be specified per scalar (``stop[s]=4.``)                  |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``sbot_2d_list``                | *Empty list*       | | Comma-separate list of scalars that provide a binary          |
+|                                 |                    | | file (``sbot_thl.0000000``) with 2D slice                     |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``z0m``                         | *None*             | Roughness length of momentum (m)                                |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``z0h``                         | *None*             | Roughness length of scalars (m)                                 |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``ustar``                       | *None*             | Value of the friction velocity (m s-1)                          |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``bulk_cm``                     | *None*             | Drag coefficient for momentum (-)                               |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+| ``bulk_cs``                     | *None*             | Drag coefficient for scalars (-)                                |
++---------------------------------+--------------------+-----------------------------------------------------------------+
+
+
+Budget statistics ``[budget]``
+------------------------------
+
+The ``Budget`` class contains the computation of the statistics of the budgets of the second order moments. It contains the entire Reynolds-stress tensor, the variances of the buoyancy variable, and the budget of the buoyancy flux.
+The switch ``swbudget`` can only be set to ``4`` if ``[grid]`` has ``swspatialorder=4``.
+
++---------------------------------+--------------------+--------------------------------------------------------+
+| Name                            | Default            | Description and options                                |
++=================================+====================+========================================================+
+| ``swbudget``                    | ``0``              | | Switch for the budget statistics                     |
+|                                 |                    | | ``2``: Budget statistics with second-order accuracy  |
+|                                 |                    | | ``4``: Budget statistics with fourth-order accuracy  |
++---------------------------------+--------------------+--------------------------------------------------------+
 
 
 Grid ``[grid]``
