@@ -11,65 +11,117 @@ Building the ``yourcase_input.nc``
 
 Each MicroHH experiment requires a NetCDF file with the initial vertical profiles, and optionally input for model components like e.g. large-scale forcings, boundary conditions, and/or radiation. The different input options are divided over different NetCDF groups.
 
-Each input file should, as a bare minimum, specify the vertical coordinates of the
+Each input file should, as a bare minimum, specify the height of the full model levels:
 
-The tables below shows an overview of the input options. If a wildcard ``*`` is used, variables can be filled in according to the description.
++--------------+---------+------------+--------------------------------------------------------------+
+| Variable     | Dims    | Unit       | Description                                                  |
++==============+=========+============+==============================================================+
+| ``z``        | ``[z]`` | ``m``      | Height of the full model levels                              |
++--------------+---------+------------+--------------------------------------------------------------+
+
+The tables below show an overview of the input options. If a wildcard ``*`` is used, variables (with units ``@``) can be filled in according to the description.
+
+.. warning::
+
+    If a variable required by the model is not present in the NetCDF file, the profile is filled with zero's, and a warning is printed.
 
 ``init`` group
 --------------
 
 The ``init`` group provides the initial vertical profiles of the prognostic variables, and optionally (non time dependent) large scale forcings like the geostrophic wind components, subsidence velocity, source terms, or nudging profiles. See :ref:`Large-scale forcings ``[force]``` for details on the different options.
 
-+-------------+---------+--------------------------------------------------------------+
-| Variable    | Dims    | Description                                                  |
-+=============+=========+==============================================================+
-| ``*``       | ``[z]`` | Initial profile of any prognostic variable                   |
-+-------------+---------+--------------------------------------------------------------+
-| ``*_ls``    | ``[z]`` | | Source term of any prognostic variable                     |
-|             |         | | (if ``swls=1`` and ``swtimedep_ls=0``)                     |
-+-------------+---------+--------------------------------------------------------------+
-| ``*_nudge`` | ``[z]`` | | Nudging target of any prognostic variable                  |
-|             |         | | (if ``swnudge=1`` and ``swtimedep_nudge=0``)               |
-+-------------+---------+--------------------------------------------------------------+
-| ``u_geo``   | ``[z]`` | | Zonal component geostrophic wind                           |
-|             |         | | (if ``swlspres=geo`` and ``swtimedep_geo=0``)              |
-+-------------+---------+--------------------------------------------------------------+
-| ``u_geo``   | ``[z]`` | | Meridional component geostrophic wind                      |
-|             |         | | (if ``swlspres=geo`` and ``swtimedep_geo=0``)              |
-+-------------+---------+--------------------------------------------------------------+
-| ``w_ls``    | ``[z]`` | Subsidence velocity (if ``swwls=1`` and ``swtimedep_wls=0``) |
-+-------------+---------+--------------------------------------------------------------+
++--------------+---------+------------+--------------------------------------------------------------+
+| Variable     | Dims    | Unit       | Description                                                  |
++==============+=========+============+==============================================================+
+| ``*``        | ``[z]`` | ``@``      | Initial profile of any prognostic variable                   |
++--------------+---------+------------+--------------------------------------------------------------+
+| ``*_ls``     | ``[z]`` | ``@ s-1``  | | Source term of any prognostic variable                     |
+|              |         |            | | (if ``swls=1`` and ``swtimedep_ls=0``)                     |
++--------------+---------+------------+--------------------------------------------------------------+
+| ``*_nudge``  | ``[z]`` | ``@``      | | Nudging target of any prognostic variable                  |
+|              |         |            | | (if ``swnudge=1`` and ``swtimedep_nudge=0``)               |
++--------------+---------+------------+--------------------------------------------------------------+
+| ``u_geo``    | ``[z]`` | ``m s-1``  | | Zonal component geostrophic wind                           |
+|              |         |            | | (if ``swlspres=geo`` and ``swtimedep_geo=0``)              |
++--------------+---------+------------+--------------------------------------------------------------+
+| ``u_geo``    | ``[z]`` | ``m s-1)`` | | Meridional component geostrophic wind                      |
+|              |         |            | | (if ``swlspres=geo`` and ``swtimedep_geo=0``)              |
++--------------+---------+------------+--------------------------------------------------------------+
+| ``w_ls``     | ``[z]`` | ``m s-1``  | Subsidence velocity (if ``swwls=1`` and ``swtimedep_wls=0``) |
++--------------+---------+------------+--------------------------------------------------------------+
+| ``nudgefac`` | ``[z]`` | ``s``      | Nudging time scale (if ``swnudge=1``)                        |
++--------------+---------+------------+--------------------------------------------------------------+
+
 
 ``timedep`` group
 -----------------
 
-The ``timedep`` group specifies the time dependent surface boundary conditions and/or large scale forcings....
+The ``timedep`` group specifies the time dependent surface boundary conditions and/or large scale forcings.
 
-+------------------+--------------------+--------------------------------------------------------------+
-| Variable         | Dims               | Description                                                  |
-+==================+====================+==============================================================+
-| ``time_surface`` | ``[time_surface]`` | Input time of surface boundary conditions                    |
-+------------------+--------------------+--------------------------------------------------------------+
-| ``*_sbot``       | ``[time_surface]`` | Surface boundary conditions of any prognostic variable       |
-+------------------+--------------------+--------------------------------------------------------------+
-| ``p_bot``        | ``[time_surface]`` | Surface pressure                                             |
-+------------------+--------------------+--------------------------------------------------------------+
-| ``time_ls``      | ``[time_ls]``      | Input time of large scale forcings                           |
-+------------------+--------------------+--------------------------------------------------------------+
-| ``*_ls``         | ``[time_ls, z]``   | | Source term of any prognostic variable                     |
-|                  |                    | | (if ``swls=1`` and ``swtimedep_ls=1```)                    |
-+------------------+--------------------+--------------------------------------------------------------+
-| ``*_nudge``      | ``[time_ls, z]``   | | Nudging target of any prognostic variable                  |
-|                  |                    | | (if ``swnudge=1`` and ``swtimedep_nudge=1```)              |
-+------------------+--------------------+--------------------------------------------------------------+
-| ``u_geo``        | ``[time_ls, z]``   | | Zonal component geostrophic wind                           |
-|                  |                    | | (if ``swlspres=geo`` and ``swtimedep_geo=1``)              |
-+------------------+--------------------+--------------------------------------------------------------+
-| ``u_geo``        | ``[time_ls, z]``   | | Meridional component geostrophic wind                      |
-|                  |                    | | (if ``swlspres=geo`` and ``swtimedep_geo=1``)              |
-+------------------+--------------------+--------------------------------------------------------------+
-| ``w_ls``         | ``[time_ls, z]``   | Subsidence velocity (if ``swwls=1`` and ``swtimedep_wls=1``) |
-+------------------+--------------------+--------------------------------------------------------------+
++------------------+--------------------+-----------+------------------------------------------------------------+
+| Variable         | Dims               | Unit      | Description                                                |
++==================+====================+===========+============================================================+
+| ``time_surface`` | ``[time_surface]`` | ``s``     | Input time of surface boundary conditions                  |
++------------------+--------------------+-----------+------------------------------------------------------------+
+| ``*_sbot``       | ``[time_surface]`` | note 1    | Surface boundary conditions of prognostic scalar variables |
++------------------+--------------------+-----------+------------------------------------------------------------+
+| ``p_bot``        | ``[time_surface]`` | ``Pa``    | Surface pressure                                           |
++------------------+--------------------+-----------+------------------------------------------------------------+
+| ``time_ls``      | ``[time_ls]``      | ``s``     | Input time of large scale forcings                         |
++------------------+--------------------+-----------+------------------------------------------------------------+
+| ``*_ls``         | ``[time_ls, z]``   | ``@ s-1`` | | Source term of any prognostic variable                   |
+|                  |                    |           | | (if ``swls=1`` and ``swtimedep_ls=1``)                   |
++------------------+--------------------+-----------+------------------------------------------------------------+
+| ``*_nudge``      | ``[time_ls, z]``   | ``@``     | | Nudging target of any prognostic variable                |
+|                  |                    |           | | (if ``swnudge=1`` and ``swtimedep_nudge=1``)             |
++------------------+--------------------+-----------+------------------------------------------------------------+
+| ``u_geo``        | ``[time_ls, z]``   | ``m s-1`` | | Zonal component geostrophic wind                         |
+|                  |                    |           | | (if ``swlspres=geo`` and ``swtimedep_geo=1``)            |
++------------------+--------------------+-----------+------------------------------------------------------------+
+| ``u_geo``        | ``[time_ls, z]``   | ``m s-1`` | | Meridional component geostrophic wind                    |
+|                  |                    |           | | (if ``swlspres=geo`` and ``swtimedep_geo=1``)            |
++------------------+--------------------+-----------+------------------------------------------------------------+
+| ``w_ls``         | ``[time_ls, z]``   | ``m s-1`` | | Subsidence velocity                                      |
+|                  |                    |           | | (if ``swwls=1`` and ``swtimedep_wls=1``)                 |
++------------------+--------------------+-----------+------------------------------------------------------------+
+
+Note 1: the units of the scalar boundary conditions (BCs) depend on the boundary conditions used: ``@`` for Dirichlet BCs, ``@ m s-1`` for flux BCs, and ``@ m-1`` for Neuman BCs.
+
+
+``radiation`` group
+-------------------
+
+The ``radiation`` group defines background profiles, used by RRTMGP to calculate the radiation boundary conditions at the top of the LES domain. The input is specified at full (dimension ``lay``) and half (dimension ``lev``) pressure levels, and typically should extend to the top of the atmosphere (TOA).
+
++-----------+-----------+---------+------------------------------+
+| Variable  | Dims      | Unit    | Description                  |
++===========+===========+=========+==============================+
+| ``p_lay`` | ``[lay]`` | ``Pa``  | Pressure                     |
++-----------+-----------+---------+------------------------------+
+| ``p_lev`` | ``[lev]`` | ``Pa``  | Pressure                     |
++-----------+-----------+---------+------------------------------+
+| ``z_lay`` | ``[lay]`` | ``m``   | Height                       |
++-----------+-----------+---------+------------------------------+
+| ``z_lev`` | ``[lev]`` | ``m``   | Height                       |
++-----------+-----------+---------+------------------------------+
+| ``t_lay`` | ``[lay]`` | ``K``   | Absolute temperature         |
++-----------+-----------+---------+------------------------------+
+| ``t_lev`` | ``[lev]`` | ``K``   | Absolute temperature         |
++-----------+-----------+---------+------------------------------+
+| ``h2o``   | ``[lay]`` | ``??``  | Water vapour mixing ratio ?? |
++-----------+-----------+---------+------------------------------+
+| ``co2``   | ``[lay]`` | ``ppm`` | Carbon dioxide mixing ratio  |
++-----------+-----------+---------+------------------------------+
+| ``ch4``   | ``[lay]`` | ``ppb`` | Methane mixing ratio         |
++-----------+-----------+---------+------------------------------+
+| ``n2o``   | ``[lay]`` | ``ppb`` | Nitrous oxide mixing ratio   |
++-----------+-----------+---------+------------------------------+
+| ``n2``    | ``[lay]`` | ``??``  | Dinitrogen mixing ratio      |
++-----------+-----------+---------+------------------------------+
+| ``o2``    | ``[lay]`` | ``??``  | Oxygen mixing ratio          |
++-----------+-----------+---------+------------------------------+
+| ``o3``    | ``[lay]`` | ``??``  | Ozone mixing ratio           |
++-----------+-----------+---------+------------------------------+
 
 
 Example input NetCDF file
