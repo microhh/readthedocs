@@ -23,7 +23,7 @@ The tables below show an overview of the input options. If a wildcard ``*`` is u
 
 .. warning::
 
-    If a variable required by the model is not present in the NetCDF file, the profile is filled with zero's, and a warning is printed.
+    If a variable required by the model is not present in the NetCDF file, the profile is filled with zero's, and a warning is printed by the model.
 
 ``init`` group
 --------------
@@ -93,35 +93,36 @@ Note 1: the units of the scalar boundary conditions (BCs) depend on the boundary
 
 The ``radiation`` group defines background profiles, used by RRTMGP to calculate the radiation boundary conditions at the top of the LES domain. The input is specified at full (dimension ``lay``) and half (dimension ``lev``) pressure levels, and typically should extend to the top of the atmosphere (TOA).
 
-+-----------+-----------+---------+------------------------------+
-| Variable  | Dims      | Unit    | Description                  |
-+===========+===========+=========+==============================+
-| ``p_lay`` | ``[lay]`` | ``Pa``  | Pressure                     |
-+-----------+-----------+---------+------------------------------+
-| ``p_lev`` | ``[lev]`` | ``Pa``  | Pressure                     |
-+-----------+-----------+---------+------------------------------+
-| ``z_lay`` | ``[lay]`` | ``m``   | Height                       |
-+-----------+-----------+---------+------------------------------+
-| ``z_lev`` | ``[lev]`` | ``m``   | Height                       |
-+-----------+-----------+---------+------------------------------+
-| ``t_lay`` | ``[lay]`` | ``K``   | Absolute temperature         |
-+-----------+-----------+---------+------------------------------+
-| ``t_lev`` | ``[lev]`` | ``K``   | Absolute temperature         |
-+-----------+-----------+---------+------------------------------+
-| ``h2o``   | ``[lay]`` | ``??``  | Water vapour mixing ratio ?? |
-+-----------+-----------+---------+------------------------------+
-| ``co2``   | ``[lay]`` | ``ppm`` | Carbon dioxide mixing ratio  |
-+-----------+-----------+---------+------------------------------+
-| ``ch4``   | ``[lay]`` | ``ppb`` | Methane mixing ratio         |
-+-----------+-----------+---------+------------------------------+
-| ``n2o``   | ``[lay]`` | ``ppb`` | Nitrous oxide mixing ratio   |
-+-----------+-----------+---------+------------------------------+
-| ``n2``    | ``[lay]`` | ``??``  | Dinitrogen mixing ratio      |
-+-----------+-----------+---------+------------------------------+
-| ``o2``    | ``[lay]`` | ``??``  | Oxygen mixing ratio          |
-+-----------+-----------+---------+------------------------------+
-| ``o3``    | ``[lay]`` | ``??``  | Ozone mixing ratio           |
-+-----------+-----------+---------+------------------------------+
++-----------+-----------+---------+---------------------------------+
+| Variable  | Dims      | Unit    | Description                     |
++===========+===========+=========+=================================+
+| ``p_lay`` | ``[lay]`` | ``Pa``  | Full level pressure             |
++-----------+-----------+---------+---------------------------------+
+| ``p_lev`` | ``[lev]`` | ``Pa``  | Half level pressure             |
++-----------+-----------+---------+---------------------------------+
+| ``z_lay`` | ``[lay]`` | ``m``   | Full level height               |
++-----------+-----------+---------+---------------------------------+
+| ``z_lev`` | ``[lev]`` | ``m``   | Half level height               |
++-----------+-----------+---------+---------------------------------+
+| ``t_lay`` | ``[lay]`` | ``K``   | Full level absolute temperature |
++-----------+-----------+---------+---------------------------------+
+| ``t_lev`` | ``[lev]`` | ``K``   | Half level absolute temperature |
++-----------+-----------+---------+---------------------------------+
+| ``h2o``   | ``[lay]`` | ``??``  | Water vapour mixing ratio ??    |
++-----------+-----------+---------+---------------------------------+
+| ``co2``   | ``[lay]`` | ``ppm`` | Carbon dioxide mixing ratio     |
++-----------+-----------+---------+---------------------------------+
+| ``ch4``   | ``[lay]`` | ``ppb`` | Methane mixing ratio            |
++-----------+-----------+---------+---------------------------------+
+| ``n2o``   | ``[lay]`` | ``ppb`` | Nitrous oxide mixing ratio      |
++-----------+-----------+---------+---------------------------------+
+| ``n2``    | ``[lay]`` | ``??``  | Dinitrogen mixing ratio         |
++-----------+-----------+---------+---------------------------------+
+| ``o2``    | ``[lay]`` | ``??``  | Oxygen mixing ratio             |
++-----------+-----------+---------+---------------------------------+
+| ``o3``    | ``[lay]`` | ``??``  | Ozone mixing ratio              |
++-----------+-----------+---------+---------------------------------+
+
 
 
 Example input NetCDF file
