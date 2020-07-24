@@ -10,7 +10,8 @@ Requirements
 
 Before starting the tutorial, make sure that you meet the requirements of MicroHH. In order to compile MicroHH you need:
 
-- C++ compiler
+- C++ compiler (C++14)
+- Fortran compiler (Fortran 2003)
 - FFTW3
 - Boost
 - NetCDF4-C
