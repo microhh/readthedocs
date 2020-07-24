@@ -11,7 +11,8 @@ Requirements
 Before starting the tutorial, make sure that you meet the requirements of MicroHH. In order to compile MicroHH you need:
 
 - C++ compiler
-- FFTW3 libraries
+- FFTW3
+- Boost
 - NetCDF4-C
 - CMake
 - MPI2/3 implementation `(optional for MPI support)`
