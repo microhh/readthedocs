@@ -382,7 +382,7 @@ It is also responsible for the generation of the random perturbation in the init
 ----
 
 
-Large-scale forcings ``[force``]
+Large-scale forcings ``[force]``
 --------------------------------
 
 The ``Force`` class provides the tendencies for all forms of large-scale forcings.
