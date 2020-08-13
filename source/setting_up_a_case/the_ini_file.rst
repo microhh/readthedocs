@@ -33,6 +33,7 @@ Advection ``[advec]``
 ---------------------
 
 The ``Advec`` class computes the advection tendencies using the chosen scheme.
+Note that the ``2i3`` scheme has hyperdiffusion included that results in a smooth solution.
 
 +---------------------------------+--------------------+-------------------------------------------------+
 | Name                            | Default            | Description and options                         |
@@ -40,6 +41,7 @@ The ``Advec`` class computes the advection tendencies using the chosen scheme.
 | ``swadvec``                     | ``swspatialorder`` | | Advection scheme                              |
 |                                 |                    | | ``0``:   Disabled                             |
 |                                 |                    | | ``2``:   2nd-order                            |
+|                                 |                    | | ``2i3``: 2nd-order (3rd-order interpolation)  |
 |                                 |                    | | ``2i4``: 2nd-order (4th-order interpolation)  |
 |                                 |                    | | ``4``:   4th-order (high accuracy)            |
 |                                 |                    | | ``4m``:  4th-order (energy conserving)        |
