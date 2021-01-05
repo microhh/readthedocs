@@ -28,6 +28,12 @@ These pages provide a documentation for MicroHH 2.0
 
    the_code/main_code_structure
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Computing systems:
+
+   computing_systems/cartesius
+
 
 Indices and tables
 ==================
