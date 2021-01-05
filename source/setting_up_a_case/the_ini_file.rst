@@ -323,7 +323,7 @@ The ``Dump`` class contains the settings for 3D field dumps.
 | ``dumplist``                    | *None*             | List of 3D dumps to be made                     |
 +---------------------------------+--------------------+-------------------------------------------------+
 
-The table below shows an overview of potential cross sections and the class that provides them.
+The table below shows an overview of potential dump variables and the class that provides them.
 If a wildcard ``*`` is used, variables can be filled in according to the description.
 
 +----------------------------+---------------------------------------------------------------------------------+

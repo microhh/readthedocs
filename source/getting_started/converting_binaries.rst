@@ -28,7 +28,7 @@ For an overview of all options, see the help function:
 Restart files and field dumps
 -----------------------------
 
-The conversion of restart files and field dumps works the same as the conversion of cross-sections, only using the :code:`3d_to_nc.py` script. Many of the possible command line arguments are the samea as in the :code:`cross_to_nc.py` script. For an overview, see the help function:
+The conversion of restart files and field dumps works the same as the conversion of cross-sections, only using the :code:`3d_to_nc.py` script. Many of the possible command line arguments are the same as in the :code:`cross_to_nc.py` script. For an overview, see the help function:
 
 .. code-block:: shell
 
