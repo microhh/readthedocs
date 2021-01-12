@@ -33,6 +33,9 @@ Cartesius uses a module system to load and/or switch between different compilers
     # Optional, for using ncview:
     module load ncview/2.1.7-intel-2018b
 
+    # Optional, for using IPython:
+    module load IPython/7.2.0-intel-2018b-Python-3.6.6
+
 The NCO module, optionally needed to merge the statistics files, unfortunately conflicts with some of the modules listed above. To use NCO, the previous packages need to be unloaded, and replaced with the following ones:
 
 .. code-block:: shell
