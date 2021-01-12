@@ -10,7 +10,7 @@ General information on the system and remote access (SSH) are available at: `use
 Modules
 -------
 
-Cartesius uses a module system to load and/or switch between different compilers, libraries, etc. The following command unloads all modules (:code:`module purge`) and loads (:code:`module load`) the ones required to compile MicroHH:
+Cartesius uses a module system to load and/or switch between different compilers, libraries, etc. The following command unloads all modules (:code:`module purge`) and loads (:code:`module load`) the ones required to compile MicroHH, generate the input files with Python, and visualise the results with Ncview:
 
 .. code-block:: shell
 
@@ -18,25 +18,42 @@ Cartesius uses a module system to load and/or switch between different compilers
     module load surfsara
     module load compilerwrappers
     module load 2019
+
+    # Needed for compilation:
     module load CMake
     module load intel/2018b
     module load netCDF/4.6.1-intel-2018b
     module load netCDF-Fortran/4.4.4-intel-2018b
     module load FFTW/3.3.8-intel-2018b
 
-To use Python, for example to generate the NetCDF input files for MicroHH, the following modules work:
+    # Needed for creating input files:
+    # (automatically loads Python modules as well)
+    module load netcdf4-python
+
+    # Optional, for using ncview:
+    module load ncview/2.1.7-intel-2018b
+
+The NCO module, optionally needed to merge the statistics files, unfortunately conflicts with some of the modules listed above. To use NCO, the previous packages need to be unloaded, and replaced with the following ones:
 
 .. code-block:: shell
 
     module purge
     module load 2019
-    module load Python/3.7.5-foss-2018b
-    module load netCDF/4.6.1-foss-2018b
+    module load NCO
+
+To simplify switching between the two environments, it can be convenient to put the two sets of module commands in a shell script in your home directory (e.g. :code:`setup_microhh.sh` and :code:`setup_nco.sh`), after which you can simply switch using:
+
+.. code-block:: shell
+
+   source ~/setup_microhh.sh
+   # or:
+   source ~/setup_nco.sh
+
 
 Slurm load balancer
 -------------------
 
-Like most supercomputers, Cartesius uses a queuing system (Slurm) to schedule all the individual jobs from users. Instead of running the model directly from the login nodes, experiments have to be submitted to one or multiple compute nodes using a Slurm script.
+Like most supercomputers, Cartesius uses a queuing system (Slurm) to schedule all the individual jobs from users. Instead of running the model directly from the login nodes, experiments have to be submitted to one or multiple compute nodes using a Slurm scrip
 
 The script below (also available in :code:`misc/runscripts/cartesius.slurm`) shows an example for running the :code:`drycblles` case on 48 CPU cores (2 nodes) in the :code:`normal` queue:
 
