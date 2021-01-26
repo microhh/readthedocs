@@ -68,17 +68,17 @@ From this directory, run :code:`cmake` with the suffix :code:`..` to point to th
 
     cmake ..
 
-
-In case you prefer to enable either MPI or CUDA (at the moment, not both!), run one of the following commands instead of the previous one:
+Running :code:`cmake` without arguments gives you a serial build without GPU support in double precision. Parallel builds with MPI can be enabled by adding the :code:`-DUSEMPI=TRUE` flag. GPU support using NVIDIA CUDA can be enabled with the flag :code:`-DUSECUDA=TRUE`. Note that they cannot be combined at the moment in absence of multi-GPU support. The precision of the code can be reduced from double (64-bits) to single (32-bits) precision using the flag :code:`-DUSESP=TRUE`. Some examples are found below here:
 
 .. code-block:: shell
 
     cmake .. -DUSEMPI=TRUE
-    cmake .. -DUSECUDA=TRUE
+    cmake .. -DUSECUDA=TRUE -DUSESP=TRUE
+    cmake .. -DUSESP=TRUE
 
 .. warning::
 
-    Once the build has been configured and you wish to change the :code:`USECUDA` or :code:`USEMPI` setting, you must delete the build directory or create an additional empty directory from which :code:`cmake` is run.
+    Once the build has been configured and you wish to change the :code:`USECUDA`, :code:`USEMPI`, or :code:`USESP` setting, you must delete the build directory or create an additional empty directory from which :code:`cmake` is run again.
     
 With the previous command you have triggered the build system and created the :code:`Makefile`, if the :code:`default.cmake` file contains the correct settings. Now, you can start the compilation of the code and create the MicroHH executable with:
 
