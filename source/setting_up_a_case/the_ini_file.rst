@@ -359,7 +359,7 @@ It is also responsible for the generation of the random perturbation in the init
 +=================================+====================+==========================================================+
 | ``slist``                       | *Empty list*       | List of passive scalars to be initialized                |
 +---------------------------------+--------------------+----------------------------------------------------------+
-| ``visc``     `                  | *None*             | Kinematic viscosity (m2 s-1)                             |
+| ``visc``                        | *None*             | Kinematic viscosity (m2 s-1)                             |
 +---------------------------------+--------------------+----------------------------------------------------------+
 | ``svisc``                       | *None*             | Diffusivity of scalars (m2 s-1)                          |
 +---------------------------------+--------------------+----------------------------------------------------------+
@@ -368,7 +368,7 @@ It is also responsible for the generation of the random perturbation in the init
 | ``rndamp``                      | ``0.``             | Amplitude of perturbations. Value can be specified per   |
 |                                 |                    | prognostic variable, for instance ``rndamp[s] = 0.1``    |
 +---------------------------------+--------------------+----------------------------------------------------------+
-| ``rndz``  `                     | ``0.``             | Height until which perturbations applied (m)             |
+| ``rndz``                        | ``0.``             | Height until which perturbations applied (m)             |
 +---------------------------------+--------------------+----------------------------------------------------------+
 | ``rndexp``                      | ``0.``             | Decay of perturbation amplitude with height              |
 +---------------------------------+--------------------+----------------------------------------------------------+
