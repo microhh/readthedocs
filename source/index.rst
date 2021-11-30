@@ -33,6 +33,7 @@ These pages provide a documentation for MicroHH 2.0
    :caption: Computing systems:
 
    computing_systems/cartesius
+   computing_systems/snellius
 
 
 Indices and tables
