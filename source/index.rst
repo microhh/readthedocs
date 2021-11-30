@@ -32,7 +32,6 @@ These pages provide a documentation for MicroHH 2.0
    :maxdepth: 2
    :caption: Computing systems:
 
-   computing_systems/cartesius
    computing_systems/snellius
 
 
