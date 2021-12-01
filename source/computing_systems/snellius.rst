@@ -77,9 +77,9 @@ After which you can simply switch using:
 
 .. code-block:: shell
 
-    source ~/setup_env.ssh gcc
+    source ~/setup_env.sh gcc
     # or:
-    source ~/setup_env.ssh intel
+    source ~/setup_env.sh intel
 
 Slurm load balancer
 -------------------
