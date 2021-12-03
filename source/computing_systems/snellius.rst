@@ -24,7 +24,6 @@ Snellius uses a module system to load and/or switch between different compilers,
     module load CUDA/11.3.1
 
     ## Python/plotting et al:
-    module load ncview/2.1.8-gompi-2021a
     module load Python/3.9.5-GCCcore-10.3.0
     module load IPython/7.25.0-GCCcore-10.3.0
     module load NCO/5.0.1-foss-2021a
