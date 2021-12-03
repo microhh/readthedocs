@@ -33,21 +33,27 @@ Advection ``[advec]``
 ---------------------
 
 The ``Advec`` class computes the advection tendencies using the chosen scheme.
-Note that the ``2i3`` scheme has hyperdiffusion included that results in a smooth solution.
+Note that the odd ordered schemes (e.g. ``2i5``) have hyperdiffusion included that results in a smooth solution.
+For ``2i53`` and ``2i62``, the interpolations are 5th/6th order accurate in the horizontal, and 3rd/2nd order in the vertical.
 
-+---------------------------------+--------------------+-------------------------------------------------+
-| Name                            | Default            | Description and options                         |
-+=================================+====================+=================================================+
-| ``swadvec``                     | ``swspatialorder`` | | Advection scheme                              |
-|                                 |                    | | ``0``:   Disabled                             |
-|                                 |                    | | ``2``:   2nd-order                            |
-|                                 |                    | | ``2i3``: 2nd-order (3rd-order interpolation)  |
-|                                 |                    | | ``2i4``: 2nd-order (4th-order interpolation)  |
-|                                 |                    | | ``4``:   4th-order (high accuracy)            |
-|                                 |                    | | ``4m``:  4th-order (energy conserving)        |
-+---------------------------------+--------------------+-------------------------------------------------+
-| ``cflmax``                      | ``1.0``            | Max. CFL for adaptive time stepping             |
-+---------------------------------+--------------------+-------------------------------------------------+
+For more details about the 2nd order accurate schemes, see: `<dx.doi.org/10.1175/1520-0493(2002)130%3C2088:TSMFEM%3E2.0.CO;2>`_.
+
++-------------+--------------------+-----------------------------------------------------+
+| Name        | Default            | Description and options                             |
++=============+====================+=====================================================+
+| ``swadvec`` | ``swspatialorder`` | | Advection scheme                                  |
+|             |                    | | ``0``: Disabled                                   |
+|             |                    | | ``2``: 2nd-order                                  |
+|             |                    | | ``2i4``: 2nd-order (4th-order interpolation)      |
+|             |                    | | ``2i4``: 2nd-order (4th-order interpolation)      |
+|             |                    | | ``2i5``: 2nd-order (5th-order interpolation)      |
+|             |                    | | ``2i53``: 2nd-order (5th/3rd-order interpolation) |
+|             |                    | | ``2i62``: 2nd-order (6th/2nd-order interpolation) |
+|             |                    | | ``4``: 4th-order (DNS, high accuracy)             |
+|             |                    | | ``4m``: 2nd-order (DNS, energy conserving)        |
++-------------+--------------------+-----------------------------------------------------+
+| ``cflmax``  | ``1.0``            | Max. CFL for adaptive time stepping                 |
++-------------+--------------------+-----------------------------------------------------+
 
 ----
 
@@ -56,66 +62,67 @@ Boundary conditions ``[boundary]``
 ----------------------------------
 
 The ``Boundary`` class computes the boundary conditions.
-It has a derived class ``Boundary_surface`` that extends the base class in case the surface model is enabled.
+It has a derived class ``Boundary_surface`` that extends the base class in case the surface model is enabled, and ``Boundary_surface_lsm`` which further extends ``Boundary_surface`` with an interactive land surface scheme (HTESSEL based).
 Setting ``swboundary=surface`` requires ``z0m`` and ``z0h`` to be set.
 Setting ``swboundary=surface_bulk`` requires ``bulk_cm`` and ``bulk_cs`` to be set.
 
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| Name                            | Default            | Description and options                                         |
-+=================================+====================+=================================================================+
-| ``swboundary``                  | *None*             | | Boundary discretization                                       |
-|                                 |                    | | ``default``: resolved boundaries                              |
-|                                 |                    | | ``surface``: MOST-based surface model                         |
-|                                 |                    | | ``surface_bulk``: Surface model with prescribed drag coefs    |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``mbcbot``                      | *None*             | | Bottom boundary type for momentum variables                   |
-|                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``                    |
-|                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``            |
-|                                 |                    | | ``ustar``: Fixed ustar at bottom                              |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``mbctop``                      | *None*             | | Top boundary type for momentum variables                      |
-|                                 |                    | | ``no-slip``: Dirichlet BC with ``u,v = 0``                    |
-|                                 |                    | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``            |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``sbcbot``                      | *None*             | | Bottom boundary type for scalar variables. Types              |
-|                                 |                    | | can be specified per scalar (``sbot[thl]=flux``)              |
-|                                 |                    | | ``dirchlet``: Dirichlet BC                                    |
-|                                 |                    | | ``neumann``: Neumann BC                                       |
-|                                 |                    | | ``flux``: Fixed-flux BC                                       |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``sbctop``                      | *None*             | | Top boundary type for scalar variables. Types                 |
-|                                 |                    | | can be specified per scalar (``stop[qt]=neumann``)            |
-|                                 |                    | | ``dirchlet``: Dirichlet BC                                    |
-|                                 |                    | | ``neumann``: Neumann BC                                       |
-|                                 |                    | | ``flux``: Fixed-flux BC                                       |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``ubot``                        | ``0.``             | | Bottom boundary value for east-west velocity (m s-1)          |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``utop``                        | ``0.``             | | Top boundary value for east-west velocity (m s-1)             |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``vbot``                        | ``0.``             | | Bottom boundary value for north-south velocity (m s-1)        |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``vtop``                        | ``0.``             | | Bottom boundary value for north-south velocity (m s-1)        |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``sbot``                        | *None*             | | Bottom boundary value for scalar variables. Values            |
-|                                 |                    | | can be specified per scalar (``sbot[thl]=300``)               |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``stop``                        | *None*             | | Top boundary value for scalar variables. Values               |
-|                                 |                    | | can be specified per scalar (``stop[s]=4.``)                  |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``sbot_2d_list``                | *Empty list*       | | Comma-separate list of scalars that provide a binary          |
-|                                 |                    | | file (``sbot_thl.0000000``) with 2D slice                     |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``z0m``                         | *None*             | Roughness length of momentum (m)                                |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``z0h``                         | *None*             | Roughness length of scalars (m)                                 |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``ustar``                       | *None*             | Value of the friction velocity (m s-1)                          |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``bulk_cm``                     | *None*             | Drag coefficient for momentum (-)                               |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
-| ``bulk_cs``                     | *None*             | Drag coefficient for scalars (-)                                |
-+---------------------------------+--------------------+-----------------------------------------------------------------+
++------------------+----------------+---------------------------------------------------------------------+
+| Name             | Default        | Description and options                                             |
++==================+================+=====================================================================+
+| ``swboundary``   | ``None``       | | Boundary discretization                                           |
+|                  |                | | ``default``: resolved boundaries                                  |
+|                  |                | | ``surface``: MOST-based surface model                             |
+|                  |                | | ``surface_lsm``: MOST-based surface model with HTESSEL LSM        |
+|                  |                | | ``surface_bulk``: Surface model with prescribed drag coefficients |
++------------------+----------------+---------------------------------------------------------------------+
+| ``mbcbot``       | ``None``       | | Bottom boundary type for momentum variables                       |
+|                  |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                      |
+|                  |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                |
+|                  |                | | ``ustar``: Fixed ustar at bottom                                  |
++------------------+----------------+---------------------------------------------------------------------+
+| ``mbctop``       | ``None``       | | Top boundary type for momentum variables                          |
+|                  |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                      |
+|                  |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                |
++------------------+----------------+---------------------------------------------------------------------+
+| ``sbcbot``       | ``None``       | | Bottom boundary type for scalar variables.                        |
+|                  |                | | Types can be specified per scalar (``sbot[thl]=flux``)            |
+|                  |                | | ``dirichlet``: Dirichlet BC                                       |
+|                  |                | | ``neumann``: Neumann BC                                           |
+|                  |                | | ``flux``: Flux BC                                                 |
++------------------+----------------+---------------------------------------------------------------------+
+| ``sbctop``       | ``None``       | | Top boundary type for scalar variables.                           |
+|                  |                | | Types can be specified per scalar (``stop[qt]=neumann``)          |
+|                  |                | | ``dirichlet``: Dirichlet BC                                       |
+|                  |                | | ``neumann``: Neumann BC                                           |
+|                  |                | | ``flux``: Flux BC                                                 |
++------------------+----------------+---------------------------------------------------------------------+
+| ``ubot``         | ``0``          | Bottom boundary value for east-west velocity (m s-1)                |
++------------------+----------------+---------------------------------------------------------------------+
+| ``utop``         | ``0``          | Top boundary value for east-west velocity (m s-1)                   |
++------------------+----------------+---------------------------------------------------------------------+
+| ``vbot``         | ``0``          | Bottom boundary value for north-south velocity (m s-1)              |
++------------------+----------------+---------------------------------------------------------------------+
+| ``vtop``         | ``0``          | Top boundary value for north-south velocity (m s-1)                 |
++------------------+----------------+---------------------------------------------------------------------+
+| ``sbot``         | ``None``       | | Bottom boundary value for scalar variables                        |
+|                  |                | | Values can be specified per scalar: ``sbot[thl]=0.1``.            |
++------------------+----------------+---------------------------------------------------------------------+
+| ``stop``         | ``None``       | | Top boundary value for scalar variables                           |
+|                  |                | | Values can be specified per scalar: ``stop[qt]=0``.               |
++------------------+----------------+---------------------------------------------------------------------+
+| ``sbot_2d_list`` | ``Empty list`` | | Comma-separate list of scalars that provide a binary              |
+|                  |                | | file (``sbot_thl.0000000``) with 2D slice                         |
++------------------+----------------+---------------------------------------------------------------------+
+| ``z0m``          | ``None``       | Roughness length of momentum (m)                                    |
++------------------+----------------+---------------------------------------------------------------------+
+| ``z0h``          | ``None``       | Roughness length of heat (m)                                        |
++------------------+----------------+---------------------------------------------------------------------+
+| ``ustar``        | ``None``       | Value of the fixed friction velocity (m s-1)                        |
++------------------+----------------+---------------------------------------------------------------------+
+| ``bulk_cm``      | ``None``       | Drag coefficient for momentum (-)                                   |
++------------------+----------------+---------------------------------------------------------------------+
+| ``bulk_cs``      | ``None``       | Drag coefficient for scalar (-)                                     |
++------------------+----------------+---------------------------------------------------------------------+
 
 ----
 
@@ -127,13 +134,13 @@ The ``Budget`` class contains the computation of the statistics of the budgets o
 It contains the entire Reynolds-stress tensor, the variances of the buoyancy variable, and the budget of the buoyancy flux.
 The switch ``swbudget`` can only be set to ``4`` if ``[grid]`` has ``swspatialorder=4``.
 
-+---------------------------------+--------------------+--------------------------------------------------------+
-| Name                            | Default            | Description and options                                |
-+=================================+====================+========================================================+
-| ``swbudget``                    | ``0``              | | Switch for the budget statistics                     |
-|                                 |                    | | ``2``: Budget statistics with second-order accuracy  |
-|                                 |                    | | ``4``: Budget statistics with fourth-order accuracy  |
-+---------------------------------+--------------------+--------------------------------------------------------+
++--------------+---------+-------------------------------------------------------+
+| Name         | Default | Description and options                               |
++==============+=========+=======================================================+
+| ``swbudget`` | ``0``   | | Switch for the budget statistics                    |
+|              |         | | ``2``: Budget statistics with second-order accuracy |
+|              |         | | ``4``: Budget statistics with fourth-order accuracy |
++--------------+---------+-------------------------------------------------------+
 
 ----
 
@@ -146,23 +153,23 @@ The strength of the buffering is defined per layer as
 :math:`\sigma ( (z - z_\textrm{start}) / ( z_\textrm{size} - z_\textrm{start}) )^\beta`.
 A logical choice for ``sigma`` is :math:`(2 \pi) / N`, where :math:`N` is the Brunt-Vaisala frequency in the sponge layer.
 
-+---------------------------------+--------------------+--------------------------------------------------------------------+
-| Name                            | Default            | Description and options                                            |
-+=================================+====================+====================================================================+
-| ``swbuffer``                    | ``0``              | | Switch for buffer layer                                          |
-|                                 |                    | | ``0``: Buffer layer disabled                                     |
-|                                 |                    | | ``1``: Buffer layer enabled                                      |
-+---------------------------------+--------------------+--------------------------------------------------------------------+
-| ``swupdate``                    | ``0``              | | Switch whether to update the buffer with actual mean profiles    |
-|                                 |                    | | ``0``: Updating disabled                                         |
-|                                 |                    | | ``1``: Updating enabled                                          |
-+---------------------------------+--------------------+--------------------------------------------------------------------+
-| ``zstart``                      | *None*             | Height in domain at which the buffer layer starts (m)              |
-+---------------------------------+--------------------+--------------------------------------------------------------------+
-| ``sigma``                       | *None*             | Damping frequency of buffer layer (rad s-1)                        |
-+---------------------------------+--------------------+--------------------------------------------------------------------+
-| ``beta``                        | ``2.``             | Exponent of strength reduction function (-)                        |
-+---------------------------------+--------------------+--------------------------------------------------------------------+
++--------------+----------+-----------------------------------------------------------------+
+| Name         | Default  | Description and options                                         |
++==============+==========+=================================================================+
+| ``swbuffer`` | ``0``    | | Switch for the buffer layer                                   |
+|              |          | | ``0``: Buffer layer disabled                                  |
+|              |          | | ``1``: Buffer layer enabled                                   |
++--------------+----------+-----------------------------------------------------------------+
+| ``swupdate`` | ``0``    | | Switch whether to update the buffer with actual mean profiles |
+|              |          | | ``0``: Updating disabled                                      |
+|              |          | | ``1``: Updating enabled                                       |
++--------------+----------+-----------------------------------------------------------------+
+| ``zstart``   | ``None`` | Height in domain at which the buffer layer starts (m)           |
++--------------+----------+-----------------------------------------------------------------+
+| ``sigma``    | ``None`` | Damping frequency of buffer layer (rad s-1)                     |
++--------------+----------+-----------------------------------------------------------------+
+| ``beta``     | ``2``    | Exponent of strength reduction function (-)                     |
++--------------+----------+-----------------------------------------------------------------+
 
 ----
 
