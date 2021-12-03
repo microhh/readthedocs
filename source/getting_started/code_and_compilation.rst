@@ -30,6 +30,10 @@ If you are running on OSX, please install also the GNU sed (:code:`gnu-sed` in H
 Obtaining the MicroHH code
 --------------------------
 
+.. note::
+
+    If you want to contribute code to MicroHH, it is best not to clone the code from the main repository, but instead make a `fork` using the `fork` option at https://github.com/microhh/microhh. This will create a copy of MicroHH in https://github.com/your_username/microhh, which you can download using :code:`git clone https://github.com/your_username/microhh.git`. If you do not want to contribute, it is fine to `clone` the code from the main repository.
+
 The MicroHH code is hosted at Github (https://github.com/microhh/microhh). The code can either be downloaded as a ZIP file (https://github.com/microhh/microhh/archive/master.zip), but if Git (version control system) is installed, the code can also be downloaded using:
 
 .. code-block:: shell
