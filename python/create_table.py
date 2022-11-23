@@ -122,6 +122,8 @@ boundary.add_row('stop', 'None', [
 boundary.add_row('sbot_2d_list', 'Empty list', [
         'Comma-separate list of scalars that provide a binary',
         'file (``sbot_thl.0000000``) with 2D slice'])
+boundary.add_row('swtimedep_sbot_2d', '0', 'Enable time varying 2D surface fields')
+boundary.add_row('sbot_2d_loadtime', 'None', 'Frequency of 2D surface input')
 boundary.add_row('z0m', 'None', 'Roughness length of momentum (m)')
 boundary.add_row('z0h', 'None', 'Roughness length of heat (m)')
 boundary.add_row('ustar', 'None', 'Value of the fixed friction velocity (m s-1)')

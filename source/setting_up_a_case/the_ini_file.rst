@@ -66,63 +66,67 @@ It has a derived class ``Boundary_surface`` that extends the base class in case 
 Setting ``swboundary=surface`` requires ``z0m`` and ``z0h`` to be set.
 Setting ``swboundary=surface_bulk`` requires ``bulk_cm`` and ``bulk_cs`` to be set.
 
-+------------------+----------------+---------------------------------------------------------------------+
-| Name             | Default        | Description and options                                             |
-+==================+================+=====================================================================+
-| ``swboundary``   | ``None``       | | Boundary discretization                                           |
-|                  |                | | ``default``: resolved boundaries                                  |
-|                  |                | | ``surface``: MOST-based surface model                             |
-|                  |                | | ``surface_lsm``: MOST-based surface model with HTESSEL LSM        |
-|                  |                | | ``surface_bulk``: Surface model with prescribed drag coefficients |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``mbcbot``       | ``None``       | | Bottom boundary type for momentum variables                       |
-|                  |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                      |
-|                  |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                |
-|                  |                | | ``ustar``: Fixed ustar at bottom                                  |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``mbctop``       | ``None``       | | Top boundary type for momentum variables                          |
-|                  |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                      |
-|                  |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``sbcbot``       | ``None``       | | Bottom boundary type for scalar variables.                        |
-|                  |                | | Types can be specified per scalar (``sbot[thl]=flux``)            |
-|                  |                | | ``dirichlet``: Dirichlet BC                                       |
-|                  |                | | ``neumann``: Neumann BC                                           |
-|                  |                | | ``flux``: Flux BC                                                 |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``sbctop``       | ``None``       | | Top boundary type for scalar variables.                           |
-|                  |                | | Types can be specified per scalar (``stop[qt]=neumann``)          |
-|                  |                | | ``dirichlet``: Dirichlet BC                                       |
-|                  |                | | ``neumann``: Neumann BC                                           |
-|                  |                | | ``flux``: Flux BC                                                 |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``ubot``         | ``0``          | Bottom boundary value for east-west velocity (m s-1)                |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``utop``         | ``0``          | Top boundary value for east-west velocity (m s-1)                   |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``vbot``         | ``0``          | Bottom boundary value for north-south velocity (m s-1)              |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``vtop``         | ``0``          | Top boundary value for north-south velocity (m s-1)                 |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``sbot``         | ``None``       | | Bottom boundary value for scalar variables                        |
-|                  |                | | Values can be specified per scalar: ``sbot[thl]=0.1``.            |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``stop``         | ``None``       | | Top boundary value for scalar variables                           |
-|                  |                | | Values can be specified per scalar: ``stop[qt]=0``.               |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``sbot_2d_list`` | ``Empty list`` | | Comma-separate list of scalars that provide a binary              |
-|                  |                | | file (``sbot_thl.0000000``) with 2D slice                         |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``z0m``          | ``None``       | Roughness length of momentum (m)                                    |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``z0h``          | ``None``       | Roughness length of heat (m)                                        |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``ustar``        | ``None``       | Value of the fixed friction velocity (m s-1)                        |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``bulk_cm``      | ``None``       | Drag coefficient for momentum (-)                                   |
-+------------------+----------------+---------------------------------------------------------------------+
-| ``bulk_cs``      | ``None``       | Drag coefficient for scalar (-)                                     |
-+------------------+----------------+---------------------------------------------------------------------+
++-----------------------+----------------+---------------------------------------------------------------------+
+| Name                  | Default        | Description and options                                             |
++=======================+================+=====================================================================+
+| ``swboundary``        | ``None``       | | Boundary discretization                                           |
+|                       |                | | ``default``: resolved boundaries                                  |
+|                       |                | | ``surface``: MOST-based surface model                             |
+|                       |                | | ``surface_lsm``: MOST-based surface model with HTESSEL LSM        |
+|                       |                | | ``surface_bulk``: Surface model with prescribed drag coefficients |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``mbcbot``            | ``None``       | | Bottom boundary type for momentum variables                       |
+|                       |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                      |
+|                       |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                |
+|                       |                | | ``ustar``: Fixed ustar at bottom                                  |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``mbctop``            | ``None``       | | Top boundary type for momentum variables                          |
+|                       |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                      |
+|                       |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``sbcbot``            | ``None``       | | Bottom boundary type for scalar variables.                        |
+|                       |                | | Types can be specified per scalar (``sbot[thl]=flux``)            |
+|                       |                | | ``dirichlet``: Dirichlet BC                                       |
+|                       |                | | ``neumann``: Neumann BC                                           |
+|                       |                | | ``flux``: Flux BC                                                 |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``sbctop``            | ``None``       | | Top boundary type for scalar variables.                           |
+|                       |                | | Types can be specified per scalar (``stop[qt]=neumann``)          |
+|                       |                | | ``dirichlet``: Dirichlet BC                                       |
+|                       |                | | ``neumann``: Neumann BC                                           |
+|                       |                | | ``flux``: Flux BC                                                 |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``ubot``              | ``0``          | Bottom boundary value for east-west velocity (m s-1)                |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``utop``              | ``0``          | Top boundary value for east-west velocity (m s-1)                   |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``vbot``              | ``0``          | Bottom boundary value for north-south velocity (m s-1)              |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``vtop``              | ``0``          | Top boundary value for north-south velocity (m s-1)                 |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``sbot``              | ``None``       | | Bottom boundary value for scalar variables                        |
+|                       |                | | Values can be specified per scalar: ``sbot[thl]=0.1``.            |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``stop``              | ``None``       | | Top boundary value for scalar variables                           |
+|                       |                | | Values can be specified per scalar: ``stop[qt]=0``.               |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``sbot_2d_list``      | ``Empty list`` | | Comma-separate list of scalars that provide a binary              |
+|                       |                | | file (``sbot_thl.0000000``) with 2D slice                         |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``swtimedep_sbot_2d`` | ``0``          | Enable time varying 2D surface fields                               |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``sbot_2d_loadtime``  | ``None``       | Frequency of 2D surface input                                       |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``z0m``               | ``None``       | Roughness length of momentum (m)                                    |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``z0h``               | ``None``       | Roughness length of heat (m)                                        |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``ustar``             | ``None``       | Value of the fixed friction velocity (m s-1)                        |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``bulk_cm``           | ``None``       | Drag coefficient for momentum (-)                                   |
++-----------------------+----------------+---------------------------------------------------------------------+
+| ``bulk_cs``           | ``None``       | Drag coefficient for scalar (-)                                     |
++-----------------------+----------------+---------------------------------------------------------------------+
 
 ----
 
