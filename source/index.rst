@@ -24,6 +24,12 @@ These pages provide a documentation for MicroHH 2.0
 
 .. toctree::
    :maxdepth: 2
+   :caption: Advanced options:
+
+   advanced_options/trajectories
+
+.. toctree::
+   :maxdepth: 2
    :caption: The code:
 
    the_code/main_code_structure
@@ -33,6 +39,12 @@ These pages provide a documentation for MicroHH 2.0
    :caption: Computing systems:
 
    computing_systems/snellius
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contributing:
+
+   contributing/documentation
 
 
 Indices and tables
