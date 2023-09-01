@@ -10,7 +10,7 @@ Requirements
 
 Before starting the tutorial, make sure that you meet the requirements of MicroHH. In order to compile MicroHH you need:
 
-- C++ compiler (C++14)
+- C++ compiler (C++17)
 - Fortran compiler (Fortran 2003)
 - FFTW3
 - Boost
@@ -34,11 +34,20 @@ Obtaining the MicroHH code
 
     If you want to contribute code to MicroHH, it is best not to clone the code from the main repository, but instead make a `fork` using the `fork` option at https://github.com/microhh/microhh. This will create a copy of MicroHH in https://github.com/your_username/microhh, which you can download using :code:`git clone https://github.com/your_username/microhh.git`. If you do not want to contribute, it is fine to `clone` the code from the main repository.
 
-The MicroHH code is hosted at Github (https://github.com/microhh/microhh). The code can either be downloaded as a ZIP file (https://github.com/microhh/microhh/archive/master.zip), but if Git (version control system) is installed, the code can also be downloaded using:
+The MicroHH code is hosted at Github (https://github.com/microhh/microhh). The code can either be downloaded as a ZIP file (https://github.com/microhh/microhh/archive/main.zip), but if Git (version control system) is installed, the code can also be downloaded using:
+
+Check out the code from GitHub using
 
 .. code-block:: shell
 
-    git clone https://github.com/microhh/microhh.git
+    git clone --recurse-submodules https://github.com/microhh/microhh.git
+
+In case you had already checked out the repository without checking out the submodules, use:
+
+.. code-block:: shell
+
+    git submodule update --init --recursive
+
 
 The advantage of using Git is that the model can easily be updated at a later time by calling :code:`git pull` from anywhere in the MicroHH directory.
 
@@ -51,11 +60,11 @@ At the starting point of this tutorial, we assume that you are in the main direc
 
     cd config
 
-Here, you find a potential series of settings with the extension :code:`.cmake` for different systems. Check whether your system is there. If not, create a file with the correct compiler settings and the proper location for all libraries. Then, copy your system file to :code:`default.cmake`. Let us assume your system is Ubuntu:
+Here, you find a potential series of settings with the extension `.cmake` for different systems. Check whether your system is there. If not, you can try the generic configuration (`generic.cmake`), or create a file with the correct compiler settings and the proper location for all libraries on your system. Then, copy your system file to default.cmake, for example:
 
 .. code-block:: shell
 
-    cp ubuntu.cmake default.cmake
+    cp generic.cmake default.cmake
 
 Then, go back to the main directory and create a subdirectory with an arbitrary name in which you will compile the code. Let us assume this directory is called :code:`build`:
 
