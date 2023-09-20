@@ -87,6 +87,14 @@ During the ``run`` phase, MicroHH / Kernel Launcher reads the wisdom files, and 
     device "NVIDIA RTX A5000", and problem size (64, 64, 128),
     using configuration for different problem size: (128, 128, 128).
 
+Note that Kernel Launcher will always pick one configuration, even if it might not be optimal for your setup or GPU:
+
+.. code-block:: shell
+
+    KERNEL_LAUNCHER [WARN] no wisdom found for kernel "diff_smag2::calc_strain2@float"
+    and device "NVIDIA GeForce RTX 2060 SUPER",
+    using configuration for different device "NVIDIA RTX A5000".
+
 Debugging
 ---------
 
