@@ -39,6 +39,7 @@ These pages provide a documentation for MicroHH 2.0
    :caption: Computing systems:
 
    computing_systems/snellius
+   computing_systems/gpu_tuning
 
 .. toctree::
    :maxdepth: 2
