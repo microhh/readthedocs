@@ -24,6 +24,8 @@ Kernel Tuner is available through PyPI, and can be installed (together with its 
 
 .. code-block:: shell
 
+    pip install kernel_tuner[cuda]
+    # Or to install the requirements manually:
     pip install pycuda cupy scikit-learn scikit-optimize kernel_tuner
 
 Next, you need to configure and compile MicroHH with Kernel Launcher enabled:
