@@ -445,6 +445,63 @@ force.add_row('swtimedep_nudge', 'false', 'Switch for time-dependent nudging')
 force.add_row('timedeplist_nudge', 'Empty list', 'List of variables with time-dependent nudging')
 force.print()
 
+"""
+GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+"""
 
+grid = Table_3col()
+grid.add_row('itot', 'None', 'Numbers of grid points in x (-)')
+grid.add_row('jtot', 'None', 'Numbers of grid points in y (-)')
+grid.add_row('ktot', 'None', 'Numbers of grid points in z (-)')
+grid.add_row('xsize', 'None', 'Size of the domain in x (m)')
+grid.add_row('ysize', 'None', 'Size of the domain in y (m)')
+grid.add_row('zsize', 'None', 'Size of the domain in z (m)')
+grid.add_row('swspatialorder', 'None', [
+        'Spatial order of the finite differences (-)',
+        '``2``: Second-order grid',
+        '``4``: Fourth-order grid'])
+grid.add_row('lat', '0', 'Latitude of the domain center (degrees)')
+grid.add_row('lon', '0', 'Longitude of the domain center (degrees)')
+grid.add_row('utrans', '0', 'Galilean translation velocity in x (m s-1)')
+grid.add_row('vtrans', '0', 'Galilean translation velocity in y (m s-1)')
+grid.add_row('swtimedep', 'false', 'Switch for time dependent lat/lon')
+grid.print()
 
+"""
+IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+"""
 
+ib = Table_3col()
+ib.add_row('sw_immersed_boundary', 'false', 'Switch for immersed boundaries')
+ib.add_row('n_idw_points', 'None', 'Number of IDW interpolation points')
+ib.add_row('sbot', 'None', [
+        'Bottom boundary value for scalar variables',
+        'Values can be specified per scalar: ``sbot[thl]=0.1``.'])
+ib.add_row('sbcbot', 'None', [
+        'Bottom boundary type for scalar variables.',
+        'Types can be specified per scalar (``sbot[thl]=flux``)',
+        '``dirichlet``: Dirichlet BC',
+        '``neumann``: Neumann BC',
+        '``flux``: Flux BC'])
+ib.add_row('sbot_spatial', 'Empty list',
+           ['List of scalars with a spatially',
+            'varying bottom boundary conditions'])
+ib.print()
+
+"""
+LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLl
+"""
+
+lim = Table_3col()
+lim.add_row('limitlist', 'Empty list', 'List of scalars for which a lower value of 0.0 is enforced')
+lim.print()
+
+"""
+MMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
+"""
+
+master = Table_3col()
+master.add_row('npx', '1', 'Numbers of processes in x (-)')
+master.add_row('npy', '1', 'Numbers of processes in y (-)')
+master.add_row('wallclocklimit', '1e8', 'Maximum run duration in wall clock time (h)')
+master.print()
