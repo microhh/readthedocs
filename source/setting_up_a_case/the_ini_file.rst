@@ -870,91 +870,162 @@ Finally, ``prescribed`` offers the posibility to prescribe the surface radiative
 | ``lw_flux_up``           | ``None``  | Prescribed surface upwelling longwave radiation (W m-2)    |
 +--------------------------+-----------+------------------------------------------------------------+
 
-
-
-
-
-
 ----
-
 
 Source ``[source]``
 -------------------
 
-+-----------------+--------------------+-----------------------------------------------------+
-| Name            | Default            | Description and options                             |
-+=================+====================+=====================================================+
-| ``swsource``    | ``0``              | | Aerosol scheme                                    |
-|                 |                    | | ``0``: Disabled                                   |
-|                 |                    | | ``1``: Enabled                                    |
-+-----------------+--------------------+-----------------------------------------------------+
-| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
-|                 |                    | | ``0``: Disabled                                   |
-|                 |                    | | ``1``: Enabled                                    |
-+-----------------+--------------------+-----------------------------------------------------+
+The source module can introduce point source emissions in the LES/DNS domain. Optionally, the locations
+and/or strenght can vary in time. 
 
-TODO swtimedep_location _strength, sw_profile, sourcelist, source x/y/z0, sigma_x/y/z strength line_x/y/z swvmr profile_index
++------------------------+----------------+---------------------------------------------------+
+| Name                   | Default        | Description and options                           |
++========================+================+===================================================+
+| ``swsource``           | ``false``      | Switch for emission from point sources            |
++------------------------+----------------+---------------------------------------------------+
+| ``sourcelist``         | ``Empty list`` | List of scalars with point source emission        |
++------------------------+----------------+---------------------------------------------------+
+| ``source_x0``          | ``Empty list`` | List if x-coordinates point sources (m)           |
++------------------------+----------------+---------------------------------------------------+
+| ``source_y0``          | ``Empty list`` | List if y-coordinates point sources (m)           |
++------------------------+----------------+---------------------------------------------------+
+| ``source_z0``          | ``Empty list`` | List if z-coordinates point sources (m)           |
++------------------------+----------------+---------------------------------------------------+
+| ``sigma_x``            | ``Empty list`` | Stddev. of Gaussian release blob in x (m)         |
++------------------------+----------------+---------------------------------------------------+
+| ``sigma_y``            | ``Empty list`` | Stddev. of Gaussian release blob in y (m)         |
++------------------------+----------------+---------------------------------------------------+
+| ``sigma_z``            | ``Empty list`` | Stddev. of Gaussian release blob in z (m)         |
++------------------------+----------------+---------------------------------------------------+
+| ``line_x``             | ``Empty list`` | TO-DO                                             |
++------------------------+----------------+---------------------------------------------------+
+| ``line_y``             | ``Empty list`` | TO-DO                                             |
++------------------------+----------------+---------------------------------------------------+
+| ``line_z``             | ``Empty list`` | TO-DO                                             |
++------------------------+----------------+---------------------------------------------------+
+| ``strength``           | ``Empty list`` | Source release strength                           |
++------------------------+----------------+---------------------------------------------------+
+| ``swvmr``              | ``Empty list`` | | ``true``: ``strength`` is in ``kmol s-1`` (vmr) |
+|                        |                | | ``false``: ``strenght is in ``kg kg s-1`` (mmr) |
++------------------------+----------------+---------------------------------------------------+
+| ``swtimedep_location`` | ``false``      | Switch for time varying source locations          |
++------------------------+----------------+---------------------------------------------------+
+| ``swtimedep_strength`` | ``false``      | Switch for time varying source strength           |
++------------------------+----------------+---------------------------------------------------+
+| ``sw_profile``         | ``false``      | Switch for prescribing vertical emission profile  |
++------------------------+----------------+---------------------------------------------------+
+| ``profile_index``      | ``Empty list`` | Profile index for each source location            |
++------------------------+----------------+---------------------------------------------------+
 
 ----
 
 Statistics ``[stats]``
 ----------------------
+
 The statistics class contains the settings for the statistics output, in particular the time series and the profiles. All statistics can be masked, meaning that only grid points that satisfy a certain condition are included in the statistics.
 The statistics over the entire domain are written out in a file named ``<casename>.default.<restarttime>.nc``. Conditional statistics are written out in files named ``<casename>.<maskname>.<restarttime>.nc``.
-+----------------+---------+-------------------------------------------------------------------------------------------------+
-|      Name      | Default |                                     Description and options                                     |
-+================+=========+=================================================================================================+
-| ``swstats``    | ``0``   | Enable/Disable the statistics                                                                   |
-|                |         | ``0``: Disabled                                                                                 |
-|                |         | ``1``: Enabled                                                                                  |
-+----------------+---------+-------------------------------------------------------------------------------------------------+
-| ``sampletime`` | *None*  | Time between two samples (s)                                                                    |
-+----------------+---------+-------------------------------------------------------------------------------------------------+
-| ``swtendency`` | ``0``   | Enable/Disable budget terms of all prognostic variables                                         |
-|                |         | ``0``: Disabled                                                                                 |
-|                |         | ``1``: Enabled                                                                                  |
-+----------------+---------+-------------------------------------------------------------------------------------------------+
-| ``blacklist``  | *None*  | List of variables that should not be included in the statistics                                 |
-|                |         | Can be a regular expression                                                                     |
-+----------------+---------+-------------------------------------------------------------------------------------------------+
-| ``whitelist``  | *None*  | List of variables that should be included in the statistics                                     |
-|                |         | Can be a regular expression                                                                     |
-+----------------+---------+-------------------------------------------------------------------------------------------------+
-| ``masklist``   | *None*  | List of masks that should be applied to the statistics                                          |
-|                |         | ``ql``: Where ``ql>0``                                                                          |
-|                |         | ``bplus``: Where buoyancy ``bu>0``                                                              |
-|                |         | ``bmin``: Where buoyancy``bu<0``                                                                |
-|                |         | ``qlcore``: Where ``ql>0`` and ``bu>0``                                                         |
-|                |         | ``qr`` : (2mom microphyics) Where ``qr>1e-6``                                                   |
-|                |         | ``wplus``: Where ``w>0``                                                                        |
-|                |         | ``wmin``: Where ``w<0``                                                                         |
-|                |         | ``couvreux``: Where the couvreux scalar is `nstd` standard deviations above the horizontal mean |
-|                |         | ``ib``:????                                                                                     |
-+----------------+---------+-------------------------------------------------------------------------------------------------+
-| ``xymasklist`` | *None*  | ????                                                                                            |
-+----------------+---------+-------------------------------------------------------------------------------------------------+
 
++----------------+----------------+-----------------------------------------------------------------------------------------------------+
+| Name           | Default        | Description and options                                                                             |
++================+================+=====================================================================================================+
+| ``swstats``    | ``false``      | Switch for statistics                                                                               |
++----------------+----------------+-----------------------------------------------------------------------------------------------------+
+| ``sampletime`` | ``None``       | Time between statistics sampling                                                                    |
++----------------+----------------+-----------------------------------------------------------------------------------------------------+
+| ``swtendency`` | ``false``      | Enable/Disable budget terms of all prognostic variables                                             |
++----------------+----------------+-----------------------------------------------------------------------------------------------------+
+| ``blacklist``  | ``Empty list`` | | List of variables that should not be included in the statistics                                   |
+|                |                | | Can be a regular expression                                                                       |
++----------------+----------------+-----------------------------------------------------------------------------------------------------+
+| ``whitelist``  | ``Empty list`` | | List of variables that should be included in the statistics                                       |
+|                |                | | Can be a regular expression                                                                       |
++----------------+----------------+-----------------------------------------------------------------------------------------------------+
+| ``masklist``   | ``Empty list`` | | List of masks that should be applied over the statistics                                          |
+|                |                | | ``ql``: Where ``ql > 0``                                                                          |
+|                |                | | ``bplus``: Where buoyancy ``b > 0``                                                               |
+|                |                | | ``bmin``: Where buoyancy``b < 0``                                                                 |
+|                |                | | ``qlcore``: Where ``ql>0`` and ``b > 0``                                                          |
+|                |                | | ``qr`` : Where ``qr > 1e-6`` (``2mom_warm``)                                                      |
+|                |                | | ``wplus``: Where ``w > 0``                                                                        |
+|                |                | | ``wmin``: Where ``w < 0``                                                                         |
+|                |                | | ``couvreux``: Where the couvreux scalar is ``nstd`` standard deviations above the horizontal mean |
+|                |                | | ``ib``: Where the atmosphere is above the IB                                                      |
++----------------+----------------+-----------------------------------------------------------------------------------------------------+
+| ``xymasklist`` | ``Empty list`` | List with xy masks from binary input file                                                           |
++----------------+----------------+-----------------------------------------------------------------------------------------------------+
 
 ----
 
 Thermodynamics ``[thermo]``
 ---------------------------
 
-+-----------------+--------------------+-----------------------------------------------------+
-| Name            | Default            | Description and options                             |
-+=================+====================+=====================================================+
-| ``swaerosol``   | ``0``              | | Aerosol scheme                                    |
-|                 |                    | | ``0``: Disabled                                   |
-|                 |                    | | ``1``: Enabled                                    |
-+-----------------+--------------------+-----------------------------------------------------+
-| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
-|                 |                    | | ``0``: Disabled                                   |
-|                 |                    | | ``1``: Enabled                                    |
-+-----------------+--------------------+-----------------------------------------------------+
++--------------+---------+----------------------------------------------------------------------------+
+| Name         | Default | Description and options                                                    |
++==============+=========+============================================================================+
+| ``swthermo`` | ``0``   | | Thermodynamics switch                                                    |
+|              |         | | ``0``: Disable thermodynamics                                            |
+|              |         | | ``buoy``: Use buoyancy as prognostic variable                            |
+|              |         | | ``dry``: Dry thermodynamics (prognostic th)                              |
+|              |         | | ``moist``: Moist thermodynamics (prognostic thl+qt, diagnostic ql+qi+... |
++--------------+---------+----------------------------------------------------------------------------+
 
-Thermo_buoy: Alpha, N2, swbaroclinic, dbdy_ls
-Thermo_dry: swbasestate, swbaroclinic, dthetady_ls, swtimedep_pbot pbot, thref0
-Thermo_moist: swbasestate, swupdatebasestat,  swtimedep_pbot pbot, thref0
+Options for ``dry`` and ``moist``:
+
++--------------------+-----------+-----------------------------------------------------------+
+| Name               | Default   | Description and options                                   |
++====================+===========+===========================================================+
+| ``swbasestate``    | ``None``  | | Switch for background base state:                       |
+|                    |           | | ``boussinesq``: Boussinesq approximation with rho=1     |
+|                    |           | | ``anelastic``: Anelastic approximation with varying rho |
++--------------------+-----------+-----------------------------------------------------------+
+| ``pbot``           | ``None``  | Surface pressure                                          |
++--------------------+-----------+-----------------------------------------------------------+
+| ``swtimedep_pbot`` | ``false`` | Switch to enable time varying surface pressure            |
++--------------------+-----------+-----------------------------------------------------------+
+
+Options for ``dry``:
+
++------------+----------+---------------------------------+
+| Name       | Default  | Description and options         |
++============+==========+=================================+
+| ``thref0`` | ``None`` | Reference potential temperature |
++------------+----------+---------------------------------+
+
+Additional options for baroclinic instability in ``dry``:
+
++------------------+-----------+---------------------------------------------------------+
+| Name             | Default   | Description and options                                 |
++==================+===========+=========================================================+
+| ``swbaroclinic`` | ``false`` | Switch for baroclinic instability                       |
++------------------+-----------+---------------------------------------------------------+
+| ``dthetady_ls``  | ``None``  | Large-scale temperature gradient in y-direction (K m-1) |
++------------------+-----------+---------------------------------------------------------+
+
+Options for ``moist``:
+
++-----------------------+----------+-----------------------------------------+
+| Name                  | Default  | Description and options                 |
++=======================+==========+=========================================+
+| ``thvref0``           | ``None`` | Reference virtual potential temperature |
++-----------------------+----------+-----------------------------------------+
+| ``swupdatebasestate`` | ``true`` | Update base state during simulation     |
++-----------------------+----------+-----------------------------------------+
+
+Options for ``buoy``:
+
++------------------+-----------+----------------------------------------------+
+| Name             | Default   | Description and options                      |
++==================+===========+==============================================+
+| ``alpha``        | ``0``     | TO-DO                                        |
++------------------+-----------+----------------------------------------------+
+| ``N2``           | ``0``     | TO-DO                                        |
++------------------+-----------+----------------------------------------------+
+| ``swbaroclinic`` | ``false`` | Switch for baroclinic instability            |
++------------------+-----------+----------------------------------------------+
+| ``dbdy_ls``      | ``None``  | Large-scale buoyancy gradient in y-direction |
++------------------+-----------+----------------------------------------------+
+
+
 
 ----
 

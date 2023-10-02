@@ -380,7 +380,6 @@ diff.add_row('cn', '0.76', 'Contant TKE scheme (TO-DO)')
 diff.add_row('swmason', 'true', 'Switch for Mason wall damping')
 diff.print()
 
-
 dump = Table_3col()
 dump.add_row('swdump', 'false', 'Switch for 3D field dumps')
 dump.add_row('swdoubledump', 'false', 'Switch for dump at two consecutive model iterations')
@@ -596,5 +595,109 @@ rad.add_row('lw_flux_dn', 'None', 'Prescribed surface downwelling longwave radia
 rad.add_row('lw_flux_up', 'None', 'Prescribed surface upwelling longwave radiation (W m-2)')
 rad.print()
 
+"""
+SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+"""
+
+source = Table_3col()
+source.add_row('swsource', 'false', 'Switch for emission from point sources')
+source.add_row('sourcelist', 'Empty list', 'List of scalars with point source emission')
+source.add_row('source_x0', 'Empty list', 'List if x-coordinates point sources (m)')
+source.add_row('source_y0', 'Empty list', 'List if y-coordinates point sources (m)')
+source.add_row('source_z0', 'Empty list', 'List if z-coordinates point sources (m)')
+source.add_row('sigma_x', 'Empty list', 'Stddev. of Gaussian release blob in x (m)')
+source.add_row('sigma_y', 'Empty list', 'Stddev. of Gaussian release blob in y (m)')
+source.add_row('sigma_z', 'Empty list', 'Stddev. of Gaussian release blob in z (m)')
+source.add_row('line_x', 'Empty list', 'TO-DO')
+source.add_row('line_y', 'Empty list', 'TO-DO')
+source.add_row('line_z', 'Empty list', 'TO-DO')
+source.add_row('strength', 'Empty list', 'Source release strength')
+source.add_row('swvmr', 'Empty list', [
+    '``true``: ``strength`` is in ``kmol s-1`` (vmr)',
+    '``false``: ``strenght is in ``kg kg s-1`` (mmr)'])
+source.add_row('swtimedep_location', 'false', 'Switch for time varying source locations')
+source.add_row('swtimedep_strength', 'false', 'Switch for time varying source strength')
+source.add_row('sw_profile', 'false', 'Switch for prescribing vertical emission profile')
+source.add_row('profile_index', 'Empty list', 'Profile index for each source location')
+source.print()
+
+stats = Table_3col()
+stats.add_row('swstats', 'false', 'Switch for statistics')
+stats.add_row('sampletime', 'None', 'Time between statistics sampling')
+stats.add_row('swtendency', 'false', 'Enable/Disable budget terms of all prognostic variables')
+stats.add_row('blacklist', 'Empty list', [
+        'List of variables that should not be included in the statistics',
+        'Can be a regular expression'])
+stats.add_row('whitelist', 'Empty list', [
+        'List of variables that should be included in the statistics',
+        'Can be a regular expression'])
+stats.add_row('masklist', 'Empty list', [
+        'List of masks that should be applied over the statistics',
+        '``ql``: Where ``ql > 0``',
+        '``bplus``: Where buoyancy ``b > 0``',
+        '``bmin``: Where buoyancy``b < 0``',
+        '``qlcore``: Where ``ql>0`` and ``b > 0``',
+        '``qr`` : Where ``qr > 1e-6`` (``2mom_warm``)',
+        '``wplus``: Where ``w > 0``',
+        '``wmin``: Where ``w < 0``',
+        '``couvreux``: Where the couvreux scalar is ``nstd`` standard deviations above the horizontal mean',
+        '``ib``: Where the atmosphere is above the IB'])
+stats.add_row('xymasklist', 'Empty list', 'List with xy masks from binary input file')
+stats.print()
+
+"""
+TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT
+"""
+
+# Thermo general
+thermo = Table_3col()
+thermo.add_row('swthermo', '0', [
+        'Thermodynamics switch',
+        '``0``: Disable thermodynamics',
+        '``buoy``: Use buoyancy as prognostic variable',
+        '``dry``: Dry thermodynamics (prognostic th)',
+        '``moist``: Moist thermodynamics (prognostic thl+qt, diagnostic ql+qi+...'])
+thermo.print()
+
+# Dry + moist
+thermo = Table_3col()
+thermo.add_row('swbasestate', 'None', [
+        'Switch for background base state:',
+        '``boussinesq``: Boussinesq approximation with rho=1',
+        '``anelastic``: Anelastic approximation with varying rho'])
+thermo.add_row('pbot', 'None', 'Surface pressure')
+thermo.add_row('swtimedep_pbot', 'false', 'Switch to enable time varying surface pressure')
+thermo.print()
+
+# Dry
+thermo = Table_3col()
+thermo.add_row('thref0', 'None', 'Reference potential temperature')
+thermo.print()
+
+thermo = Table_3col()
+thermo.add_row('swbaroclinic', 'false', 'Switch for baroclinic instability') 
+thermo.add_row('dthetady_ls', 'None', 'Large-scale temperature gradient in y-direction (K m-1)')
+thermo.print()
+
+# Moist
+thermo = Table_3col()
+thermo.add_row('thvref0', 'None', 'Reference virtual potential temperature')
+thermo.add_row('swupdatebasestate', 'true', 'Update base state during simulation')
+thermo.print()
+
+# Buoy
+thermo = Table_3col()
+thermo.add_row('alpha', '0', 'TO-DO') 
+thermo.add_row('N2', '0', 'TO-DO')
+thermo.add_row('swbaroclinic', 'false', 'Switch for baroclinic instability')
+thermo.add_row('dbdy_ls', 'None', 'Large-scale buoyancy gradient in y-direction')
+thermo.print()
+
+
+
+
+#Thermo_buoy: Alpha, N2, swbaroclinic, dbdy_ls
+#Thermo_dry: swbasestate, swbaroclinic, dthetady_ls, swtimedep_pbot pbot, thref0
+#Thermo_moist: swbasestate, swupdatebasestat,  swtimedep_pbot pbot, thref0
 
 
