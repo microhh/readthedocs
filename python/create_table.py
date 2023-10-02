@@ -68,17 +68,18 @@ class Table_2col:
     def add_row(self, label, desc):
         self.rows.append((label, desc))
 
-    def add_single_row(self, label):
-        self.rows.append((label))
-
     def print(self):
         # Find max row lengths
         max_label = len('Name')+2
         max_desc = len('Description and options')+2
 
         for row in self.rows:
-            label = row[0]
-            desc = row[1]
+            if len(row) == 2:
+                label = row[0]
+                desc = row[1]
+            else:
+                label = row[0]
+                desc = ''
 
             max_label = max(max_label, len(label)+6)
             if isinstance(desc, list):
@@ -249,24 +250,91 @@ buffer.print()
 """
 CCCCCCCCCCCCCCCCCCCCC
 """
-cross1 = Table_3col()
-cross1.add_row('swcross', 'false', 'Switch for cross sections')
-cross1.add_row('sampletime', 'None', 'Time between consecutive samples (s)')
-cross1.add_row('crosslist', '[]', 'List of cross sections to be made')
-cross1.add_row('xy', 'None', 'List of z-levels for xy-cross sections')
-cross1.add_row('xz', 'None', 'List of y-levels for xz-cross sections')
-cross1.add_row('yz', 'None', 'List of x-levels for yz-cross sections')
-cross1.print()
+
+column = Table_3col()
+column.add_row('swcolumn', 'false', 'Switch for column statistics')
+column.add_row('sampletime', 'None', 'Time between consecutive samples (s)')
+column.add_row('coordinates[x]', 'Empty list', 'List with x-coordinates column (m)')
+column.add_row('coordinates[y]', 'Empty list', 'List with y-coordinates column (m)')
+column.print()
+
+
+cross = Table_3col()
+cross.add_row('swcross', 'false', 'Switch for cross sections')
+cross.add_row('sampletime', 'None', 'Time between consecutive samples (s)')
+cross.add_row('crosslist', '[]', 'List of cross sections to be made')
+cross.add_row('xy', 'None', 'List of z-levels for xy-cross sections')
+cross.add_row('xz', 'None', 'List of y-levels for xz-cross sections')
+cross.add_row('yz', 'None', 'List of x-levels for yz-cross sections')
+cross.print()
 
 # TO-DO: create option for two column tables.
-cross2 = Table_2col()
-cross2.add_row('*', 'Any prognostic or diagnostic variable')
-cross2.add_row('*_path', 'Density-weighted vertical integral of any prognostic or diagnostic variable')
-cross2.add_row('*_bot', 'Bottom boundary value of any prognostic variable')
-cross2.add_row('*_top', 'Top boundary value of any prognostic variable')
-cross2.add_row('*_fluxbot', 'Bottom boundary flux of any prognostic variable')
-cross2.add_row('*_fluxtop', 'Top boundary flux of any prognostic variable')
-cross2.add_row('*_lngrad', 'Logarithm of the length of the gradient vector for any prognostic variable')
-cross2.print()
+cross = Table_2col()
+cross.add_row('*_path', 'Density-weighted vertical integral of any prognostic or diagnostic variable')
+cross.add_row('*_bot', 'Bottom boundary value of any prognostic variable')
+cross.add_row('*_top', 'Top boundary value of any prognostic variable')
+cross.add_row('*_fluxbot', 'Bottom boundary flux of any prognostic variable')
+cross.add_row('*_fluxtop', 'Top boundary flux of any prognostic variable')
+cross.add_row('*_lngrad', 'Logarithm of the length of the gradient vector for any prognostic variable')
+cross.print()
+
+cross = Table_2col()
+cross.add_row('ustar', 'Friction velocity (m s-1)')
+cross.add_row('obuk', 'Obukhov length (m)')
+cross.print()
+
+cross = Table_2col()
+cross.add_row('*_fluxbot_ib', 'Bottom boundary flux of any prognostic variable at DEM surface')
+cross.print()
+
+cross = Table_2col()
+cross.add_row('rr_bot', 'Surface rain rate (kg s-1) ')
+cross.print()
+
+cross = Table_2col()
+cross.add_row('rg_bot', 'Surface graupel rate (kg s-1) ')
+cross.add_row('rs_bot', 'Surface snow rate (kg s-1) ')
+cross.print()
+
+cross = Table_2col()
+cross.add_row('sw_flux_dn', 'Downwelling shortwave radiation flux (W m-2)')
+cross.add_row('sw_flux_up', 'Upwelling shortwave radiation flux (W m-2)')
+cross.add_row('sw_flux_dn_dir', 'Downwelling direct shortwave radiation flux (W m-2)')
+cross.add_row('lw_flux_dn', 'Downwelling longwave radiation flux (W m-2)')
+cross.add_row('lw_flux_up', 'Upwelling longwave radiation flux (W m-2)')
+cross.print()
+
+cross = Table_2col()
+cross.add_row('sw_flux_sfc_dir_rt', 'Surface downwellling direct shortwave radiation flux (W m-2)')
+cross.add_row('sw_flux_sfc_dif_rt', 'Surface downwellling diffuse shortwave radiation flux (W m-2)')
+cross.add_row('sw_flux_sfc_up_rt', 'Surface upwelling shortwave radiation flux (W m-2)')
+cross.add_row('sw_flux_tod_dn_rt', 'Top of domain downwellling shortwave radiation flux (W m-2)')
+cross.add_row('sw_flux_tod_up_rt', 'Top of domain upwelling shortwave radiation flux (W m-2)')
+cross.print()
+
+cross = Table_2col()
+cross.add_row('sw_flux_dn_clear', 'Clear-sky downwelling shortwave radiation flux (W m-2)')
+cross.add_row('sw_flux_up_clear', 'Clear-sky upwelling shortwave radiation flux (W m-2)')
+cross.add_row('sw_flux_dn_dir_clear', 'Clear-sky downwelling direct shortwave radiation flux (W m-2)')
+cross.add_row('lw_flux_dn_clear', 'Clear-sky downwelling longwave radiation flux (W m-2)')
+cross.add_row('lw_flux_up_clear', 'Clear-sky upwelling longwave radiation flux (W m-2)')
+cross.print()
+
+cross = Table_2col()
+cross.add_row('ql', 'Cloud liquid water (kg kg-1)')
+cross.add_row('qi', 'Cloud ice (kg kg-1)')
+cross.add_row('qlqi', 'Cloud liquid water + ice (kg kg-1)')
+cross.add_row('ql_base', 'Cloud base height (m)')
+cross.add_row('ql_top', 'Cloud top height (m)')
+cross.add_row('ql_path', 'Density-weighted vertical integral of cloud liquid water (kg m-2)')
+cross.add_row('qi_path', 'Density-weighted vertical integral of cloud ice (kg m-2)')
+cross.add_row('qlqi_base', 'Cloud (water+ice) base height (m)')
+cross.add_row('qlqi_top', 'Cloud (water+ice) top height (m)')
+cross.add_row('qlqi_path', 'Density-weighted vertical integral of cloud water+ice (kg m-2)')
+cross.add_row('qsat_path', 'Density-weighted vertical integral of saturated specific humidity (kg m-2)')
+cross.add_row('w500hpa', 'Vertical velocity at the 500 hPa level (m s-1)')
+cross.print()
+
+
 
 
