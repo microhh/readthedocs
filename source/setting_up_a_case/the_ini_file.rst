@@ -1,6 +1,6 @@
 The ``.ini`` file
 =================
-
+TODO DIFF FORCE  IB Limiter radiation source thermo 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -34,7 +34,11 @@ Advection ``[advec]``
 
 The ``Advec`` class computes the advection tendencies using the chosen scheme.
 Note that the odd ordered schemes (e.g. ``2i5``) have hyperdiffusion included that results in a smooth solution.
-For ``2i53`` and ``2i62``, the interpolations are 5th/6th order accurate in the horizontal, and 3rd/2nd order in the vertical.
+For ```2i62``, the interpolations are 6th order accurate in the horizontal, and 2nd order in the vertical.
+
+Variables on the ``fluxlimit_list`` are guaranteed to be monotonically advected.
+
+The order of the advection scheme has to match the order of the spatial discretization, as set by ``[grid] swspatialorder``.
 
 For more details about the 2nd order accurate schemes, see: `<dx.doi.org/10.1175/1520-0493(2002)130%3C2088:TSMFEM%3E2.0.CO;2>`_.
 
@@ -47,13 +51,31 @@ For more details about the 2nd order accurate schemes, see: `<dx.doi.org/10.1175
 |             |                    | | ``2i4``: 2nd-order (4th-order interpolation)      |
 |             |                    | | ``2i4``: 2nd-order (4th-order interpolation)      |
 |             |                    | | ``2i5``: 2nd-order (5th-order interpolation)      |
-|             |                    | | ``2i53``: 2nd-order (5th/3rd-order interpolation) |
 |             |                    | | ``2i62``: 2nd-order (6th/2nd-order interpolation) |
 |             |                    | | ``4``: 4th-order (DNS, high accuracy)             |
 |             |                    | | ``4m``: 2nd-order (DNS, energy conserving)        |
 +-------------+--------------------+-----------------------------------------------------+
+| ``fluxlimit_list``  | ````       | List of variables that are flux-limited             |
++-------------+--------------------+-----------------------------------------------------+
 | ``cflmax``  | ``1.0``            | Max. CFL for adaptive time stepping                 |
 +-------------+--------------------+-----------------------------------------------------+
+TODO fluxlimit_list
+----
+
+Aerosol ``[aerosol]``
+---------------------
+
++-----------------+--------------------+-----------------------------------------------------+
+| Name            | Default            | Description and options                             |
++=================+====================+=====================================================+
+| ``swaerosol``   | ``0``              | | Aerosol scheme                                    |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
 
 ----
 
@@ -127,7 +149,7 @@ Setting ``swboundary=surface_bulk`` requires ``bulk_cm`` and ``bulk_cs`` to be s
 +-----------------------+----------------+---------------------------------------------------------------------+
 | ``bulk_cs``           | ``None``       | Drag coefficient for scalar (-)                                     |
 +-----------------------+----------------+---------------------------------------------------------------------+
-
+TODO swtimedep swtimedep_outflow swconstantz0 swcharnock alpha_m alpha_ch alpha_h swhomogeneous swfreedrainage swwater swhomegenizesfsc swtilestats swtilestats_column emis_sfc flow_direction scalar_outflow
 ----
 
 
@@ -175,6 +197,27 @@ A logical choice for ``sigma`` is :math:`(2 \pi) / N`, where :math:`N` is the Br
 | ``beta``     | ``2``    | Exponent of strength reduction function (-)                     |
 +--------------+----------+-----------------------------------------------------------------+
 
+----
+
+Column ``[column]``
+---------------------
+The ``Column`` class contains the settings for single column output.
++------------------+--------------------+-----------------------------------------------------+
+| Name             | Default            | Description and options                             |
++==================+====================+=====================================================+
+| ``swcolumn``     | ``0``              | | Column output                                     |
+|                  |                    | | ``0``: Disabled                                   |
+|                  |                    | | ``1``: Enabled                                    |
++------------------+--------------------+-----------------------------------------------------+
+| ``sampletime``   | *None*             | Time between consecutive samples (s)                |
++------------------+--------------------+-----------------------------------------------------+
+|``coordinates[x]``| *None*             | List of locations of the vertical columns (m)       |
+|``coordinates[y]``|                    |                                                     |
++------------------+--------------------+-----------------------------------------------------+
+| ``swtimedep``    | ``0``              | | Time-dependent aerosol                            |
+|                  |                    | | ``0``: Disabled                                   |
+|                  |                    | | ``1``: Enabled                                    |
++------------------+--------------------+-----------------------------------------------------+
 ----
 
 
@@ -291,12 +334,32 @@ If a wildcard ``*`` is used, variables can be filled in according to the descrip
 
 ----
 
+Decay ``[decay]``
+---------------------
+Imposes an expontial decay on prognostic variables of choice. It also defines a statistical mask for areas where a decaying field is a certain number of standard deviations above the mean.
++-------------------+---------+----------------------------------------------------------------------------------+
+|       Name        | Default |                             Description and options                              |
++===================+=========+==================================================================================+
+| ``swdecay``       | ``0``   | Decay scheme                                                                     |
+|                   |         | ``0``: Disabled                                                                  |
+|                   |         | ``1``: Enabled                                                                   |
++-------------------+---------+----------------------------------------------------------------------------------+
+| ``timescale``     | *None*  | Exponential timescale                                                            |
+|                   |         | of the decay rate (s)                                                            |
+|                   |         | ``1``: Enabled                                                                   |
++-------------------+---------+----------------------------------------------------------------------------------+
+| ``nstd_couvreux`` | ``1``   | Number of standard deviations above the horizontal mean for conditional sampling |
++-------------------+---------+----------------------------------------------------------------------------------+
+----
+
 
 Diffusion ``[diff]``
 --------------------
 
 The ``Diff`` class computes the tendencies related to molecular, and in case of LES, of eddy diffusion.
 If ``swdiff=smag2``, LES mode is enabled and the user can choose ``cs`` and/or ``tPr``.
+
+The order of the diffusion scheme has to match the order of the spatial discretization, as set by ``[grid] swspatialorder``.
 
 +---------------------------------+--------------------+------------------------------------------------------------+
 | Name                            | Default            | Description and options                                    |
@@ -306,6 +369,7 @@ If ``swdiff=smag2``, LES mode is enabled and the user can choose ``cs`` and/or `
 |                                 |                    | | ``2``: 2nd-order                                         |
 |                                 |                    | | ``4``: 4th-order                                         |
 |                                 |                    | | ``smag2``: 2nd-order Smagorinsky for LES                 |
+|                                 |                    | | ``tke2``: 2th-order Deardorff for LES                    |
 +---------------------------------+--------------------+------------------------------------------------------------+
 | ``dnmax``                       | ``0.4``            | Max. diffusion number for adaptive time stepping           |
 +---------------------------------+--------------------+------------------------------------------------------------+
@@ -313,7 +377,7 @@ If ``swdiff=smag2``, LES mode is enabled and the user can choose ``cs`` and/or `
 +---------------------------------+--------------------+------------------------------------------------------------+
 | ``tPr``                         | ``1./3.``          | Turbulent Prandtl number                                   |
 +---------------------------------+--------------------+------------------------------------------------------------+
-
+TODO swmason, ap, cf ce1 ce2 cm ch1 ch2 cn
 ----
 
 
@@ -455,7 +519,7 @@ The ``Force`` class provides the tendencies for all forms of large-scale forcing
 +---------------------------------+----------+--------------------------------------------------------------------------+
 | ``timedeplist_nudge``           | *None*   | List of variables with time-dependent nudging                            |
 +---------------------------------+----------+--------------------------------------------------------------------------+
-
+TODO swwls_mom
 ----
 
 
@@ -485,6 +549,10 @@ The ``Grid`` class contains the grid configuration.
 |                                 |                    | | ``2``: Second-order grid                      |
 |                                 |                    | | ``4``: Fourth-order grid                      |
 +---------------------------------+--------------------+-------------------------------------------------+
+| ``lat``                         | ``0.``             | Latitude of the domain center (degrees)         |
++---------------------------------+--------------------+-------------------------------------------------+
+| ``lon``                         | ``0.``             | Longitude of the domain center (degrees)        |
++---------------------------------+--------------------+-------------------------------------------------+
 | ``utrans``                      | ``0.``             | Galilean translation velocity in x (m s-1)      |
 +---------------------------------+--------------------+-------------------------------------------------+
 | ``vtrans``                      | ``0.``             | Galilean translation velocity in y (m s-1)      |
@@ -492,7 +560,38 @@ The ``Grid`` class contains the grid configuration.
 
 ----
 
+Immersed boundary ``[ib]``
+-------------------
 
++-----------------+--------------------+-----------------------------------------------------+
+| Name            | Default            | Description and options                             |
++=================+====================+=====================================================+
+| ``swaerosol``   | ``0``              | | Aerosol scheme                                    |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+TODO sbot_spatial sbot sbcbot
+----
+
+Limiter ``[limiter]``
++-----------------+--------------------+-----------------------------------------------------+
+| Name            | Default            | Description and options                             |
++=================+====================+=====================================================+
+| ``swaerosol``   | ``0``              | | Aerosol scheme                                    |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+TODO limitlist
+
+----
 Master ``[master]``
 -------------------
 
@@ -507,4 +606,183 @@ The ``Master`` class contains the configuration settings for parallel runs.
 +---------------------------------+--------------------+-------------------------------------------------+
 | ``wallclocklimit``              | ``1.E8``           | Maximum run duration in wall clock time (h)     |
 +---------------------------------+--------------------+-------------------------------------------------+
+
+----
+Microphysics ``[micro]``
+---------------------
+
++-------------+---------+-----------------------------------------------------+
+|    Name     | Default |               Description and options               |
++=============+=========+=====================================================+
+| ``swmicro`` | ``0``   | Microphysics scheme                                 |
+|             |         | ``0``: Disabled                                     |
+|             |         | ``2mom_warm``: Use 2 moment warm Seifert and Beheng |
+|             |         | ``nsw6``: Use Tomita Ice microphyics                |
++-------------+---------+-----------------------------------------------------+
+| ``Nc0``     | *None*  | The cloud droplet number concentration (m-3)        |
++-------------+---------+-----------------------------------------------------+
+| ``cflmax``  | ``2``   | The CFL criterion limiter for the sedimentation     |
++-------------+---------+-----------------------------------------------------+
+
+----
+
+
+Pressure ``[pres]``
+---------------------
+
++----------------------+---------+------------------------------------------+
+|         Name         | Default |         Description and options          |
++======================+=========+==========================================+
+| ``swpres``           | ``0``   | Pressure force                           |
+|                      |         | ``0``: Disabled                          |
+|                      |         | ``1``: Enabled                           |
++----------------------+---------+------------------------------------------+
+| ``sw_fft_per_slice`` | ``0``   | Do not allow the FFT to be handled in 3D |
+|                      |         | ``0``: Disabled                          |
+|                      |         | ``1``: Enabled                           |
++----------------------+---------+------------------------------------------+
+----
+
+Radiation ``[radiation]``
+---------------------
+
++-----------------+--------------------+-----------------------------------------------------+
+| Name            | Default            | Description and options                             |
++=================+====================+=====================================================+
+| ``swaerosol``   | ``0``              | | Aerosol scheme                                    |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+TODO
+swradiation
+radiation_gcss: xka, fr0, fr1, div
+radiation_prescribed: swtimedep_prescribed, lw/sw_flux_dn/up
+radiation_rrrtmgp and _rt:swshort/longwave, swfixedsza, swupdatecolumn, swdeltacloud, swdeltaaer, swalawysrt, swclearskystats, swhomogenizesfc_sw/lw, swhomogenizehr_sw/lw, dt_rad, t_sfc, tsi_scaling, emis_sfcm sfc_alb_dir, sfc_alb_dif timedeplist_bg
+radiation_rrtmgp alone: swfilterdiffuse, sigma_filter
+radiation_rrtmgp_rt alone: rays_per_pixel, kngrid_i/j/k, sza
+
+
+----
+
+
+Source ``[source]``
+---------------------
+
++-----------------+--------------------+-----------------------------------------------------+
+| Name            | Default            | Description and options                             |
++=================+====================+=====================================================+
+| ``swsource``    | ``0``              | | Aerosol scheme                                    |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+TODO swtimedep_location _strength, sw_profile, sourcelist, source x/y/z0, sigma_x/y/z strength line_x/y/z swvmr profile_index
+----
+
+Statistics ``[stats]``
+---------------------
+The statistics class contains the settings for the statistics output, in particular the time series and the profiles. All statistics can be masked, meaning that only grid points that satisfy a certain condition are included in the statistics.
+The statistics over the entire domain are written out in a file named ``<casename>.default.<restarttime>.nc``. Conditional statistics are written out in files named ``<casename>.<maskname>.<restarttime>.nc``.
++----------------+---------+-------------------------------------------------------------------------------------------------+
+|      Name      | Default |                                     Description and options                                     |
++================+=========+=================================================================================================+
+| ``swstats``    | ``0``   | Enable/Disable the statistics                                                                   |
+|                |         | ``0``: Disabled                                                                                 |
+|                |         | ``1``: Enabled                                                                                  |
++----------------+---------+-------------------------------------------------------------------------------------------------+
+| ``sampletime`` | *None*  | Time between two samples (s)                                                                    |
++----------------+---------+-------------------------------------------------------------------------------------------------+
+| ``swtendency`` | ``0``   | Enable/Disable budget terms of all prognostic variables                                         |
+|                |         | ``0``: Disabled                                                                                 |
+|                |         | ``1``: Enabled                                                                                  |
++----------------+---------+-------------------------------------------------------------------------------------------------+
+| ``blacklist``  | *None*  | List of variables that should not be included in the statistics                                 |
+|                |         | Can be a regular expression                                                                     |
++----------------+---------+-------------------------------------------------------------------------------------------------+
+| ``whitelist``  | *None*  | List of variables that should be included in the statistics                                     |
+|                |         | Can be a regular expression                                                                     |
++----------------+---------+-------------------------------------------------------------------------------------------------+
+| ``masklist``   | *None*  | List of masks that should be applied to the statistics                                          |
+|                |         | ``ql``: Where ``ql>0``                                                                          |
+|                |         | ``bplus``: Where buoyancy ``bu>0``                                                              |
+|                |         | ``bmin``: Where buoyancy``bu<0``                                                                |
+|                |         | ``qlcore``: Where ``ql>0`` and ``bu>0``                                                         |
+|                |         | ``qr`` : (2mom microphyics) Where ``qr>1e-6``                                                   |
+|                |         | ``wplus``: Where ``w>0``                                                                        |
+|                |         | ``wmin``: Where ``w<0``                                                                         |
+|                |         | ``couvreux``: Where the couvreux scalar is `nstd` standard deviations above the horizontal mean |
+|                |         | ``ib``:????                                                                                     |
++----------------+---------+-------------------------------------------------------------------------------------------------+
+| ``xymasklist`` | *None*  | ????                                                                                            |
++----------------+---------+-------------------------------------------------------------------------------------------------+
+
+
+
+
+
+----
+
+
+Thermodynamics ``[thermo]``
+---------------------
+
++-----------------+--------------------+-----------------------------------------------------+
+| Name            | Default            | Description and options                             |
++=================+====================+=====================================================+
+| ``swaerosol``   | ``0``              | | Aerosol scheme                                    |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
+|                 |                    | | ``0``: Disabled                                   |
+|                 |                    | | ``1``: Enabled                                    |
++-----------------+--------------------+-----------------------------------------------------+
+
+Thermo_buoy: Alpha, N2, swbaroclinic, dbdy_ls
+Thermo_dry: swbasestate, swbaroclinic, dthetady_ls, swtimedep_pbot pbot, thref0
+Thermo_moist: swbasestate, swupdatebasestat,  swtimedep_pbot pbot, thref0
+
+----
+
+
+Timeloop ``[time]``
+---------------------
+
++------------------+------------+---------------------------------------------------------------------------------+
+|       Name       |  Default   |                             Description and options                             |
++==================+============+=================================================================================+
+| ``starttime``    | *None*     | Start time of the simulation (s)                                                |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``endtime``      | *None*     | End time of the simulation (s)                                                  |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``savetime``     | *None      | Interval at which a restart file will be saved (s)                              |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``adaptivestep`` | ``1``      | Adaptive time stepping, based on CFL, Diffusion Number, and other limitations   |
+|                  |            | ``0``: Disabled                                                                 |
+|                  |            | ``1``: Enabled                                                                  |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``dtmax``        | ``\infty`` | Maximum time step (s)                                                           |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``dt``           | ``dtmax``  | Initial time step (s)                                                           |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``rkorder``      | ``3``      | Order of the Runge-Kutta scheme                                                 |
+|                  |            | ``3``: Third Order                                                              |
+|                  |            | ``4``: Fourth Order                                                             |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``outputiter``   | ``20``     | Number of iterations between diagnostic output is written to ``<casename>.out`` |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``iotimeprec``   | ``0``      | Precision of the file timestamp, in ``10**iotimeprec`` s                        |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``datetime_utc`` | ``0``      | Calendar start time of the simulation. Must be of the format YY-MM-DD HH:MM::SS |
++------------------+------------+---------------------------------------------------------------------------------+
+| ``postrpoctime`` | ``0``      | Timestamp to use in postprocessing mode                                         |
++------------------+------------+---------------------------------------------------------------------------------+
+
 
