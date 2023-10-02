@@ -505,3 +505,96 @@ master.add_row('npx', '1', 'Numbers of processes in x (-)')
 master.add_row('npy', '1', 'Numbers of processes in y (-)')
 master.add_row('wallclocklimit', '1e8', 'Maximum run duration in wall clock time (h)')
 master.print()
+
+
+micro = Table_3col()
+micro.add_row('swmicro', '0', [
+        'Microphysics scheme',
+        '``0``: Disabled',
+        '``2mom_warm``: Double moment warm (Seifert & Beheng)',
+        '``nsw6``: Single moment ice (Tomita)'])
+micro.add_row('Nc0', 'None', 'The cloud water droplet number concentration (m-3)')
+micro.add_row('Ni0', 'None', 'The cloud ice number concentration (m-3)')
+micro.add_row('cflmax', '1.2', 'The CFL criterion limiter for sedimentation')
+micro.add_row('swmicrobudget', 'false', [
+        'Output microphysics tendencies in statistics',
+        '(2mom_warm only)'])
+micro.print()
+
+"""
+PPPPPPPPPPPPPPPPPPPPPPPPPPPP
+"""
+
+pres = Table_3col()
+pres.add_row('swpres', 'swspatialorder', [
+        'Pressure solver',
+        '``2``: 2nd order accurate',
+        '``4``: rth order accurate'])
+pres.add_row('sw_fft_per_slice', 'false', 'Force GPU solver to use XY slices')
+pres.print()
+
+"""
+RRRRRRRRRRRRRRRRRRRRRRRRRRR
+"""
+
+rad = Table_3col()
+rad.add_row('swradiation', '0', [
+        'Radiative transfer scheme',
+        '``0``: Disabled',
+        '``rrtmgp``: RTE-RRTMGP',
+        '``rrtmgp_rt``: RTE-RRTMGP with shortwave ray tracer (GPU only)',
+        '``gcss``: GCSS parameterized radiation',
+        '``prescribed``: Prescribed surface radiation'])
+rad.print()
+
+rad = Table_3col()
+rad.add_row('dt_rad', 'None', 'Time interval at which radiation is solved')
+rad.add_row('swshortwave', 'true', 'Switch to solve shortwave radiation')
+rad.add_row('swlongwave', 'true', 'Switch to solve longwave radiation')
+rad.add_row('sfc_alb_dir', 'None', 'Surface albedo direct radiation')
+rad.add_row('sfc_alb_dif', 'None', 'Surface albedo diffuse radiation')
+rad.add_row('swdeltacloud', 'false', 'Use delta scaling for clouds')
+rad.add_row('swdeltaaer', 'false', 'Use delta scaling for aerosols')
+rad.add_row('swfixedsza', 'true', 'Switch to use a fixed solar zenith angle')
+rad.add_row('sza', 'None', 'Solar zenith angle (if ``swfixedsza=true``)')
+rad.add_row('tsi_scaling', '-999?', 'Scaling factor TOD incoming shortwave radiation')
+rad.add_row('emis_sfc', 'None', 'Surface emissivity')
+rad.add_row('t_sfc', 'None', 'Surface temperature (IS THIS STILL USED?)')
+rad.add_row('swfilterdiffuse', 'false', '3D parameterization Tijhuis et al (2023, ..)')
+rad.add_row('sigma_filter', 'None', 'Standard deviation of filter width (for ``swfilterdiffuse=true``)')
+rad.add_row('swupdatecolumn', 'false', 'Switch to update the background column')
+rad.add_row('timedeplist_bg', 'Empty list', 'List of background column profiles which vary in time')
+rad.add_row('swclearskystats', 'false', 'Output clear sky statistics')
+rad.add_row('swhomogenizesfc_sw', 'false', 'Horizontally homogenize the surface shortwave radiation')
+rad.add_row('swhomogenizesfc_lw', 'false', 'Horizontally homogenize the surface longwave radiation')
+rad.add_row('swhomogenizehr_sw', 'false', 'Horizontally homogenize the shortwave heating rates')
+rad.add_row('swhomogenizehr_lw', 'false', 'Horizontally homogenize the longwave heating rates')
+rad.print()
+
+rad = Table_3col()
+rad.add_row('swalwaysrt', 'true', [
+    '``true``: Always use ray tracer',
+    '``false``: Use 2 stream solver in absence of clouds'])
+rad.add_row('kngrid_i', 'None', 'Null-collision grid size in x-direction')
+rad.add_row('kngrid_j', 'None', 'Null-collision grid size in y-direction')
+rad.add_row('kngrid_k', 'None', 'Null-collision grid size in z-direction')
+rad.add_row('rays_per_pixel', 'None', 'Samples per pixel per spectral quadrature point')
+rad.print()
+
+rad = Table_3col()
+rad.add_row('xka', 'None', 'TO-DO')
+rad.add_row('fr0', 'None', 'TO-DO')
+rad.add_row('fr1', 'None', 'TO-DO')
+rad.add_row('div', 'None', 'TO-DO')
+rad.print()
+
+rad = Table_3col()
+rad.add_row('swtimedep_prescribed', 'false', 'Switch for time dependent prescribed radiative fluxes')
+rad.add_row('sw_flux_dn', 'None', 'Prescribed surface downwelling shortwave radiation (W m-2)')
+rad.add_row('sw_flux_up', 'None', 'Prescribed surface upwelling shortwave radiation (W m-2)')
+rad.add_row('lw_flux_dn', 'None', 'Prescribed surface downwelling longwave radiation (W m-2)')
+rad.add_row('lw_flux_up', 'None', 'Prescribed surface upwelling longwave radiation (W m-2)')
+rad.print()
+
+
+

@@ -724,18 +724,23 @@ The ``master`` class contains the configuration settings for parallel runs.
 Microphysics ``[micro]``
 ------------------------
 
-+-------------+---------+-----------------------------------------------------+
-|    Name     | Default |               Description and options               |
-+=============+=========+=====================================================+
-| ``swmicro`` | ``0``   | Microphysics scheme                                 |
-|             |         | ``0``: Disabled                                     |
-|             |         | ``2mom_warm``: Use 2 moment warm Seifert and Beheng |
-|             |         | ``nsw6``: Use Tomita Ice microphyics                |
-+-------------+---------+-----------------------------------------------------+
-| ``Nc0``     | *None*  | The cloud droplet number concentration (m-3)        |
-+-------------+---------+-----------------------------------------------------+
-| ``cflmax``  | ``2``   | The CFL criterion limiter for the sedimentation     |
-+-------------+---------+-----------------------------------------------------+
++-------------------+-----------+--------------------------------------------------------+
+| Name              | Default   | Description and options                                |
++===================+===========+========================================================+
+| ``swmicro``       | ``0``     | | Microphysics scheme                                  |
+|                   |           | | ``0``: Disabled                                      |
+|                   |           | | ``2mom_warm``: Double moment warm (Seifert & Beheng) |
+|                   |           | | ``nsw6``: Single moment ice (Tomita)                 |
++-------------------+-----------+--------------------------------------------------------+
+| ``Nc0``           | ``None``  | The cloud water droplet number concentration (m-3)     |
++-------------------+-----------+--------------------------------------------------------+
+| ``Ni0``           | ``None``  | The cloud ice number concentration (m-3)               |
++-------------------+-----------+--------------------------------------------------------+
+| ``cflmax``        | ``1.2``   | The CFL criterion limiter for sedimentation            |
++-------------------+-----------+--------------------------------------------------------+
+| ``swmicrobudget`` | ``false`` | | Output microphysics tendencies in statistics         |
+|                   |           | | (2mom_warm only)                                     |
++-------------------+-----------+--------------------------------------------------------+
 
 ----
 
@@ -743,42 +748,131 @@ Microphysics ``[micro]``
 Pressure ``[pres]``
 -------------------
 
-+----------------------+---------+------------------------------------------+
-|         Name         | Default |         Description and options          |
-+======================+=========+==========================================+
-| ``swpres``           | ``0``   | Pressure force                           |
-|                      |         | ``0``: Disabled                          |
-|                      |         | ``1``: Enabled                           |
-+----------------------+---------+------------------------------------------+
-| ``sw_fft_per_slice`` | ``0``   | Do not allow the FFT to be handled in 3D |
-|                      |         | ``0``: Disabled                          |
-|                      |         | ``1``: Enabled                           |
-+----------------------+---------+------------------------------------------+
++----------------------+--------------------+-----------------------------------+
+| Name                 | Default            | Description and options           |
++======================+====================+===================================+
+| ``swpres``           | ``swspatialorder`` | | Pressure solver                 |
+|                      |                    | | ``2``: 2nd order accurate       |
+|                      |                    | | ``4``: rth order accurate       |
++----------------------+--------------------+-----------------------------------+
+| ``sw_fft_per_slice`` | ``false``          | Force GPU solver to use XY slices |
++----------------------+--------------------+-----------------------------------+
+
 
 ----
 
 Radiation ``[radiation]``
 -------------------------
 
-+-----------------+--------------------+-----------------------------------------------------+
-| Name            | Default            | Description and options                             |
-+=================+====================+=====================================================+
-| ``swaerosol``   | ``0``              | | Aerosol scheme                                    |
-|                 |                    | | ``0``: Disabled                                   |
-|                 |                    | | ``1``: Enabled                                    |
-+-----------------+--------------------+-----------------------------------------------------+
-| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
-|                 |                    | | ``0``: Disabled                                   |
-|                 |                    | | ``1``: Enabled                                    |
-+-----------------+--------------------+-----------------------------------------------------+
++-----------------+---------+------------------------------------------------------------------+
+| Name            | Default | Description and options                                          |
++=================+=========+==================================================================+
+| ``swradiation`` | ``0``   | | Radiative transfer scheme                                      |
+|                 |         | | ``0``: Disabled                                                |
+|                 |         | | ``rrtmgp``: RTE-RRTMGP                                         |
+|                 |         | | ``rrtmgp_rt``: RTE-RRTMGP with shortwave ray tracer (GPU only) |
+|                 |         | | ``gcss``: GCSS parameterized radiation                         |
+|                 |         | | ``prescribed``: Prescribed surface radiation                   |
++-----------------+---------+------------------------------------------------------------------+
 
-TODO
-swradiation
-radiation_gcss: xka, fr0, fr1, div
-radiation_prescribed: swtimedep_prescribed, lw/sw_flux_dn/up
-radiation_rrrtmgp and _rt:swshort/longwave, swfixedsza, swupdatecolumn, swdeltacloud, swdeltaaer, swalawysrt, swclearskystats, swhomogenizesfc_sw/lw, swhomogenizehr_sw/lw, dt_rad, t_sfc, tsi_scaling, emis_sfcm sfc_alb_dir, sfc_alb_dif timedeplist_bg
-radiation_rrtmgp alone: swfilterdiffuse, sigma_filter
-radiation_rrtmgp_rt alone: rays_per_pixel, kngrid_i/j/k, sza
+For ``rrtmgp`` and ``rrtmgp_rt``, the following settings are available:
+
++------------------------+----------------+-------------------------------------------------------------------+
+| Name                   | Default        | Description and options                                           |
++========================+================+===================================================================+
+| ``dt_rad``             | ``None``       | Time interval at which radiation is solved                        |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swshortwave``        | ``true``       | Switch to solve shortwave radiation                               |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swlongwave``         | ``true``       | Switch to solve longwave radiation                                |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``sfc_alb_dir``        | ``None``       | Surface albedo direct radiation                                   |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``sfc_alb_dif``        | ``None``       | Surface albedo diffuse radiation                                  |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swdeltacloud``       | ``false``      | Use delta scaling for clouds                                      |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swdeltaaer``         | ``false``      | Use delta scaling for aerosols                                    |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swfixedsza``         | ``true``       | Switch to use a fixed solar zenith angle                          |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``sza``                | ``None``       | Solar zenith angle (if ``swfixedsza=true``)                       |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``tsi_scaling``        | ``-999?``      | Scaling factor TOD incoming shortwave radiation                   |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``emis_sfc``           | ``None``       | Surface emissivity                                                |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``t_sfc``              | ``None``       | Surface temperature (IS THIS STILL USED?)                         |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swfilterdiffuse``    | ``false``      | 3D parameterization Tijhuis et al (2023, ..)                      |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``sigma_filter``       | ``None``       | Standard deviation of filter width (for ``swfilterdiffuse=true``) |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swupdatecolumn``     | ``false``      | Switch to update the background column                            |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``timedeplist_bg``     | ``Empty list`` | List of background column profiles which vary in time             |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swclearskystats``    | ``false``      | Output clear sky statistics                                       |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swhomogenizesfc_sw`` | ``false``      | Horizontally homogenize the surface shortwave radiation           |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swhomogenizesfc_lw`` | ``false``      | Horizontally homogenize the surface longwave radiation            |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swhomogenizehr_sw``  | ``false``      | Horizontally homogenize the shortwave heating rates               |
++------------------------+----------------+-------------------------------------------------------------------+
+| ``swhomogenizehr_lw``  | ``false``      | Horizontally homogenize the longwave heating rates                |
++------------------------+----------------+-------------------------------------------------------------------+
+
+``rrtmgp_rt`` has the following additional settings:
+
++--------------------+----------+-------------------------------------------------------+
+| Name               | Default  | Description and options                               |
++====================+==========+=======================================================+
+| ``swalwaysrt``     | ``true`` | | ``true``: Always use ray tracer                     |
+|                    |          | | ``false``: Use 2 stream solver in absence of clouds |
++--------------------+----------+-------------------------------------------------------+
+| ``kngrid_i``       | ``None`` | Null-collision grid size in x-direction               |
++--------------------+----------+-------------------------------------------------------+
+| ``kngrid_j``       | ``None`` | Null-collision grid size in y-direction               |
++--------------------+----------+-------------------------------------------------------+
+| ``kngrid_k``       | ``None`` | Null-collision grid size in z-direction               |
++--------------------+----------+-------------------------------------------------------+
+| ``rays_per_pixel`` | ``None`` | Samples per pixel per spectral quadrature point       |
++--------------------+----------+-------------------------------------------------------+
+
+For ``gcss`` the following settings are available:
+
++---------+----------+-------------------------+
+| Name    | Default  | Description and options |
++=========+==========+=========================+
+| ``xka`` | ``None`` | TO-DO                   |
++---------+----------+-------------------------+
+| ``fr0`` | ``None`` | TO-DO                   |
++---------+----------+-------------------------+
+| ``fr1`` | ``None`` | TO-DO                   |
++---------+----------+-------------------------+
+| ``div`` | ``None`` | TO-DO                   |
++---------+----------+-------------------------+
+
+Finally, ``prescribed`` offers the posibility to prescribe the surface radiative fluxes:
+
++--------------------------+-----------+------------------------------------------------------------+
+| Name                     | Default   | Description and options                                    |
++==========================+===========+============================================================+
+| ``swtimedep_prescribed`` | ``false`` | Switch for time dependent prescribed radiative fluxes      |
++--------------------------+-----------+------------------------------------------------------------+
+| ``sw_flux_dn``           | ``None``  | Prescribed surface downwelling shortwave radiation (W m-2) |
++--------------------------+-----------+------------------------------------------------------------+
+| ``sw_flux_up``           | ``None``  | Prescribed surface upwelling shortwave radiation (W m-2)   |
++--------------------------+-----------+------------------------------------------------------------+
+| ``lw_flux_dn``           | ``None``  | Prescribed surface downwelling longwave radiation (W m-2)  |
++--------------------------+-----------+------------------------------------------------------------+
+| ``lw_flux_up``           | ``None``  | Prescribed surface upwelling longwave radiation (W m-2)    |
++--------------------------+-----------+------------------------------------------------------------+
+
+
+
+
 
 
 ----
