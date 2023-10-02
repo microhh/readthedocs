@@ -694,10 +694,19 @@ thermo.add_row('dbdy_ls', 'None', 'Large-scale buoyancy gradient in y-direction'
 thermo.print()
 
 
-
-
-#Thermo_buoy: Alpha, N2, swbaroclinic, dbdy_ls
-#Thermo_dry: swbasestate, swbaroclinic, dthetady_ls, swtimedep_pbot pbot, thref0
-#Thermo_moist: swbasestate, swupdatebasestat,  swtimedep_pbot pbot, thref0
-
-
+time = Table_3col()
+time.add_row('starttime', 'None', 'Start time of simulation (s)')
+time.add_row('endtime', 'None', 'End time of simulation (s)')
+time.add_row('savetime', 'None', 'Interval at which a restart file will be saved (s)')
+time.add_row('adaptivestep', 'true', 'Adaptive time stepping, based on CFL, Diffusion Number, and other limitations')
+time.add_row('dtmax', '\infty', 'Maximum time step (s)')
+time.add_row('dt', 'dtmax', 'Initial time step (s)')
+time.add_row('rkorder', '3', [
+    'Order of the Runge-Kutta scheme',
+    '``3``: Third order accurate',
+    '``4``: Fourth order accurate'])
+time.add_row('outputiter', '20', 'Number of iterations between diagnostic output is written to ``<casename>.out``')
+time.add_row('iotimeprec', '0', 'Precision of the file timestamp, in ``10**iotimeprec`` s')
+time.add_row('datetime_utc', '0', 'Calendar start time of the simulation. Must be of the format YY-MM-DD HH:MM::SS')
+time.add_row('postproctime', '0', 'Time step to use in postprocessing mode')
+time.print()

@@ -1025,8 +1025,6 @@ Options for ``buoy``:
 | ``dbdy_ls``      | ``None``  | Large-scale buoyancy gradient in y-direction |
 +------------------+-----------+----------------------------------------------+
 
-
-
 ----
 
 
@@ -1034,25 +1032,23 @@ Timeloop ``[time]``
 -------------------
 
 +------------------+------------+---------------------------------------------------------------------------------+
-|       Name       |  Default   |                             Description and options                             |
+| Name             | Default    | Description and options                                                         |
 +==================+============+=================================================================================+
-| ``starttime``    | *None*     | Start time of the simulation (s)                                                |
+| ``starttime``    | ``None``   | Start time of simulation (s)                                                    |
 +------------------+------------+---------------------------------------------------------------------------------+
-| ``endtime``      | *None*     | End time of the simulation (s)                                                  |
+| ``endtime``      | ``None``   | End time of simulation (s)                                                      |
 +------------------+------------+---------------------------------------------------------------------------------+
-| ``savetime``     | *None*     | Interval at which a restart file will be saved (s)                              |
+| ``savetime``     | ``None``   | Interval at which a restart file will be saved (s)                              |
 +------------------+------------+---------------------------------------------------------------------------------+
-| ``adaptivestep`` | ``1``      | Adaptive time stepping, based on CFL, Diffusion Number, and other limitations   |
-|                  |            | ``0``: Disabled                                                                 |
-|                  |            | ``1``: Enabled                                                                  |
+| ``adaptivestep`` | ``true``   | Adaptive time stepping, based on CFL, Diffusion Number, and other limitations   |
 +------------------+------------+---------------------------------------------------------------------------------+
 | ``dtmax``        | ``\infty`` | Maximum time step (s)                                                           |
 +------------------+------------+---------------------------------------------------------------------------------+
 | ``dt``           | ``dtmax``  | Initial time step (s)                                                           |
 +------------------+------------+---------------------------------------------------------------------------------+
-| ``rkorder``      | ``3``      | Order of the Runge-Kutta scheme                                                 |
-|                  |            | ``3``: Third Order                                                              |
-|                  |            | ``4``: Fourth Order                                                             |
+| ``rkorder``      | ``3``      | | Order of the Runge-Kutta scheme                                               |
+|                  |            | | ``3``: Third order accurate                                                   |
+|                  |            | | ``4``: Fourth order accurate                                                  |
 +------------------+------------+---------------------------------------------------------------------------------+
 | ``outputiter``   | ``20``     | Number of iterations between diagnostic output is written to ``<casename>.out`` |
 +------------------+------------+---------------------------------------------------------------------------------+
@@ -1060,7 +1056,5 @@ Timeloop ``[time]``
 +------------------+------------+---------------------------------------------------------------------------------+
 | ``datetime_utc`` | ``0``      | Calendar start time of the simulation. Must be of the format YY-MM-DD HH:MM::SS |
 +------------------+------------+---------------------------------------------------------------------------------+
-| ``postrpoctime`` | ``0``      | Timestamp to use in postprocessing mode                                         |
+| ``postproctime`` | ``0``      | Time step to use in postprocessing mode                                         |
 +------------------+------------+---------------------------------------------------------------------------------+
-
-
