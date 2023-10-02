@@ -123,6 +123,7 @@ class Table_2col:
 """
 AAAAAAAAAAAAAAAAAAAAA
 """
+
 advec = Table_3col()
 advec.add_row('swadvec', 'swspatialorder', [
         'Advection scheme',
@@ -146,6 +147,7 @@ aerosol.print()
 """
 BBBBBBBBBBBBBBBBBBBBB
 """
+
 boundary = Table_3col()
 boundary.add_row('swboundary', 'None', [
         'Boundary discretization',
@@ -335,7 +337,6 @@ cross.add_row('qsat_path', 'Density-weighted vertical integral of saturated spec
 cross.add_row('w500hpa', 'Vertical velocity at the 500 hPa level (m s-1)')
 cross.print()
 
-
 """
 DDDDDDDDDDDDDDDDDDDDDDDDDD
 """
@@ -382,6 +383,7 @@ diff.print()
 
 dump = Table_3col()
 dump.add_row('swdump', 'false', 'Switch for 3D field dumps')
+dump.add_row('swdoubledump', 'false', 'Switch for dump at two consecutive model iterations')
 dump.add_row('sampletime', 'None', 'Time between consecutive samples (s)')
 dump.add_row('dumplist', 'Empty list', 'List of 3D dumps to be made')
 dump.print()
@@ -391,6 +393,58 @@ dump.add_row('ql', 'Cloud liquid water (kg kg-1)')
 dump.add_row('qi', 'Cloud ice (kg kg-1)')
 dump.add_row('T', 'Absolute temperature (K)')
 dump.print()
+
+"""
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+"""
+
+fields = Table_3col()
+fields.add_row('slist', 'Empty list', 'List of passive scalars to be initialized')
+fields.add_row('visc', 'None', 'Kinematic viscosity (m2 s-1)')
+fields.add_row('svisc', 'None', 'Diffusivity of scalars (m2 s-1)')
+fields.add_row('rndseed', '0', 'Seed of random number generator (-)')
+fields.add_row('rndamp', '0', [
+    'Amplitude of perturbations. Value can be specified per',
+    'prognostic variable, for instance ``rndamp[s] = 0.1``'])
+fields.add_row('rndz', '0', 'Height until which perturbations applied (m)')
+fields.add_row('rndexp', '0', 'Decay of perturbation amplitude with height')
+fields.add_row('vortexnpair', '0', 'Number of pairs of counter rotating vortices (-)')
+fields.add_row('vortexamp', '0', 'Maximum vortex velocity (m s-1)')
+fields.add_row('vortexaxis', 'y', [
+        'Orientation of axis vortices',
+        '``x``: Rotation of vortices in xz-plane',
+        '``y``: Rotation of vortices in yz-plane'])
+fields.print()
+
+
+force = Table_3col()
+force.add_row('swlspres', '0', [
+        'Switch for large-scale pressure force',
+        '``geo``: Fixed pressure gradient in x-direction',
+        '``dpdx``: Rotation of vortices in yz-plane',
+        '``uflux``: ixed volume flux through domain'])
+
+force.add_row('fc', 'None', 'Coriolis parameter (s-1) (if ``swlspres=geo``)')
+force.add_row('dpdx', 'None', 'Fixed pressure gradient in x (Pa m-1) (if ``swlspres=dpdx``)')
+force.add_row('uflux', 'None', 'Fixed volume-mean velocity (m s-1) (if ``swlspres=uflux``)')
+force.add_row('swtimedep_geo', 'false', 'Switch for time dependent geostrophic wind')
+
+force.add_row('swls', 'false', 'Switch for large-scale advective tendencies')
+force.add_row('lslist', 'Empty list', 'List of variables for which advective tendencies are given')
+force.add_row('swtimedep_ls', 'false', 'Switch for time-dependent advective tendencies')
+force.add_row('timedeplist_ls', 'Empty list', 'List of scalars with time-dependent advective tendencies')
+
+force.add_row('swwls', 'false', 'Switch for large-scale subsidence (scalars)')
+force.add_row('swwls_mom', 'false', 'Switch for large-scale subsidence (momentum)')
+force.add_row('swtimedep_wls', 'false', 'Switch for time dependent subsidence')
+
+force.add_row('swnudge', 'false', 'Switch for nudging')
+force.add_row('nudgelist', 'Empty list', 'List of variables to which nudging is applied')
+force.add_row('scalednudgelist', 'Empty list', 'List of variables to which a nudging scale is applied')
+force.add_row('swtimedep_nudge', 'false', 'Switch for time-dependent nudging')
+force.add_row('timedeplist_nudge', 'Empty list', 'List of variables with time-dependent nudging')
+force.print()
+
 
 
 
