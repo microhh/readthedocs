@@ -42,116 +42,175 @@ The order of the advection scheme has to match the order of the spatial discreti
 
 For more details about the 2nd order accurate schemes, see: `<dx.doi.org/10.1175/1520-0493(2002)130%3C2088:TSMFEM%3E2.0.CO;2>`_.
 
-+-------------+--------------------+-----------------------------------------------------+
-| Name        | Default            | Description and options                             |
-+=============+====================+=====================================================+
-| ``swadvec`` | ``swspatialorder`` | | Advection scheme                                  |
-|             |                    | | ``0``: Disabled                                   |
-|             |                    | | ``2``: 2nd-order                                  |
-|             |                    | | ``2i4``: 2nd-order (4th-order interpolation)      |
-|             |                    | | ``2i4``: 2nd-order (4th-order interpolation)      |
-|             |                    | | ``2i5``: 2nd-order (5th-order interpolation)      |
-|             |                    | | ``2i62``: 2nd-order (6th/2nd-order interpolation) |
-|             |                    | | ``4``: 4th-order (DNS, high accuracy)             |
-|             |                    | | ``4m``: 2nd-order (DNS, energy conserving)        |
-+-------------+--------------------+-----------------------------------------------------+
-| ``fluxlimit_list``  | ````       | List of variables that are flux-limited             |
-+-------------+--------------------+-----------------------------------------------------+
-| ``cflmax``  | ``1.0``            | Max. CFL for adaptive time stepping                 |
-+-------------+--------------------+-----------------------------------------------------+
-TODO fluxlimit_list
++--------------------+--------------------+--------------------------------------------------------+
+| Name               | Default            | Description and options                                |
++====================+====================+========================================================+
+| ``swadvec``        | ``swspatialorder`` | | Advection scheme                                     |
+|                    |                    | | ``0``: Disabled                                      |
+|                    |                    | | ``2``: 2nd-order                                     |
+|                    |                    | | ``2i4``: 2nd-order with 4th-order interpolations     |
+|                    |                    | | ``2i5``: 2nd-order with 5th-order interpolations     |
+|                    |                    | | ``2i62``: 2nd-order with 6th/2nd-order interpolation |
+|                    |                    | | ``4``: 4th-order (DNS, high accuracy)                |
+|                    |                    | | ``4m``: 2nd-order (DNS, energy conserving)           |
++--------------------+--------------------+--------------------------------------------------------+
+| ``cflmax``         | ``1.0``            | Max. CFL for adaptive time stepping                    |
++--------------------+--------------------+--------------------------------------------------------+
+| ``fluxlimit_list`` | ``Empty list``     | Use flux limiter for scalars (2i5 and 2i62 only)       |
++--------------------+--------------------+--------------------------------------------------------+
+
 ----
 
 Aerosol ``[aerosol]``
 ---------------------
 
-+-----------------+--------------------+-----------------------------------------------------+
-| Name            | Default            | Description and options                             |
-+=================+====================+=====================================================+
-| ``swaerosol``   | ``0``              | | Aerosol scheme                                    |
-|                 |                    | | ``0``: Disabled                                   |
-|                 |                    | | ``1``: Enabled                                    |
-+-----------------+--------------------+-----------------------------------------------------+
-| ``swtimedep``   | ``0``              | | Time-dependent aerosol                            |
-|                 |                    | | ``0``: Disabled                                   |
-|                 |                    | | ``1``: Enabled                                    |
-+-----------------+--------------------+-----------------------------------------------------+
+Description: TO-DO Mirjam.
+
++-----------------------+---------------+--------------------------------------------+
+| Name                  | Default       | Description and options                    |
++=======================+===============+============================================+
+| ``swaerosol``         | ``false``     | Switch for aerosols in radiation           |
++-----------------------+---------------+--------------------------------------------+
+| ``swtimedep``         | ``false``     | Switch for time dependent aerosols         |
++-----------------------+---------------+--------------------------------------------+
+| ``tdep_aermr{01-11}`` | ``swtimedep`` | Aerosol individual time depenence switches |
++-----------------------+---------------+--------------------------------------------+
 
 ----
-
 
 Boundary conditions ``[boundary]``
 ----------------------------------
 
 The ``Boundary`` class computes the boundary conditions.
 It has a derived class ``Boundary_surface`` that extends the base class in case the surface model is enabled, and ``Boundary_surface_lsm`` which further extends ``Boundary_surface`` with an interactive land surface scheme (HTESSEL based).
-Setting ``swboundary=surface`` requires ``z0m`` and ``z0h`` to be set.
-Setting ``swboundary=surface_bulk`` requires ``bulk_cm`` and ``bulk_cs`` to be set.
 
-+-----------------------+----------------+---------------------------------------------------------------------+
-| Name                  | Default        | Description and options                                             |
-+=======================+================+=====================================================================+
-| ``swboundary``        | ``None``       | | Boundary discretization                                           |
-|                       |                | | ``default``: resolved boundaries                                  |
-|                       |                | | ``surface``: MOST-based surface model                             |
-|                       |                | | ``surface_lsm``: MOST-based surface model with HTESSEL LSM        |
-|                       |                | | ``surface_bulk``: Surface model with prescribed drag coefficients |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``mbcbot``            | ``None``       | | Bottom boundary type for momentum variables                       |
-|                       |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                      |
-|                       |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                |
-|                       |                | | ``ustar``: Fixed ustar at bottom                                  |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``mbctop``            | ``None``       | | Top boundary type for momentum variables                          |
-|                       |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                      |
-|                       |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``sbcbot``            | ``None``       | | Bottom boundary type for scalar variables.                        |
-|                       |                | | Types can be specified per scalar (``sbot[thl]=flux``)            |
-|                       |                | | ``dirichlet``: Dirichlet BC                                       |
-|                       |                | | ``neumann``: Neumann BC                                           |
-|                       |                | | ``flux``: Flux BC                                                 |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``sbctop``            | ``None``       | | Top boundary type for scalar variables.                           |
-|                       |                | | Types can be specified per scalar (``stop[qt]=neumann``)          |
-|                       |                | | ``dirichlet``: Dirichlet BC                                       |
-|                       |                | | ``neumann``: Neumann BC                                           |
-|                       |                | | ``flux``: Flux BC                                                 |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``ubot``              | ``0``          | Bottom boundary value for east-west velocity (m s-1)                |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``utop``              | ``0``          | Top boundary value for east-west velocity (m s-1)                   |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``vbot``              | ``0``          | Bottom boundary value for north-south velocity (m s-1)              |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``vtop``              | ``0``          | Top boundary value for north-south velocity (m s-1)                 |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``sbot``              | ``None``       | | Bottom boundary value for scalar variables                        |
-|                       |                | | Values can be specified per scalar: ``sbot[thl]=0.1``.            |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``stop``              | ``None``       | | Top boundary value for scalar variables                           |
-|                       |                | | Values can be specified per scalar: ``stop[qt]=0``.               |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``sbot_2d_list``      | ``Empty list`` | | Comma-separate list of scalars that provide a binary              |
-|                       |                | | file (``sbot_thl.0000000``) with 2D slice                         |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``swtimedep_sbot_2d`` | ``0``          | Enable time varying 2D surface fields                               |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``sbot_2d_loadtime``  | ``None``       | Frequency of 2D surface input                                       |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``z0m``               | ``None``       | Roughness length of momentum (m)                                    |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``z0h``               | ``None``       | Roughness length of heat (m)                                        |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``ustar``             | ``None``       | Value of the fixed friction velocity (m s-1)                        |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``bulk_cm``           | ``None``       | Drag coefficient for momentum (-)                                   |
-+-----------------------+----------------+---------------------------------------------------------------------+
-| ``bulk_cs``           | ``None``       | Drag coefficient for scalar (-)                                     |
-+-----------------------+----------------+---------------------------------------------------------------------+
-TODO swtimedep swtimedep_outflow swconstantz0 swcharnock alpha_m alpha_ch alpha_h swhomogeneous swfreedrainage swwater swhomegenizesfsc swtilestats swtilestats_column emis_sfc flow_direction scalar_outflow
++-----------------------+----------------+-------------------------------------------------------------------------+
+| Name                  | Default        | Description and options                                                 |
++=======================+================+=========================================================================+
+| ``swboundary``        | ``None``       | | Boundary discretization                                               |
+|                       |                | | ``default``: Resolved boundaries                                      |
+|                       |                | | ``surface``: MOST-based surface model                                 |
+|                       |                | | ``surface_lsm``: MOST-based surface model with HTESSEL LSM            |
+|                       |                | | ``surface_bulk``: Surface model with prescribed drag coefficients     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``mbcbot``            | ``None``       | | Bottom boundary type for momentum variables                           |
+|                       |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                          |
+|                       |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                    |
+|                       |                | | ``ustar``: Fixed ustar at bottom                                      |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``mbctop``            | ``None``       | | Top boundary type for momentum variables                              |
+|                       |                | | ``no-slip``: Dirichlet BC with ``u = v = 0``                          |
+|                       |                | | ``free-slip``: Neumann BC with ``dudz = dvdz = 0``                    |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``sbcbot``            | ``None``       | | Bottom boundary type for scalar variables.                            |
+|                       |                | | Types can be specified per scalar (``sbot[thl]=flux``)                |
+|                       |                | | ``dirichlet``: Dirichlet BC                                           |
+|                       |                | | ``neumann``: Neumann BC                                               |
+|                       |                | | ``flux``: Flux BC                                                     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``sbctop``            | ``None``       | | Top boundary type for scalar variables.                               |
+|                       |                | | Types can be specified per scalar (``stop[qt]=neumann``)              |
+|                       |                | | ``dirichlet``: Dirichlet BC                                           |
+|                       |                | | ``neumann``: Neumann BC                                               |
+|                       |                | | ``flux``: Flux BC                                                     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``ubot``              | ``0``          | Bottom boundary value for east-west velocity (m s-1)                    |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``utop``              | ``0``          | Top boundary value for east-west velocity (m s-1)                       |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``vbot``              | ``0``          | Bottom boundary value for north-south velocity (m s-1)                  |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``vtop``              | ``0``          | Top boundary value for north-south velocity (m s-1)                     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``sbot``              | ``None``       | | Bottom boundary value for scalar variables                            |
+|                       |                | | Values can be specified per scalar: ``sbot[thl]=0.1``.                |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``stop``              | ``None``       | | Top boundary value for scalar variables                               |
+|                       |                | | Values can be specified per scalar: ``stop[qt]=0``.                   |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``sbot_2d_list``      | ``Empty list`` | | Comma-separate list of scalars that provide a binary                  |
+|                       |                | | file (``sbot_thl_in.0000000``) with 2D slice                          |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``z0m``               | ``None``       | Roughness length of momentum (m)                                        |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``z0h``               | ``None``       | Roughness length of heat (m)                                            |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``swconstantz0``      | ``true``       | | Switch for spatially homogeneous z0m/z0h                              |
+|                       |                | | ``true``: Homogeneous z0m/z0h, from ``.ini`` file                     |
+|                       |                | | ``false``: Heterogeneous z0m/z0h from ``z0m.0000000``/``z0h.0000000`` |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``swcharnock``        | ``false``      | Switch for Charnock parameterization (``boundary_surface`` only)        |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``alpha_m``           | ``None``       | Parameter Charnock parameterization                                     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``alpha_ch``          | ``None``       | Parameter Charnock parameterization                                     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``alpha_h``           | ``None``       | Parameter Charnock parameterization                                     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``ustar``             | ``None``       | Value of the fixed friction velocity (m s-1)                            |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``bulk_cm``           | ``None``       | Drag coefficient for momentum (-)                                       |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``bulk_cs``           | ``None``       | Drag coefficient for scalar (-)                                         |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``swtimedep``         | ``false``      | Switch for time varying surface BCs                                     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``timedeplist``       | ``Empty list`` | List of scalars with time varying BCs                                   |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``swtimedep_sbot_2d`` | ``false``      | Switch for time varying 2D surface BCs                                  |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``sbot_2d_loadtime``  | ``None``       | Frequency of 2D surface BC input                                        |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``scalar_outflow``    | ``Empty list`` | List of scalars with non-periodic lateral BCs                           |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``flow_direction``    | ``None``       | | Flow direction used for ``scalar_outflow`` at each lateral edge       |
+|                       |                | | ``inflow``: Inflow (Dirichlet BC)                                     |
+|                       |                | | ``outflow``: Outflow (Neumann BC)                                     |
++-----------------------+----------------+-------------------------------------------------------------------------+
+| ``swtimedep_outflow`` | ``false``      | Switch for time varying scalar outflow                                  |
++-----------------------+----------------+-------------------------------------------------------------------------+
+
+For ``swboundary=surface_lsm``, the ``[land_surface]`` group contains some additional settings:
+
++------------------------+-----------+---------------------------------------------------+
+| Name                   | Default   | Description and options                           |
++========================+===========+===================================================+
+| ``swhomogeneous``      | ``true``  | Use spatially homogeneous land-surface properties |
++------------------------+-----------+---------------------------------------------------+
+| ``swfreedrainage``     | ``true``  | Free drainage BC at bottom of soil column         |
++------------------------+-----------+---------------------------------------------------+
+| ``swwater``            | ``false`` | Switch for allowing open water                    |
++------------------------+-----------+---------------------------------------------------+
+| ``swtilestats``        | ``false`` | Output individual tile statistics                 |
++------------------------+-----------+---------------------------------------------------+
+| ``swtilestats_column`` | ``false`` | Output individual tile column statistics          |
++------------------------+-----------+---------------------------------------------------+
+| ``emis_sfc``           | ``None``  | Surface emissivity                                |
++------------------------+-----------+---------------------------------------------------+
+
+For ``swhomogeneous=true``, the following surface and vegetation properties need to be specified in the ``[land_surface]`` group:
+
++---------------------+----------+-------------------------------------------------------+
+| Name                | Default  | Description and options                               |
++=====================+==========+=======================================================+
+| ``gD``              | ``None`` | gD coefficient in VDP reduction canopy resistance (?) |
++---------------------+----------+-------------------------------------------------------+
+| ``c_veg``           | ``None`` | Sub-grid vegetation fraction (0-1)                    |
++---------------------+----------+-------------------------------------------------------+
+| ``lai``             | ``None`` | Leaf area index (m2 m-2)                              |
++---------------------+----------+-------------------------------------------------------+
+| ``rs_veg_min``      | ``None`` | Minium canopy resistance (s m-1)                      |
++---------------------+----------+-------------------------------------------------------+
+| ``rs_soil_min``     | ``None`` | Minium soil resistance (s m-1)                        |
++---------------------+----------+-------------------------------------------------------+
+| ``lambda_stable``   | ``None`` | Skin conductivity stable conditions (W m-2 K-1)       |
++---------------------+----------+-------------------------------------------------------+
+| ``lambda_unstable`` | ``None`` | Skin conductivity unstable conditions (W m-2 K-1)     |
++---------------------+----------+-------------------------------------------------------+
+| ``cs_veg``          | ``None`` | Heat capacity skin layer (J K-1)                      |
++---------------------+----------+-------------------------------------------------------+
+
 ----
-
 
 Budget statistics ``[budget]``
 ------------------------------
@@ -172,36 +231,34 @@ The switch ``swbudget`` can only be set to ``4`` if ``[grid]`` has ``swspatialor
 
 
 Buffer layer ``[buffer]``
-------------------------------
+-------------------------
 
 The ``Buffer`` class contains the implementation of the buffer layer in the top of the domain that prevents the reflection of gravity waves back into the domain.
 The strength of the buffering is defined per layer as
 :math:`\sigma ( (z - z_\textrm{start}) / ( z_\textrm{size} - z_\textrm{start}) )^\beta`.
 A logical choice for ``sigma`` is :math:`(2 \pi) / N`, where :math:`N` is the Brunt-Vaisala frequency in the sponge layer.
 
-+--------------+----------+-----------------------------------------------------------------+
-| Name         | Default  | Description and options                                         |
-+==============+==========+=================================================================+
-| ``swbuffer`` | ``0``    | | Switch for the buffer layer                                   |
-|              |          | | ``0``: Buffer layer disabled                                  |
-|              |          | | ``1``: Buffer layer enabled                                   |
-+--------------+----------+-----------------------------------------------------------------+
-| ``swupdate`` | ``0``    | | Switch whether to update the buffer with actual mean profiles |
-|              |          | | ``0``: Updating disabled                                      |
-|              |          | | ``1``: Updating enabled                                       |
-+--------------+----------+-----------------------------------------------------------------+
-| ``zstart``   | ``None`` | Height in domain at which the buffer layer starts (m)           |
-+--------------+----------+-----------------------------------------------------------------+
-| ``sigma``    | ``None`` | Damping frequency of buffer layer (rad s-1)                     |
-+--------------+----------+-----------------------------------------------------------------+
-| ``beta``     | ``2``    | Exponent of strength reduction function (-)                     |
-+--------------+----------+-----------------------------------------------------------------+
++--------------+-----------+---------------------------------------------------------------+
+| Name         | Default   | Description and options                                       |
++==============+===========+===============================================================+
+| ``swbuffer`` | ``false`` | Switch for the buffer layer                                   |
++--------------+-----------+---------------------------------------------------------------+
+| ``swupdate`` | ``false`` | Switch whether to update the buffer with actual mean profiles |
++--------------+-----------+---------------------------------------------------------------+
+| ``zstart``   | ``None``  | Height in domain at which the buffer layer starts (m)         |
++--------------+-----------+---------------------------------------------------------------+
+| ``sigma``    | ``None``  | Damping frequency of buffer layer (rad s-1)                   |
++--------------+-----------+---------------------------------------------------------------+
+| ``beta``     | ``2``     | Exponent of strength reduction function (-)                   |
++--------------+-----------+---------------------------------------------------------------+
 
 ----
 
 Column ``[column]``
----------------------
+-------------------
+
 The ``Column`` class contains the settings for single column output.
+
 +------------------+--------------------+-----------------------------------------------------+
 | Name             | Default            | Description and options                             |
 +==================+====================+=====================================================+
@@ -218,6 +275,7 @@ The ``Column`` class contains the settings for single column output.
 |                  |                    | | ``0``: Disabled                                   |
 |                  |                    | | ``1``: Enabled                                    |
 +------------------+--------------------+-----------------------------------------------------+
+
 ----
 
 
@@ -335,7 +393,7 @@ If a wildcard ``*`` is used, variables can be filled in according to the descrip
 ----
 
 Decay ``[decay]``
----------------------
+-----------------
 Imposes an expontial decay on prognostic variables of choice. It also defines a statistical mask for areas where a decaying field is a certain number of standard deviations above the mean.
 +-------------------+---------+----------------------------------------------------------------------------------+
 |       Name        | Default |                             Description and options                              |
@@ -350,6 +408,7 @@ Imposes an expontial decay on prognostic variables of choice. It also defines a 
 +-------------------+---------+----------------------------------------------------------------------------------+
 | ``nstd_couvreux`` | ``1``   | Number of standard deviations above the horizontal mean for conditional sampling |
 +-------------------+---------+----------------------------------------------------------------------------------+
+
 ----
 
 
@@ -377,6 +436,7 @@ The order of the diffusion scheme has to match the order of the spatial discreti
 +---------------------------------+--------------------+------------------------------------------------------------+
 | ``tPr``                         | ``1./3.``          | Turbulent Prandtl number                                   |
 +---------------------------------+--------------------+------------------------------------------------------------+
+
 TODO swmason, ap, cf ce1 ce2 cm ch1 ch2 cn
 ----
 
@@ -423,7 +483,7 @@ If a wildcard ``*`` is used, variables can be filled in according to the descrip
 
 
 Fields ``[fields]``
-----------------------------
+-------------------
 
 The ``Fields`` class initializes and contains the 3D fields that are passed around in the model.
 This class generates passive scalars, which are prognostic variables that are not initialized by other classes.
@@ -519,10 +579,9 @@ The ``Force`` class provides the tendencies for all forms of large-scale forcing
 +---------------------------------+----------+--------------------------------------------------------------------------+
 | ``timedeplist_nudge``           | *None*   | List of variables with time-dependent nudging                            |
 +---------------------------------+----------+--------------------------------------------------------------------------+
+
 TODO swwls_mom
 ----
-
-
 
 
 Grid ``[grid]``
@@ -561,7 +620,7 @@ The ``Grid`` class contains the grid configuration.
 ----
 
 Immersed boundary ``[ib]``
--------------------
+--------------------------
 
 +-----------------+--------------------+-----------------------------------------------------+
 | Name            | Default            | Description and options                             |
@@ -589,6 +648,7 @@ Limiter ``[limiter]``
 |                 |                    | | ``0``: Disabled                                   |
 |                 |                    | | ``1``: Enabled                                    |
 +-----------------+--------------------+-----------------------------------------------------+
+
 TODO limitlist
 
 ----
@@ -608,8 +668,9 @@ The ``Master`` class contains the configuration settings for parallel runs.
 +---------------------------------+--------------------+-------------------------------------------------+
 
 ----
+
 Microphysics ``[micro]``
----------------------
+------------------------
 
 +-------------+---------+-----------------------------------------------------+
 |    Name     | Default |               Description and options               |
@@ -628,7 +689,7 @@ Microphysics ``[micro]``
 
 
 Pressure ``[pres]``
----------------------
+-------------------
 
 +----------------------+---------+------------------------------------------+
 |         Name         | Default |         Description and options          |
@@ -641,10 +702,11 @@ Pressure ``[pres]``
 |                      |         | ``0``: Disabled                          |
 |                      |         | ``1``: Enabled                           |
 +----------------------+---------+------------------------------------------+
+
 ----
 
 Radiation ``[radiation]``
----------------------
+-------------------------
 
 +-----------------+--------------------+-----------------------------------------------------+
 | Name            | Default            | Description and options                             |
@@ -657,6 +719,7 @@ Radiation ``[radiation]``
 |                 |                    | | ``0``: Disabled                                   |
 |                 |                    | | ``1``: Enabled                                    |
 +-----------------+--------------------+-----------------------------------------------------+
+
 TODO
 swradiation
 radiation_gcss: xka, fr0, fr1, div
@@ -670,7 +733,7 @@ radiation_rrtmgp_rt alone: rays_per_pixel, kngrid_i/j/k, sza
 
 
 Source ``[source]``
----------------------
+-------------------
 
 +-----------------+--------------------+-----------------------------------------------------+
 | Name            | Default            | Description and options                             |
@@ -683,11 +746,13 @@ Source ``[source]``
 |                 |                    | | ``0``: Disabled                                   |
 |                 |                    | | ``1``: Enabled                                    |
 +-----------------+--------------------+-----------------------------------------------------+
+
 TODO swtimedep_location _strength, sw_profile, sourcelist, source x/y/z0, sigma_x/y/z strength line_x/y/z swvmr profile_index
+
 ----
 
 Statistics ``[stats]``
----------------------
+----------------------
 The statistics class contains the settings for the statistics output, in particular the time series and the profiles. All statistics can be masked, meaning that only grid points that satisfy a certain condition are included in the statistics.
 The statistics over the entire domain are written out in a file named ``<casename>.default.<restarttime>.nc``. Conditional statistics are written out in files named ``<casename>.<maskname>.<restarttime>.nc``.
 +----------------+---------+-------------------------------------------------------------------------------------------------+
@@ -724,14 +789,10 @@ The statistics over the entire domain are written out in a file named ``<casenam
 +----------------+---------+-------------------------------------------------------------------------------------------------+
 
 
-
-
-
 ----
 
-
 Thermodynamics ``[thermo]``
----------------------
+---------------------------
 
 +-----------------+--------------------+-----------------------------------------------------+
 | Name            | Default            | Description and options                             |
@@ -753,7 +814,7 @@ Thermo_moist: swbasestate, swupdatebasestat,  swtimedep_pbot pbot, thref0
 
 
 Timeloop ``[time]``
----------------------
+-------------------
 
 +------------------+------------+---------------------------------------------------------------------------------+
 |       Name       |  Default   |                             Description and options                             |
@@ -762,7 +823,7 @@ Timeloop ``[time]``
 +------------------+------------+---------------------------------------------------------------------------------+
 | ``endtime``      | *None*     | End time of the simulation (s)                                                  |
 +------------------+------------+---------------------------------------------------------------------------------+
-| ``savetime``     | *None      | Interval at which a restart file will be saved (s)                              |
+| ``savetime``     | *None*     | Interval at which a restart file will be saved (s)                              |
 +------------------+------------+---------------------------------------------------------------------------------+
 | ``adaptivestep`` | ``1``      | Adaptive time stepping, based on CFL, Diffusion Number, and other limitations   |
 |                  |            | ``0``: Disabled                                                                 |
