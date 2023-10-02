@@ -438,19 +438,18 @@ Decay ``[decay]``
 
 Imposes an expontial decay on prognostic variables of choice. It also defines a statistical mask for areas where a decaying field is a certain number of standard deviations above the mean.
 
-+-------------------+---------+----------------------------------------------------------------------------------+
-|       Name        | Default |                             Description and options                              |
-+===================+=========+==================================================================================+
-| ``swdecay``       | ``0``   | Decay scheme                                                                     |
-|                   |         | ``0``: Disabled                                                                  |
-|                   |         | ``1``: Enabled                                                                   |
-+-------------------+---------+----------------------------------------------------------------------------------+
-| ``timescale``     | *None*  | Exponential timescale                                                            |
-|                   |         | of the decay rate (s)                                                            |
-|                   |         | ``1``: Enabled                                                                   |
-+-------------------+---------+----------------------------------------------------------------------------------+
-| ``nstd_couvreux`` | ``1``   | Number of standard deviations above the horizontal mean for conditional sampling |
-+-------------------+---------+----------------------------------------------------------------------------------+
++-------------------+----------+----------------------------------------------------------------------------------+
+| Name              | Default  | Description and options                                                          |
++===================+==========+==================================================================================+
+| ``swdecay``       | ``0``    | | Decay type:                                                                    |
+|                   |          | | ``0``: No decay                                                                |
+|                   |          | | ``exponential``: Exponential decay                                             |
+|                   |          | | Set per scalar, e.g. ``decay[s1]=0``, ``decay[s2]=exponential``                |
++-------------------+----------+----------------------------------------------------------------------------------+
+| ``timescale``     | ``None`` | Exponential decay rate (s)                                                       |
++-------------------+----------+----------------------------------------------------------------------------------+
+| ``nstd_couvreux`` | ``1``    | Number of standard deviations above the horizontal mean for conditional sampling |
++-------------------+----------+----------------------------------------------------------------------------------+
 
 ----
 
@@ -458,29 +457,56 @@ Imposes an expontial decay on prognostic variables of choice. It also defines a 
 Diffusion ``[diff]``
 --------------------
 
-The ``Diff`` class computes the tendencies related to molecular, and in case of LES, of eddy diffusion.
-If ``swdiff=smag2``, LES mode is enabled and the user can choose ``cs`` and/or ``tPr``.
+The ``Diff`` class computes the tendencies related to molecular, and in case of LES, of eddy diffusion. The order of the diffusion scheme has to match the order of the spatial discretization, as set by ``[grid] swspatialorder``.
 
-The order of the diffusion scheme has to match the order of the spatial discretization, as set by ``[grid] swspatialorder``.
++------------+---------+----------------------------------------------------+
+| Name       | Default | Description and options                            |
++============+=========+====================================================+
+| ``swdiff`` | ``0``   | | Switch for diffusion type                        |
+|            |         | | ``0``: Disabled                                  |
+|            |         | | ``2``: 2nd-order DNS                             |
+|            |         | | ``4``: 4th-order DNS                             |
+|            |         | | ``smag2``: 2nd-order Smagorinsky for LES         |
+|            |         | | ``tke2``: 2nd-order Deardorff TKE scheme for LES |
++------------+---------+----------------------------------------------------+
+| ``dnmax``  | ``0.4`` | Max. diffusion number for adaptive time stepping   |
++------------+---------+----------------------------------------------------+
 
-+---------------------------------+--------------------+------------------------------------------------------------+
-| Name                            | Default            | Description and options                                    |
-+=================================+====================+============================================================+
-| ``swdiff``                      | ``0``              | | Switch for diffusion type                                |
-|                                 |                    | | ``0``: Disabled                                          |
-|                                 |                    | | ``2``: 2nd-order                                         |
-|                                 |                    | | ``4``: 4th-order                                         |
-|                                 |                    | | ``smag2``: 2nd-order Smagorinsky for LES                 |
-|                                 |                    | | ``tke2``: 2th-order Deardorff for LES                    |
-+---------------------------------+--------------------+------------------------------------------------------------+
-| ``dnmax``                       | ``0.4``            | Max. diffusion number for adaptive time stepping           |
-+---------------------------------+--------------------+------------------------------------------------------------+
-| ``cs``                          | ``0.23``           | Smagorinsky constant                                       |
-+---------------------------------+--------------------+------------------------------------------------------------+
-| ``tPr``                         | ``1./3.``          | Turbulent Prandtl number                                   |
-+---------------------------------+--------------------+------------------------------------------------------------+
+For ``swdiff=smag2``, the following settings are available:
 
-TODO swmason, ap, cf ce1 ce2 cm ch1 ch2 cn
++-------------+----------+-------------------------------+
+| Name        | Default  | Description and options       |
++=============+==========+===============================+
+| ``cs``      | ``0.23`` | Smagorinsky constant          |
++-------------+----------+-------------------------------+
+| ``tPr``     | ``1/3``  | Turbulent Prandtl number      |
++-------------+----------+-------------------------------+
+| ``swmason`` | ``true`` | Switch for Mason wall damping |
++-------------+----------+-------------------------------+
+
+For ``swdiff=tke2``, the following settings are available:
+
++-------------+----------+-------------------------------+
+| Name        | Default  | Description and options       |
++=============+==========+===============================+
+| ``ap``      | ``0.4``  | Contant TKE scheme (TO-DO)    |
++-------------+----------+-------------------------------+
+| ``cf``      | ``2.5``  | Contant TKE scheme (TO-DO)    |
++-------------+----------+-------------------------------+
+| ``ce1``     | ``0.19`` | Contant TKE scheme (TO-DO)    |
++-------------+----------+-------------------------------+
+| ``ce2``     | ``0.51`` | Contant TKE scheme (TO-DO)    |
++-------------+----------+-------------------------------+
+| ``cm``      | ``0.12`` | Contant TKE scheme (TO-DO)    |
++-------------+----------+-------------------------------+
+| ``ch1``     | ``1``    | Contant TKE scheme (TO-DO)    |
++-------------+----------+-------------------------------+
+| ``ch2``     | ``2``    | Contant TKE scheme (TO-DO)    |
++-------------+----------+-------------------------------+
+| ``cn``      | ``0.76`` | Contant TKE scheme (TO-DO)    |
++-------------+----------+-------------------------------+
+| ``swmason`` | ``true`` | Switch for Mason wall damping |
++-------------+----------+-------------------------------+
 
 ----
 
@@ -490,38 +516,27 @@ Dump of 3D fields ``[dump]``
 
 The ``Dump`` class contains the settings for 3D field dumps.
 
-+---------------------------------+--------------------+-------------------------------------------------+
-| Name                            | Default            | Description and options                         |
-+=================================+====================+=================================================+
-| ``swdump``                      | ``0.``             | Switch for 3D dumps                             |
-|                                 |                    | | ``0``: Disabled                               |
-|                                 |                    | | ``1``: Enabled                                |
-+---------------------------------+--------------------+-------------------------------------------------+
-| ``sampletime``                  | *None*             | Time between consecutive samples (s)            |
-+---------------------------------+--------------------+-------------------------------------------------+
-| ``dumplist``                    | *None*             | List of 3D dumps to be made                     |
-+---------------------------------+--------------------+-------------------------------------------------+
++----------------+----------------+--------------------------------------+
+| Name           | Default        | Description and options              |
++================+================+======================================+
+| ``swdump``     | ``false``      | Switch for 3D field dumps            |
++----------------+----------------+--------------------------------------+
+| ``sampletime`` | ``None``       | Time between consecutive samples (s) |
++----------------+----------------+--------------------------------------+
+| ``dumplist``   | ``Empty list`` | List of 3D dumps to be made          |
++----------------+----------------+--------------------------------------+
 
-The table below shows an overview of potential dump variables and the class that provides them.
-If a wildcard ``*`` is used, variables can be filled in according to the description.
+``dumplist`` can contain any prognostic or diagnostic field. In addition, ``swthermo=thermo_moist`` can provide:
 
-+----------------------------+---------------------------------------------------------------------------------+
-| Name                       | Description                                                                     |
-+============================+=================================================================================+
-| *Always available*                                                                                           |
-+----------------------------+---------------------------------------------------------------------------------+
-| ``*``                      | Any prognostic or diagnostic variables                                          |
-+----------------------------+---------------------------------------------------------------------------------+
-|                                                                                                              |
-+----------------------------+---------------------------------------------------------------------------------+
-| *Availabe if* ``[thermo]`` *has* ``swthermo=thermo_moist``                                                   |
-+----------------------------+---------------------------------------------------------------------------------+
-| ``ql``                     | Liquid water concentration (kg kg-1)                                            |
-+----------------------------+---------------------------------------------------------------------------------+
-| ``qi``                     | Ice concentration (kg kg-1)                                                     |
-+----------------------------+---------------------------------------------------------------------------------+
-| ``T``                      | Absolute temperature (K)                                                        |
-+----------------------------+---------------------------------------------------------------------------------+
++--------+------------------------------+
+| Name   | Description and options      |
++========+==============================+
+| ``ql`` | Cloud liquid water (kg kg-1) |
++--------+------------------------------+
+| ``qi`` | Cloud ice (kg kg-1)          |
++--------+------------------------------+
+| ``T``  | Absolute temperature (K)     |
++--------+------------------------------+
 
 ----
 

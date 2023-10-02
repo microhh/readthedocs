@@ -336,5 +336,61 @@ cross.add_row('w500hpa', 'Vertical velocity at the 500 hPa level (m s-1)')
 cross.print()
 
 
+"""
+DDDDDDDDDDDDDDDDDDDDDDDDDD
+"""
+
+decay = Table_3col()
+decay.add_row('swdecay', '0', [
+        'Decay type:',
+        '``0``: No decay',
+        '``exponential``: Exponential decay',
+        'Set per scalar, e.g. ``decay[s1]=0``, ``decay[s2]=exponential``'])
+decay.add_row('timescale', 'None', 'Exponential decay rate (s)')
+decay.add_row('nstd_couvreux', '1', 'Number of standard deviations above the horizontal mean for conditional sampling')
+decay.print()
+
+diff = Table_3col()
+diff.add_row('swdiff', '0', [
+        'Switch for diffusion type',
+        '``0``: Disabled',
+        '``2``: 2nd-order DNS',
+        '``4``: 4th-order DNS',
+        '``smag2``: 2nd-order Smagorinsky for LES',
+        '``tke2``: 2nd-order Deardorff TKE scheme for LES',])
+diff.add_row('dnmax', '0.4', 'Max. diffusion number for adaptive time stepping')
+diff.print()
+
+diff = Table_3col()
+diff.add_row('cs', '0.23', 'Smagorinsky constant')
+diff.add_row('tPr', '1/3', 'Turbulent Prandtl number')
+diff.add_row('swmason', 'true', 'Switch for Mason wall damping')
+diff.print()
+
+diff = Table_3col()
+diff.add_row('ap', '0.4', 'Contant TKE scheme (TO-DO)')
+diff.add_row('cf', '2.5', 'Contant TKE scheme (TO-DO)')
+diff.add_row('ce1', '0.19', 'Contant TKE scheme (TO-DO)')
+diff.add_row('ce2', '0.51', 'Contant TKE scheme (TO-DO)')
+diff.add_row('cm', '0.12', 'Contant TKE scheme (TO-DO)')
+diff.add_row('ch1', '1', 'Contant TKE scheme (TO-DO)')
+diff.add_row('ch2', '2', 'Contant TKE scheme (TO-DO)')
+diff.add_row('cn', '0.76', 'Contant TKE scheme (TO-DO)')
+diff.add_row('swmason', 'true', 'Switch for Mason wall damping')
+diff.print()
+
+
+dump = Table_3col()
+dump.add_row('swdump', 'false', 'Switch for 3D field dumps')
+dump.add_row('sampletime', 'None', 'Time between consecutive samples (s)')
+dump.add_row('dumplist', 'Empty list', 'List of 3D dumps to be made')
+dump.print()
+
+dump = Table_2col()
+dump.add_row('ql', 'Cloud liquid water (kg kg-1)')
+dump.add_row('qi', 'Cloud ice (kg kg-1)')
+dump.add_row('T', 'Absolute temperature (K)')
+dump.print()
+
 
 
