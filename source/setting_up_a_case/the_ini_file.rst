@@ -5,9 +5,6 @@ The ``.ini`` file
    :maxdepth: 2
    :caption: Contents:
 
-
-TODO DIFF FORCE  IB Limiter radiation source thermo 
-
 File structure
 --------------
 
