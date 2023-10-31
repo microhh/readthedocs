@@ -256,7 +256,7 @@ A logical choice for ``sigma`` is :math:`(2 \pi) / N`, where :math:`N` is the Br
 Column ``[column]``
 -------------------
 
-The ``Column`` class contains the settings for single column output.
+The ``Column`` class contains the settings for single column output. Columns are only created for each specific ``(x,y)`` pair. So specifying ``coordinates[x]=100,200``, ``coordinates[y]=300,400`` will create columns for ``x,y=(100,300)`` and ``x,y=(200,400)``, but not the cross-combinations like e.g. ``x,y=(100,400)``. 
 
 +--------------------+----------------+--------------------------------------+
 | Name               | Default        | Description and options              |
