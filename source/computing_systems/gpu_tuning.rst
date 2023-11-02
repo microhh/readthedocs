@@ -65,9 +65,9 @@ To tune the code, run the ``tune.py`` script in ``microhh/tuner``:
 .. code-block:: shell
 
     # Tune selection of captures:
-    python tune.py ../captures/*128x128x128.json --time=05:00
+    python tune.py ../captures/*128x128x128.json --time=30:00
     # Or simply tune all:
-    python tune.py ../captures/*.json --iterations=30
+    python tune.py ../captures/*.json --iterations=250
 
 As you can see, there are different methods for specifying how much time Kernel Tuner should spend tuning each kernel. After tuning, the most optimal configurations for your specific setup are appended to the wisdom files in ``microhh/wisdom/``. For each kernel (with settings name ``captures/kernel_name.json`` in this example), the individual timings are written to ``captures/kernel_name.cache.json``, and can be visualised with ``microhh/tuner/plot_cache.py``.
 
