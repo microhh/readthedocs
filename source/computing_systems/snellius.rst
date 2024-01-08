@@ -28,26 +28,7 @@ Snellius uses a module system to load and/or switch between different compilers,
     module load Python/3.10.4-GCCcore-11.3.0
     module load NCO/5.1.0-foss-2022a
 
-To simplify setting up the environment, it can be convenient to put the module commands in a shell script in your home directory (e.g. :code:`setup_env.sh`):
-
-.. code-block:: shell
-
-    module purge
-    module load 2022
-    module load CMake/3.23.1-GCCcore-11.3.0
-
-    # MicroHH + GCC
-    module load foss/2022a
-    module load netCDF/4.9.0-gompi-2022a
-    module load CUDA/11.8.0
-    module load Clang/13.0.1-GCCcore-11.3.0
-
-    # Python et al.
-    module load Python/3.10.4-GCCcore-11.3.0
-    module load NCO/5.1.0-foss-2022a
-
-
-After which you can setup the environment using:
+To simplify setting up the environment, it can be convenient to put the module commands in a shell script in your home directory (e.g. :code:`setup_env.sh`), after which you can setup the environment using:
 
 .. code-block:: shell
 
@@ -84,21 +65,13 @@ The script below (also available in :code:`microhh_root/misc/runscripts/snellius
     #SBATCH --mail-type=end
     #SBATCH --mail-user=ceo@microhh.org
 
-    # Load required modules:
-    toolkit="gcc"     # Switch between gcc/intel builds
-
     module purge
-    module load 2021
-    module load CMake/3.20.1-GCCcore-10.3.0
-
-    if [ "$toolkit" = "gcc" ]; then
-        module load foss/2021a
-        module load netCDF/4.8.0-gompi-2021a
-    elif [ "$toolkit" = "intel" ]; then
-        module load intel/2021a
-        module load netCDF/4.8.0-iimpi-2021a
-        module load FFTW/3.3.9-intel-2021a
-    fi
+    module load 2022
+    module load CMake/3.23.1-GCCcore-11.3.0
+    module load foss/2022a
+    module load netCDF/4.9.0-gompi-2022a
+    module load CUDA/11.8.0
+    module load Clang/13.0.1-GCCcore-11.3.0
 
     export OMPI_MCA_fcoll="two_phase"
     export OMPI_MCA_io_ompio_bytes_per_agg="512MB"
@@ -117,7 +90,7 @@ Best practices
 
 #. You should always run your experiments on the GPFS :code:`scratch` (:code:`/scratch-shared/your_username/`) file system, which is designed for the storage of large volumes of data, and fast parallel I/O.
 #. Files on the :code:`scratch` file system are automatically deleted after 14 days, so archive them in time to e.g. the SURFsara archive at :code:`/archive/your_username/`.
-#. Always specify the following two OpenMPI parameters before `srun ./microhh init case_name` (see run script above), otherwise I/O becomes a bottleneck:
+#. Always specify the following two OpenMPI parameters before :code:`srun ./microhh init case_name` (see run script above), otherwise I/O becomes a bottleneck:
 
 .. code-block:: shell
 
