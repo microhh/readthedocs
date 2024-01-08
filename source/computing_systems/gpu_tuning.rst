@@ -97,6 +97,11 @@ Note that Kernel Launcher will always pick one configuration, even if it might n
     and device "NVIDIA GeForce RTX 2060 SUPER",
     using configuration for different device "NVIDIA RTX A5000".
 
+Tuning all tunable kernels
+--------------------------
+
+Exporting the captures for all available (tunable) kernels, and a variety of grid sizes, can be a tedious task. The ``drycblles_tuner.py`` script in the ``drycblles`` case simplifies this task by automatically running the model in various configurations, such that all tunable kernels are captured.
+
 Debugging
 ---------
 

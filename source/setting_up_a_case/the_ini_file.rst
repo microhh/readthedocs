@@ -72,8 +72,6 @@ Description: TO-DO Mirjam.
 +-----------------------+---------------+--------------------------------------------+
 | ``swtimedep``         | ``false``     | Switch for time dependent aerosols         |
 +-----------------------+---------------+--------------------------------------------+
-| ``tdep_aermr{01-11}`` | ``swtimedep`` | Aerosol individual time depenence switches |
-+-----------------------+---------------+--------------------------------------------+
 
 ----
 
@@ -807,7 +805,7 @@ For ``rrtmgp`` and ``rrtmgp_rt``, the following settings are available:
 +------------------------+----------------+-------------------------------------------------------------------+
 | ``swupdatecolumn``     | ``false``      | Switch to update the background column                            |
 +------------------------+----------------+-------------------------------------------------------------------+
-| ``timedeplist_bg``     | ``Empty list`` | List of background column profiles which vary in time             |
+| ``timedeplist_gas``    | ``Empty list`` | List of gas profiles which vary in time                           |
 +------------------------+----------------+-------------------------------------------------------------------+
 | ``swclearskystats``    | ``false``      | Output clear sky statistics                                       |
 +------------------------+----------------+-------------------------------------------------------------------+
