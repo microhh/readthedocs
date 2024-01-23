@@ -50,11 +50,11 @@ The script below (also available in :code:`microhh_root/misc/runscripts/snellius
     #SBATCH --output=mhh-%j.out
     #SBATCH --error=mhh-%j.err
 
-    # Thin CPU partition (https://servicedesk.surfsara.nl/wiki/display/WIKI/Snellius+usage+and+accounting):
-    #SBATCH --partition=thin
+    # New (2023) Genoa CPU partition (https://servicedesk.surfsara.nl/wiki/display/WIKI/Snellius+usage+and+accounting):
+    #SBATCH --partition=genoa
 
-    # Snellius has 128 cores/node. Slurm automatically determines the required number of nodes:
-    #SBATCH -n 128
+    # Genoa nodes have 192 cores/node. Slurm automatically determines the required number of nodes:
+    #SBATCH -n 192
     #SBATCH --cpus-per-task=1
     #SBATCH --ntasks-per-core=1
 
