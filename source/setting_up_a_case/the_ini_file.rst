@@ -184,6 +184,8 @@ For ``swboundary=surface_lsm``, the ``[land_surface]`` group contains some addit
 +------------------------+-----------+---------------------------------------------------+
 | ``emis_sfc``           | ``None``  | Surface emissivity                                |
 +------------------------+-----------+---------------------------------------------------+
+| ``ktot``               | ``None``  | Number of vertical soil grid points               |
++------------------------+-----------+---------------------------------------------------+
 
 For ``swhomogeneous=true``, the following surface and vegetation properties need to be specified in the ``[land_surface]`` group:
 

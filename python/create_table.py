@@ -220,6 +220,7 @@ lsm1.add_row('swwater', 'false', 'Switch for allowing open water')
 lsm1.add_row('swtilestats', 'false', 'Output individual tile statistics')
 lsm1.add_row('swtilestats_column', 'false', 'Output individual tile column statistics')
 lsm1.add_row('emis_sfc', 'None', 'Surface emissivity')
+lsm1.add_row('ktot', 'None', 'Number of vertical soil grid points')
 lsm1.print()
 
 lsm2 = Table_3col()
