@@ -604,7 +604,9 @@ The ``Force`` class calculates the tendencies for all forms of large-scale forci
 +-----------------------+----------------+--------------------------------------------------------------+
 | ``timedeplist_ls``    | ``Empty list`` | List of scalars with time-dependent advective tendencies     |
 +-----------------------+----------------+--------------------------------------------------------------+
-| ``swwls``             | ``false``      | Switch for large-scale subsidence (scalars)                  |
+| ``swwls``             | ``0``          | | Switch for large-scale subsidence (scalars)                |
+|                       |                | | ``local``: Advect local field                              |
+|                       |                | | ``mean``: Advect horizontally mean field                   |
 +-----------------------+----------------+--------------------------------------------------------------+
 | ``swwls_mom``         | ``false``      | Switch for large-scale subsidence (momentum)                 |
 +-----------------------+----------------+--------------------------------------------------------------+

@@ -432,7 +432,10 @@ force.add_row('lslist', 'Empty list', 'List of variables for which advective ten
 force.add_row('swtimedep_ls', 'false', 'Switch for time-dependent advective tendencies')
 force.add_row('timedeplist_ls', 'Empty list', 'List of scalars with time-dependent advective tendencies')
 
-force.add_row('swwls', 'false', 'Switch for large-scale subsidence (scalars)')
+force.add_row('swwls', '0', [
+        'Switch for large-scale subsidence (scalars)',
+        '``local``: Advect local field',
+        '``mean``: Advect horizontally mean field'])
 force.add_row('swwls_mom', 'false', 'Switch for large-scale subsidence (momentum)')
 force.add_row('swtimedep_wls', 'false', 'Switch for time dependent subsidence')
 
