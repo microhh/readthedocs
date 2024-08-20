@@ -515,8 +515,8 @@ micro.add_row('swmicro', '0', [
         '``0``: Disabled',
         '``2mom_warm``: Double moment warm (Seifert & Beheng)',
         '``nsw6``: Single moment ice (Tomita)'])
-micro.add_row('Nc0', 'None', 'The cloud water droplet number concentration (m-3)')
-micro.add_row('Ni0', 'None', 'The cloud ice number concentration (m-3)')
+micro.add_row('Nc0', '-1', 'The cloud water droplet number concentration (m-3)')
+micro.add_row('Ni0', '-1', 'The cloud ice number concentration (m-3)')
 micro.add_row('cflmax', '1.2', 'The CFL criterion limiter for sedimentation')
 micro.add_row('swmicrobudget', 'false', [
         'Output microphysics tendencies in statistics',

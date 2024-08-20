@@ -731,15 +731,17 @@ Microphysics ``[micro]``
 |                   |           | | ``2mom_warm``: Double moment warm (Seifert & Beheng) |
 |                   |           | | ``nsw6``: Single moment ice (Tomita)                 |
 +-------------------+-----------+--------------------------------------------------------+
-| ``Nc0``           | ``None``  | The cloud water droplet number concentration (m-3)     |
+| ``Nc0``           | ``-1``    | The cloud water droplet number concentration (m-3)     |
 +-------------------+-----------+--------------------------------------------------------+
-| ``Ni0``           | ``None``  | The cloud ice number concentration (m-3)               |
+| ``Ni0``           | ``-1``    | The cloud ice number concentration (m-3)               |
 +-------------------+-----------+--------------------------------------------------------+
 | ``cflmax``        | ``1.2``   | The CFL criterion limiter for sedimentation            |
 +-------------------+-----------+--------------------------------------------------------+
 | ``swmicrobudget`` | ``false`` | | Output microphysics tendencies in statistics         |
 |                   |           | | (2mom_warm only)                                     |
 +-------------------+-----------+--------------------------------------------------------+
+
+For simulations with radiation, ``Nc0`` and ``Ni0`` need to be positive numbers, even when microphysics is disabled.
 
 ----
 
