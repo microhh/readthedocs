@@ -89,6 +89,10 @@ Running :code:`cmake` without arguments gives you a serial build without GPU sup
     cmake .. -DUSECUDA=TRUE -DUSESP=TRUE
     cmake .. -DUSESP=TRUE
 
+.. note::
+
+    If you get an error :code:`add_subdirectory given source "rte-rrtmgp-cpp/src_kernels" which is not an existing directory`, you probably forgot to specify :code:`--recurse-submodules` in the :code:`git clone` command. You can fix this by running :code:`git submodule update --init --recursive` once.
+
 .. warning::
 
     Once the build has been configured and you wish to change the :code:`USECUDA`, :code:`USEMPI`, or :code:`USESP` setting, you must delete the build directory or create an additional empty directory from which :code:`cmake` is run again.
@@ -100,4 +104,3 @@ With the previous command you have triggered the build system and created the :c
     make -j 4
 
 Your directory should contain a file named :code:`microhh` now. This is the main executable.
-
