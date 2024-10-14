@@ -216,15 +216,12 @@ Budget statistics ``[budget]``
 
 The ``Budget`` class contains the computation of the statistics of the budgets of the second order moments.
 It contains the entire Reynolds-stress tensor, the variances of the buoyancy variable, and the budget of the buoyancy flux.
-The switch ``swbudget`` can only be set to ``4`` if ``[grid]`` has ``swspatialorder=4``.
 
-+--------------+---------+-------------------------------------------------------+
-| Name         | Default | Description and options                               |
-+==============+=========+=======================================================+
-| ``swbudget`` | ``0``   | | Switch for the budget statistics                    |
-|              |         | | ``2``: Budget statistics with second-order accuracy |
-|              |         | | ``4``: Budget statistics with fourth-order accuracy |
-+--------------+---------+-------------------------------------------------------+
++--------------+-----------+-------------------------------------------------------+
+| Name         | Default   | Description and options                               |
++==============+===========+=======================================================+
+| ``swbudget`` | ``false`` | Switch for the budget statistics                      |
++--------------+-----------+-------------------------------------------------------+
 
 ----
 
@@ -280,7 +277,7 @@ The ``Cross`` class contains the settings for the cross sections.
 +---------------------------------+--------------------+-------------------------------------------------+
 | Name                            | Default            | Description and options                         |
 +=================================+====================+=================================================+
-| ``swcross``                     | ``0.``             | Switch for cross sections                       |
+| ``swcross``                     | ``false``          | Switch for cross sections                       |
 +---------------------------------+--------------------+-------------------------------------------------+
 | ``sampletime``                  | *None*             | Time between consecutive samples (s)            |
 +---------------------------------+--------------------+-------------------------------------------------+
