@@ -27,7 +27,6 @@ These pages provide a documentation for MicroHH 2.0
    :caption: Statistics:
 
    statistics/masked_statistics
-   statistics/trajectories
 
 .. toctree::
    :maxdepth: 2
