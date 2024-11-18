@@ -63,15 +63,16 @@ For more details about the 2nd order accurate schemes, see: `<dx.doi.org/10.1175
 Aerosol ``[aerosol]``
 ---------------------
 
-Description: TO-DO Mirjam.
+Description: The ``aerosol`` class reads aerosol mass mixing ratios from the input file and can interpolate these mixing ratios in time.
+Aerosols mass mixing ratios should be provided in the input file for the aerosol types as in the CAMS global reanalysis.
 
-+-----------------------+---------------+--------------------------------------------+
-| Name                  | Default       | Description and options                    |
-+=======================+===============+============================================+
-| ``swaerosol``         | ``false``     | Switch for aerosols in radiation           |
-+-----------------------+---------------+--------------------------------------------+
-| ``swtimedep``         | ``false``     | Switch for time dependent aerosols         |
-+-----------------------+---------------+--------------------------------------------+
++-----------------------+---------------+-------------------------------------------------------+
+| Name                  | Default       | Description and options                               |
++=======================+===============+=======================================================+
+| ``swaerosol``         | ``false``     | Switch for aerosols in radiation                      |
++-----------------------+---------------+-------------------------------------------------------+
+| ``swtimedep``         | ``false``     | Switch for time dependent aerosols in radiation       |
++-----------------------+---------------+-------------------------------------------------------+
 
 ----
 
