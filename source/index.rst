@@ -46,8 +46,7 @@ These pages provide a documentation for MicroHH 2.0
    :caption: Tutorials:
 
    Tutorials/Generating_input_data
-   Tutorials/standalone_raytracer
-   Tutorials/coupled_raytracer
+   Tutorials/raytracer
    Tutorials/MicroHH_to_raytracer_input
 
 .. toctree::
