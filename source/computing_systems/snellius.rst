@@ -14,19 +14,22 @@ Snellius uses a module system to load and/or switch between different compilers,
 
 .. code-block:: shell
 
+
     module purge
-    module load 2022
-    module load CMake/3.23.1-GCCcore-11.3.0
+    module load 2023
+    module load CMake/3.26.3-GCCcore-12.3.0
 
     # MicroHH + GCC
-    module load foss/2022a
-    module load netCDF/4.9.0-gompi-2022a
-    module load CUDA/11.8.0
-    module load Clang/13.0.1-GCCcore-11.3.0
+    module load foss/2023a
+    module load netCDF/4.9.2-gompi-2023a
+    module load CUDA/12.1.1
+    module load Clang/16.0.6-GCCcore-12.3.0
 
     # Python et al.
-    module load Python/3.10.4-GCCcore-11.3.0
-    module load NCO/5.1.0-foss-2022a
+    module load Python/3.11.3-GCCcore-12.3.0
+    module load NCO/5.1.9-foss-2023a
+
+
 
 To simplify setting up the environment, it can be convenient to put the module commands in a shell script in your home directory (e.g. :code:`setup_env.sh`), after which you can setup the environment using:
 
