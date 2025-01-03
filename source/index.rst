@@ -45,9 +45,9 @@ These pages provide a documentation for MicroHH 2.0
    :maxdepth: 2
    :caption: Tutorials:
 
-   Tutorials/Generating_input_data
-   Tutorials/raytracer
-   Tutorials/MicroHH_to_raytracer_input
+   Tutorials/Overview
+   Tutorials/idealized_cases
+   Tutorials/realistic_cases
 
 .. toctree::
    :maxdepth: 2

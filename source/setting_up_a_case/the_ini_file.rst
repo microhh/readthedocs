@@ -1,3 +1,5 @@
+.. _ini-file-label:
+
 The ``.ini`` file
 =================
 
