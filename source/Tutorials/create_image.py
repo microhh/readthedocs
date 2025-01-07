@@ -3,33 +3,34 @@ import schemdraw
 import schemdraw.flow as flow
 schemdraw.config(lblofst=0)
 
-long_arrow = 5
+long_arrow = 4
 short_arrow = 1.5
 box_size = 4
+large_box_size = 6
 
 with schemdraw.Drawing() as d:
     d.config(fontsize=6, lw=1)
 
     # starting question and answers
     start = flow.Start(w=box_size, h=0.5).label("Choose a simulation type")
-    flow.Arrow().at(start.E).theta(-45).length(short_arrow)
+    flow.Arrow().at(start.S).theta(-45).length(short_arrow)
     les = flow.Box(w=2, h=0.5).anchor('N').label("LES")
-    flow.Arrow().at(start.E).theta(45).length(short_arrow)
+    flow.Arrow().at(start.N).theta(45).length(short_arrow)
     dns = flow.Box(w=2, h=0.5).anchor('S').label("DNS")
 
     ### LES ###
-    flow.Line().right(d.unit/2).at(les.E)
-    advec = flow.Start(w=5, h=0.5).label("1. Choose an advection scheme").anchor('W')
+    flow.Line().down(short_arrow).at(les.S)
+    advec = flow.Start(w=box_size, h=0.5).label("1. Choose an advection scheme").anchor('W')
     flow.Line().down(d.unit/1.5).at(advec.S)
-    boundary = flow.Start(w=5, h=0.5).label("2. Choose a surface scheme")
+    boundary = flow.Start(w=box_size, h=0.5).label("2. Choose a surface scheme")
     flow.Line().down(d.unit / 2).at(boundary.S)
-    diffusion = flow.Start(w=5, h=0.5).label("3. Choose a diffusion scheme")
+    diffusion = flow.Start(w=box_size, h=0.5).label("3. Choose a diffusion scheme")
     flow.Line().down(d.unit / 2).at(diffusion.S)
-    thermo = flow.Start(w=5, h=0.5).label("4. Choose a thermodynamics scheme")
+    thermo = flow.Start(w=box_size, h=0.5).label("4. Choose a thermodynamics scheme")
     flow.Line().down(d.unit / 2).at(thermo.S)
-    other = flow.Start(w=5, h=0.5).label("5. Additional options?")
-    flow.Line().down(d.unit / 2).at(other.S)
-    limiter = flow.Start(w=5, h=0.5).label("6. Limit scalars?")
+    other = flow.Start(w=box_size, h=0.5).label("5. Additional options?")
+    flow.Line().down(d.unit * 3.5).at(other.S)
+    limiter = flow.Start(w=box_size, h=0.5).label("6. Limit scalars?")
 
     # advection
     flow.Arrow().right(long_arrow).at(advec.E).label("4th order interpolations", ofst=-0.1)
@@ -48,6 +49,7 @@ with schemdraw.Drawing() as d:
     # surface
     flow.Arrow().right(long_arrow).at(boundary.E).label("interactive land surface", ofst=-0.1)
     surf_lsm = flow.Box(w=box_size, h=0.5).anchor('W').label("swboundary=surface_lsm")
+    # note: surface_lsm only works with sw_thermo=moist
     surf = flow.Box(w=box_size, h=0.5).anchor('S').label("swboundary=surface").at(surf_lsm.N)
     surf_bulk = flow.Box(w=box_size, h=0.5).anchor('N').label("swboundary=surface_bulk").at(surf_lsm.S)
 
@@ -73,7 +75,7 @@ with schemdraw.Drawing() as d:
     flow.Arrow().right(long_arrow).label('include clouds', ofst=-0.1)
 
     # microphysics
-    flow.Arrow().length(long_arrow).at(moist.E).theta(60)
+    flow.Arrow().length(long_arrow*1.5).at(moist.E).theta(70)
     micro = flow.Start(w=box_size, h=0.5).anchor('W').label('1. include microphysics?')
 
     flow.Arrow().right(short_arrow).at(micro.E).label("no", ofst=-0.1)
@@ -94,9 +96,10 @@ with schemdraw.Drawing() as d:
 
     flow.Arrow().right(short_arrow).at(radiation.E).label("no", ofst=-0.1)
     no_radiation = flow.Box(w=box_size, h=0.5).anchor('W').label("swradiation=0")
-    incl_radiation = flow.Start(w=box_size, h=0.5).anchor('N').label("choose radiation scheme").at(no_radiation.S)
-    flow.Line().at(radiation.E).toy(incl_radiation.W)
-    flow.Arrow().right(short_arrow).label('yes', ofst=-0.1)
+
+    flow.Arrow().down(short_arrow).label('yes', ofst=-0.1).at(radiation.S)
+    incl_radiation = flow.Start(w=box_size, h=0.5).anchor('N').label("choose radiation scheme")
+    # flow.Line().at(radiation.E).toy(incl_radiation.W)
 
     flow.Arrow().right(long_arrow).at(incl_radiation.E).label("prescribed", ofst=-0.1)
     prescribed_radiation = flow.Box(w=box_size, h=0.5).anchor('W').label("swradiation=prescribed")
@@ -114,20 +117,58 @@ with schemdraw.Drawing() as d:
     flow.Arrow().right(long_arrow).label('RTE-RRTMGP with raytracer', ofst=-0.1)
 
     # Aerosols
-    flow.Arrow().right(short_arrow).at(rrtmgp_radiation.E)
-    aerosols = flow.Start(w=box_size, h=0.5).label("include aerosols?").anchor('W')
-    flow.Arrow().at(rt_radiation.E).to(aerosols.W)
+    flow.Line().at(rt_radiation.E).length(short_arrow)
+    flow.Line().at(rrtmgp_radiation.E).length(short_arrow)
+    flow.Arrow().down(short_arrow)
+    # flow.Arrow().right(short_arrow).at(rrtmgp_radiation.E)
+    aerosols = flow.Start(w=box_size, h=0.5).label("include aerosols?").anchor('N')
+    # flow.Arrow().at(rt_radiation.E).to(aerosols.W)
 
-    flow.Arrow().right(short_arrow).at(aerosols.E).label("no", ofst=-0.1)
-    no_aerosols = flow.Box(w=box_size, h=0.5).anchor('W').label("swaerosol=0")
+    flow.Arrow().left(short_arrow).at(aerosols.W).label("no", ofst=-0.1)
+    no_aerosols = flow.Box(w=box_size, h=0.5).anchor('E').label("swaerosol=0")
     incl_aerosols = flow.Box(w=box_size, h=0.5).anchor('N').label("swaerosol=1").at(no_aerosols.S)
-    flow.Line().at(aerosols.E).toy(incl_aerosols.W)
-    flow.Arrow().right(short_arrow).label('yes', ofst=-0.1)
+    flow.Line().at(aerosols.W).toy(incl_aerosols.E)
+    flow.Arrow().left(short_arrow).label('yes', ofst=-0.1)
 
     # other options
+    # Do all of these belong here or do some only belong on the DNS side of the scheme?
+    flow.Line().right(short_arrow).at(other.E)
+    buffer = flow.Start(w=box_size, h=0.5).label("1. include buffer layer?").anchor('W')
+    flow.Arrow().right(short_arrow).at(buffer.E)
+    flow.Box(w=box_size, h=0.5).anchor('W').label("set settings for buffer class")
+
+    flow.Line().down(d.unit / 3).at(buffer.S)
+    rnd = flow.Start(w=box_size, h=0.5).label("2. include initial random perturbations?").anchor('N')
+    flow.Arrow().right(short_arrow).at(rnd.E)
+    flow.Box(w=box_size, h=0.5).anchor('W').label("set settings for rnd in fields class")
+
+    flow.Line().down(d.unit / 3).at(rnd.S)
+    scalar = flow.Start(w=box_size, h=0.5).label("3. include passive scalars?").anchor('N')
+    flow.Arrow().right(short_arrow).at(scalar.E)
+    flow.Box(w=box_size, h=0.5).anchor('W').label("set slist in fields class")
+
+    flow.Line().down(d.unit / 3).at(scalar.S)
+    point = flow.Start(w=box_size, h=0.5).label("4. include point source emissions?").anchor('N')
+    flow.Arrow().right(short_arrow).at(point.E)
+    flow.Box(w=box_size, h=0.5).anchor('W').label("set settings in source class")
+
+    flow.Line().down(d.unit / 3).at(point.S)
+    decay = flow.Start(w=box_size, h=0.5).label("5. include exponential decay?").anchor('N')
+    flow.Arrow().right(short_arrow).at(decay.E)
+    flow.Box(w=box_size, h=0.5).anchor('W').label("set settings in decay class")
+
+    flow.Line().down(d.unit / 3).at(decay.S)
+    force = flow.Start(w=box_size, h=0.5).label("6. include large scale forcings?").anchor('N')
+    flow.Arrow().right(short_arrow).at(force.E)
+    flow.Box(w=box_size, h=0.5).anchor('W').label("set settings in force class")
+
+    flow.Line().down(d.unit / 3).at(force.S)
+    ib = flow.Start(w=box_size, h=0.5).label("7. include immersed boundaries?").anchor('N')
+    flow.Arrow().right(short_arrow).at(ib.E)
+    flow.Box(w=box_size, h=0.5).anchor('W').label("set settings in immersed boundaries class")
 
     # limiter
-    flow.Arrow().right(short_arrow).at(limiter.E).label("yes")
-    do_limiter = flow.Box(w=6, h=0.5).anchor('W').label("add necessary scalars to limitlist")
+    flow.Arrow().right(short_arrow).at(limiter.E)
+    do_limiter = flow.Box(w=box_size, h=0.5).anchor('W').label("add necessary scalars to limitlist")
 
-    d.save("source/Tutorials/flowchart.jpeg", dpi=300)
+    d.save("source/Tutorials/flowchart.jpeg", dpi=600)
