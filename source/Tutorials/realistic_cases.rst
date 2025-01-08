@@ -120,6 +120,9 @@ This includes the following aspects:
       Note that this also requires a new :code:`_input.nc` file where the necessary profiles are in :code:`init` group instead of the :code:`timedep`.
       This should be one profile for each variable, so take e.g. the profile at t=0 or a time-averaged profile.
 
+..
+    maybe I should add some insructions on how to use cabauw_input.py
+
 .. note::
     The default day (15 August 2016) is mostly locally driven, so the impact of the large scale forcings and nudging to ERA5 might seems small, but can be very different (larger) in other cases.
 
@@ -147,7 +150,7 @@ The ``_input.nc`` file must contain a ``soil`` group with profiles (of size ``kt
     | 2. Make the soil wetter or drier by increasing or decreasing the soil water content in the ``_input.nc`` file
 
 ..
-    Does suggestion 1 work or should I remake the input to have thl_sbot and qt_sbot
+    Does suggestion 1 work or should I remake the input to have thl_sbot and qt_sbot?
 
 Radiation
 ----------------------
