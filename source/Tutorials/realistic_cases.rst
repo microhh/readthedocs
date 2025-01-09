@@ -47,8 +47,71 @@ For CAMS: https://github.com/LS2D/LS2D/blob/main/examples/example_cams.py
     3. Optionally, specify your own date, time and location in the settings dictionary in :code:`example_cams.py` and :code:`example_era5.py`.
     4. :code:`example_cams.py` and :code:`example_era5.py` stop after the download requests are submitted. Run them again once the data is downloaded to obtain the derived data.
 
+..
+    Should we add the images here that are created by these python scripts?
+
 The obtained files can now be used to generate a ``yourcase_input.nc`` file.
 An example script to do this is available in ``/cases/cabauw/cabauw_input.py``
+
+**the cabauw_input.py script**
+
+The ``cabauw_input.py`` is a very complete script that allows to set many options that are discussed in the rest of this tutorial.
+It does not only produce ``cabauw_input.nc``, it also produces ``cabauw.ini`` from ``cabauw.ini.base``.
+Hence all the switches are set automatically, based on the flags given in ``cabauw_input.py``.
+The code snipet below shows the part of ``cabauw_input.py`` where the flags are set.
+
+.. code-block:: python
+
+    """
+    Case switches.
+    """
+    TF = np.float64              # Switch between double (float64) and single (float32) precision.
+    use_htessel = True           # False = prescribed surface H+LE fluxes from ERA5.
+    use_rrtmgp = True            # False = prescribed surface radiation from ERA5.
+    use_rt = False               # False = 2stream solver for shortwave down, True = raytracer.
+    use_homogeneous_z0 = True    # False = checkerboard pattern roughness lengths.
+    use_homogeneous_ls = True    # False = checkerboard pattern (some...) land-surface fields.
+    use_aerosols = False         # False = no aerosols in RRTMGP.
+    use_tdep_aerosols = False    # False = time fixed RRTMGP aerosol in domain and background.
+    use_tdep_gasses = False      # False = time fixed ERA5 (o3) and CAMS (co2, ch4) gasses.
+    use_tdep_background = False  # False = time fixed RRTMGP T/h2o/o3 background profiles.
+
+    sw_micro = '2mom_warm'
+
+    """
+    NOTE: `use_tdep_aerosols` and `use_tdep_gasses` specify whether the aerosols and gasses
+          used by RRTMGP are updated inside the LES domain. If `use_tdep_background` is true, the
+          aerosols, gasses, and the temperature & humidity are also updated on the RRTMGP background levels.
+    """
+
+    # Switch between the two default RRTMGP g-point sets.
+    gpt_set = '128_112' # or '256_224'
+
+    # Time period.
+    # NOTE: Included ERA5/CAMS data is limited to 2016-08-15 06:00 - 18:00 UTC.
+    start_date = datetime(year=2016, month=8, day=15, hour=6)
+    end_date   = datetime(year=2016, month=8, day=15, hour=18)
+
+    # Simple equidistant grid.
+    zsize = 4000
+    ktot = 160
+
+    itot = 512
+    jtot = 512
+
+    xsize = 25600
+    ysize = 25600
+
+In this part of the script, you can specify the precision (``TF``), the start and end date/time (``start_date``, ``end_date``), and the domain size (``zsize``, ``xsize``, ``y_size``) and number of grid points (``ktot``, ``itot``, ``jtot``).
+Furthermore, you can specify settings regarding the land surface model (``use_htessel``, ``use_homogeneous_z0``, ``use_homogeneous_ls``) and the radiation (``use_rrtmgp``, ``use_rt``, ``use_aerosols``, ``use_tdep_aerosols``, ``use_tdep_gasses``, ``use_tdep_background``) as discussed below (:ref:`Land surface` and :ref:`Radiation` respectivelly).
+Lastly, you can set the microphysics scheme, as discussed for the idealized cases (:ref:`Microphysics`)
+
+
+.. note::
+    The :code:`cabauw_input.py` script also searches for some lookup tables in the microhh directory and links them to the working directory as required for the model run.
+    Running :code:`cabauw_input.py` in a different directory will therefore likely result in some errors.
+    To avoid these errors the linking functions (:code:`copy_xxxfiles`) can be commented out,
+    but this means that the necessary files must be manually linked to the working directory before running MicroHH, as described under :ref:`Land surface` and :ref:`Radiation`.
 
 .. admonition:: Task
     :class: tip
@@ -57,16 +120,6 @@ An example script to do this is available in ``/cases/cabauw/cabauw_input.py``
     2. run cabauw_input.py
 
     Two files should have been created: :code:`cabauw_input.nc` and :code:`cabauw.ini`
-
-..
-    Should we add the images here that are created by these python scripts?
-
-.. note::
-    :code:`cabauw_input.py` is a very complete script that allows to set many options that are discussed below.
-    Therefore, the script searches for some lookup tables in the microhh directory and links them to the working directory as required for the model run.
-    Running :code:`cabauw_input.py` in a different directory will therefore likely result in some errors.
-    To avoid these errors the linking functions (:code:`copy_xxxfiles`) can be commented out,
-    but this means that the necessary files must be manually linked to the working directory before running MicroHH, as described under :ref:`Land surface` and :ref:`Radiation`.
 
 
 .. admonition:: Task
@@ -120,9 +173,6 @@ This includes the following aspects:
       Note that this also requires a new :code:`_input.nc` file where the necessary profiles are in :code:`init` group instead of the :code:`timedep`.
       This should be one profile for each variable, so take e.g. the profile at t=0 or a time-averaged profile.
 
-..
-    maybe I should add some insructions on how to use cabauw_input.py
-
 .. note::
     The default day (15 August 2016) is mostly locally driven, so the impact of the large scale forcings and nudging to ERA5 might seems small, but can be very different (larger) in other cases.
 
@@ -146,11 +196,10 @@ The ``_input.nc`` file must contain a ``soil`` group with profiles (of size ``kt
     :class: tip
 
     | To get a feeling for the impact of the land surface, we can play around with the Cabauw case. Here are some suggestions:
-    | 1. Exclude the interactive land-surface scheme by putting :code:`swboundary=surface`
-    | 2. Make the soil wetter or drier by increasing or decreasing the soil water content in the ``_input.nc`` file
+    | 1. Exclude the interactive land-surface scheme by remaking the input with :code:`use_htessel=false` in :code:`cabauw_input.py`.
+    | 2. Make the soil wetter or drier by increasing or decreasing the soil water content in the :code:`_input.nc` file.
+    | 3. Use a checkerboard pattern for the roughness lengths and/or the land surface by remaking the input with :code:`use_homogeneous_z0` and/or :code:`use_homogeneous_ls` in :code:`cabauw_input.py`.
 
-..
-    Does suggestion 1 work or should I remake the input to have thl_sbot and qt_sbot?
 
 Radiation
 ----------------------
@@ -200,10 +249,20 @@ Using less g-points is slightly less accurate, but requires less memory.
     | 2. use horizontally homogeneous surface radiation for the shortwave radiation (:code:`swhomogenizesfc_sw`)
     | 3. make the background column time-dependent (:code:`swtimedep_background=true`).
       Note that this requires a new :code:`_input.nc` file where the necessary profiles are in :code:`timedep` group.
+      To create this file, use :code:`use_tdep_background=true` in :code:`cabauw_input.py`.
     | 4a. add aerososols (:code:`swaerosol=true` in :ref:`aerosol ``[aerosol]```)
       Note that this requires a new :code:`_input.nc` file where the necessary profiles are in :code:`init` and :code:`radiation` group.
+      To create this file, use :code:`use_aerosols=true` in :code:`cabauw_input.py`.
     | 4b. make the aerosols time-dependent (:code:`swtimedep=true` in :ref:`aerosol ``[aerosol]```)
       Note that this requires a new :code:`_input.nc` file where the necessary profiles are in :code:`timedep`.
+      To create this file, use :code:`use_aerosols=true` and :code:`use_tdep_aerosols` in :code:`cabauw_input.py`.
+
+Apart from the switches mentioned in the task above, ``cabauw_input.py`` contains three other switches that concern the radiation.
+The first one (``use_rrtmgp``) controls the radiation model used. If turned to ``false``, prescribed radiation will be used from the provided file with ERA5 radiation (``era_rad_20160815.nc``).
+The second one (``use_tdep_gasses``) controls the time-dependence of the gasses within the domain and if ``use_tdep_background=true`` also in the background profile.
+With the downloaded ERA5 data, this only concerns O\ :sub:`3`, but profiles of CO\ :sub:`2` and CH\ :sub:`4` can be added by downloading the relevant data from the `CAMS EGG4 <https://ads.atmosphere.copernicus.eu/datasets/cams-global-ghg-reanalysis-egg4?tab=overview>`_ dataset.
+Unfortunatelly, this is currently not possible with (LS) :sup:`2` D because of an open ADS bug.
+Lastly, the switch ``use_rt`` controls the usage of the ray tracer as discussed below.
 
 
 Ray tracing
