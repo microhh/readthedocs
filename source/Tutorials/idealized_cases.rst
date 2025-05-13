@@ -8,56 +8,49 @@ Idealized simulations: beyond the drycblles
 
 In :ref:`Running your first case` you ran an LES of a dry convective boundary layer.
 In this tutorial we will explore the building bloks of such a simulation, such as advection and diffusion and the different options that are availabel (for LES).
-As this tutorial will also cover the possible options for thermodynamics and microphysics, we will use a simle example case that includes moisture: the BOMEX case.
-As this case runs on a small domain, it is easy to do many simulations to get familiar with the available options and the work flow.
+As this tutorial will also cover the possible options for thermodynamics and microphysics, we will mainly show examples for a simle example case that includes moisture: the BOMEX case.
+The :code:`bomex.ini` file and a python file to create the :code:`bomex_input.nc` are available in the case folder (:code:`cases/bomex`).
 
-..
-    I opted for the BOMEX mainly because it runs on such a small domain that you can quickly do all kinds of tests locally.
-    Donwside is that it does not precipitate, which e.g. RICO does.
+.. note::
+Here we show examples of commonly used options and there impact, to help you choose suitable settings for your own simulations.
+However, what the most suitable settings are depends on the case.
+Apart from looking at the examples here, you can base your choises on the available example cases or test the sensitivity of your own case yourself.
 
-.. admonition:: Task
-    :class: tip
-
-    Run the BOMEX case. This works exacty the same as the drycblles.
-    The :code:`bomex.ini` file and a python file to create the :code:`bomex_input.nc` are in the case folder (:code:`cases/bomex`).
-
+.. note::
+The BOMEX case that we use here for most examples is a realativelly simple case and runs on a small domain.
+Hence, if you want to do some simulations to get familiar with the available options and the work flow, this case and the examples shown in this tutorial are very suitable .
 
 .. note::
     For most of the available cases the case folder contains a :code:`case.ini` or :code:`case.ini.base` file as well as a python script to create the :code:`case_input.nc` file.
-    With these file, you can run all of the example cases yourself.
+    With these files, you can run all of the example cases yourself.
 
 
 
 Advection and Diffusion
 --------------------------
 Our BOMEX case (and also the drycblles) use a 2nd order advection scheme (``swadvec=2``).
-This schemes is also available with higher order interpolations, which are more accurate.
-The odd ordered schemes have hyperdiffusion included that results in a smooth solution.
-For the ``2i5`` and ``2i62`` schemes, it is possible to provide a list of the scalars for which monotonic advection must be guaranteed.
+Commonly used alternatives are the 2nd order scheme with 5th order interpolations (``swadvec=2i5``) and the 2nd order scheme with 6th order interpolations in the horizontal and 2nd order interpolations in the vertical (``swadvec=2i62``)
+The advantage of the higher order schemes is a higher accuracy, but this comes at higher computational costs.
 
-.. admonition:: Task
+The odd ordered schemes have hyperdiffusion included and the ``2i5`` and ``2i62`` schemes have the possibility to provide a list of the scalars for which monotonic advection is guaranteed.
+Both the hyperdiffusion and the flux limiters dampen the variance and smooth out sharp gradients.
+In some cases, e.g. when using a coarse resolution, this can be advantagous.
+However, in other cases, it can hamper the existence of small scale structures and result in overly smooth fields.
+
+.. admonition:: Example
     :class: tip
 
-    To get a feeling for the impact of the advection scheme, we can play around with the BOMEX case.
-    Run the BOMEX case two more times with :code:`swadvec=2i62` and :code:`swadvec=2i5`.
-    The impact of the advection scheme can best be seen from the updraft structures, for example from the generated xz-cross sections.
+    To get a feeling for the impact of the advection scheme, we show here the BOMEX case with three different advection schemes (:code:`swadvec=2`, :code:`swadvec=2i62`, and :code:`swadvec=2i5`).
+    We ran the higher order advection schemes with and without flux limiters.
+    The impact of the advection scheme can best be seen from the updraft structures, for example from the xz-cross sections of vertical wind.
 
-..
-    should there be suggestions in every task as to what to look at? or even figures of results?
+
+
+All additional settings and alternative options are listed under :ref:`Advection ``[advec]```
 
 Our BOMEX case (and also the drycblles) use a 2nd order Smagorinsky scheme for the diffusion.
-The strength of the diffusion in this scheme is controlled by the Smagorinsky constant (``cs``) and turbulent Prandtl number (``tPr``)
-
-Alternativelly, a 2nd order Deardorf TKE scheme is available.
-This scheme uses an additional prognostic variable (subgrid-scale tke),
-hence additional boundary conditions need to be provided and guaranteed monotonic advection of this variable is required to have a running simulation.
-
-.. admonition:: Task
-    :class: tip
-
-    To get a feeling for the impact of the diffusion scheme, we can play around with the BOMEX case.
-    For example, increase the diffusivity by doubling the Smagorinsky constant (:code:`cs`).
-    Again, the impact can best be seen from the updraft structures, for example from the generated xz-cross sections.
+This scheme (with the default values for the Smagorinsky constant (``cs``) and turbulent Prandtl number (``tPr``)) is used in most example LES cases, and is generally speeking a good choice.
+All additional settings and alternative options are listed under :ref:`Diffusion ``[diff]```
 
 .. note::
     By default, MicroHH uses an adaptive time step. In some cases when a simulation crashes, it can help to enforce a shorter timestep,
@@ -72,7 +65,7 @@ These references profiles are also refered to as the base state.
 
 Our BOMEX case uses this anelastic approximation (``swbasestate=anelastic``) and a base state that changes over time (``swupdatebasestate=true``).
 The drycblles on other hand, uses the Boussinesq approximation (``swbasestate=boussinesq``), which is the same as the anelastic approximation with the additional assumption that the density is always 1.
-Under this approximation the base state is constant over time.
+Under this approximation the base state is always constant over time.
 Furhermore, as mentioned in the beginning of this tutorial, the bomex case uses moist thermodynamics (``swthermo=moist``), hence clouds can be formed.
 The dryccblles uses dry thermodynamics (``swthermo=dry``).
 

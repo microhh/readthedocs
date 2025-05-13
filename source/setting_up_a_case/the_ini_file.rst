@@ -235,7 +235,7 @@ Buffer layer ``[buffer]``
 The ``Buffer`` class contains the implementation of the buffer layer in the top of the domain that prevents the reflection of gravity waves back into the domain.
 The strength of the buffering is defined per layer as
 :math:`\sigma ( (z - z_\textrm{start}) / ( z_\textrm{size} - z_\textrm{start}) )^\beta`.
-A logical choice for ``sigma`` is :math:`(2 \pi) / N`, where :math:`N` is the Brunt-Vaisala frequency in the sponge layer.
+A logical choice for ``sigma`` is :math:`N / (2 \pi)`, where :math:`N` is the Brunt-Vaisala frequency in the sponge layer.
 
 +--------------+-----------+---------------------------------------------------------------+
 | Name         | Default   | Description and options                                       |
