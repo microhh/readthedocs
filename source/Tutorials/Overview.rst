@@ -5,16 +5,17 @@ Overview
    :maxdepth: 2
    :caption: Contents:
 
-The decision tree below provides an overview of the available options in the model.
-The tree touches upon all classes of the model the control the simulation, represented by the headers of the ``.ini`` file.
-If you choose to include an aspect, we advice you to check out the complete list of the options in :ref:`ini-file-label`.
+
+Simulation settings
+---------------------
+
+The decision tree below provides an overview of the main available options in the model.
+Note that many more (detailed) options are available.
+Therefore, it is advised to check out the complete list of the options in :ref:`ini-file-label` for the classes included in your simulation.
 
 For any simulation, the grid and time settings have to be specified (:ref:`Grid ``[Grid]``` and :ref:`Timeloop ``[Time]```),
 as well as the viscosity (:ref:`Fields ``[Fields]``` ``visc`` and ``svisc``).
 Hence these are not included in the scheme below.
-
-..
-    grid and time are currently also not covered in the tutorials. Should something about that be added?
 
 |
 
@@ -22,6 +23,10 @@ Hence these are not included in the scheme below.
     :width: 800
 
 |
+
+
+Output
+------------
 
 In addition to the classes in the decision tree there are classes that control the output settings.
 These are:
@@ -37,23 +42,19 @@ These are:
 5. budgets of the second order moments: :ref:`Budget statistics ``[budget]```
 
 
-Lastly, the :ref:`Master ``[Master]``` class controls the settings for parallel runs.
-
-
-.. admonition:: Task
+.. admonition:: Example
     :class: tip
 
-    | To get familiar with the different output options, we can add some options to the drycblles.
-      Here are some suggestions:
-    | 1. Add output for a single column (:code:`swcolumn=true`).
-      Note that you need to specify the x and y position of the column in meters (:code:`coordinates[x]` and :code:`coordinates[y]`) and the timeresolution (:code:`sampletime`)
-    | 2. Add some cross sections (:code:`swcross=true`)
-      Note that you need to specify the position of the cross-section (:code:`xy`, :code:`xz`, and/or :code:`yz`), the timeresolution (:code:`sampletime`),
-      and the variable of which cross sections should be saved (:code:`crosslist`)
+    The figure below shows examples of different output types (domain average statistics, single columns, and cross sections).
+    The figure shows rain water content in the the Weisman Klemp case. More examples from this case are shown in :ref:`ini-file-label`.
+    On the left, the domain average values.
+    In the center, the values in a column, which is located at half the y domain size and 1/3 the x domain size.
+    On the right, the values in a xz cross section located at half the y domain size for time = 60 minutes.
+
+.. figure:: figures/stats.png
+
+|
 
 .. note::
     | How to convert cross-sections and 3D dump to netCDF is described in :ref:`Merging statistics`.
     | Options for masked statistics are described in :ref:`Masked statistics`.
-
-..
-    note: all classes are mentioned apart from the pressure class. (where) should this be included?

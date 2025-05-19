@@ -14,9 +14,13 @@ Download the data
 
 To generate input based on ERA5, the (LS) :sup:`2` D python package can be used.
 General instructions on (LS) :sup:`2` D can be found here: https://github.com/LS2D/LS2D and
-a more elaborate description is given in the reference paper (van Stratum et al., 2013 https://doi.org/10.1029/2023MS003750 ).
-ERA5 is described in Hersbach et al., (2020, https://doi.org/10.1002/qj.3803 ) and CAMS in Inness et al (2019, https://doi.org/10.5194/acp-19-3515-2019 ).
-Here we shortly describe the steps to take and where to find the relevant scripts and functions.
+a more elaborate description is given in the reference paper (`van Stratum et al., 2023`_).
+ERA5 is described in `Hersbach et al., (2020)`_ and CAMS in `Inness et al (2019)`_.
+This tutorial shortly describes the steps to take and where to find the relevant scripts and functions.
+
+.. _van Stratum et al., 2023: https://doi.org/10.1029/2023MS003750
+.. _Hersbach et al., (2020): https://doi.org/10.1002/qj.3803
+.. _Inness et al (2019): https://doi.org/10.5194/acp-19-3515-2019
 
 | 1. Download the ERA5 (and CAMS) data.
 |   This is done with the ``download_era5`` function (and the ``download_cams`` function). If the requested data is not done before, these functions submit a request to the ECMWF system and close after submitting the request. Hence, you have to call this function a second time once the request is completed to download the data.
@@ -66,7 +70,7 @@ An example script to do this is available in ``/cases/cabauw/cabauw_input.py``
 The ``cabauw_input.py`` is a very complete script that allows to set many options that are discussed in the rest of this tutorial.
 It does not only produce ``cabauw_input.nc``, it also produces ``cabauw.ini`` from ``cabauw.ini.base``.
 Hence all the switches are set automatically, based on the flags given in ``cabauw_input.py``.
-The code snipet below shows the part of ``cabauw_input.py`` where the flags are set.
+The code snippet below shows the part of ``cabauw_input.py`` where the flags are set.
 
 .. code-block:: python
 
@@ -132,22 +136,22 @@ The code snipet below shows the part of ``cabauw_input.py`` where the flags are 
 
 Large scale forcings
 -----------------------
-Our Cabauw simulation includes large scale forcings based on ERA5 (:ref:`Large-scale forcings ``[force]```).
+Our Cabauw simulation includes :ref:`Large-scale forcings ``[force]``` based on ERA5.
 This includes the following aspects and their settings in ``cabauw.ini`` and ``cabauw_input.nc``:
 
-| 1. A large scale pressure force, derived from the timedependent geostropic wind and the coriolis parameter.
+| 1. A large scale pressure force, derived from the time dependent geostropic wind and the coriolis parameter.
 |     ``cabauw.ini``: ``swlspres=geo``, ``swtimedep_geo=true`` and ``fc=0.000115``.
 |     ``cabauw_input.nc``: profiles of the geostropic wind (u and v) in the ``timedep`` group.
-| 2. Timedependent large scale advection of thl, qt, u and v.
+| 2. Time dependent large scale advection of thl, qt, u and v.
 |     ``cabauw.ini``: ``swls=1``, ``swtimedep_ls=true``, ``lslist=thl,qt,u,v`` and ``timedeplist_ls=thl,qt,u,v``.
 |     ``cabauw_input.nc``: profiles of thl_ls, qt_ls, u_ls and v_ls in the ``timedep`` group.
-| 3. Timedepenent large scale subsidence based on the local field.
+| 3. Time dependent large scale subsidence based on the local field.
 |     ``cabauw.ini``: ``swwls=local`` and ``swtimedep_wls=true``.
 |     ``cabauw_input.nc``: ``w_ls`` profile in the ``timedep`` group.
-| 4. Nudging towards the timedependent ERA5 profiles of thl, qt, u and v.
+| 4. Nudging towards the time dependent ERA5 profiles of thl, qt, u and v.
 |     ``cabauw.ini``: ``swnudge=true``, ``swtimedep_nudge=true`` and ``nudgelist=thl,qt,u,v``.
 |     ``cabauw_input.nc``: profiles of thl_nudge, qt_nudge, u_nudge and v_nudge in the ``timedep`` group + profile of the nudging factor in the ``init`` group.
-| The ``cabauw_input.nc`` file also contains the time at which the timedependent variables are given.
+| The ``cabauw_input.nc`` file also contains the time at which the time dependent variables are given.
 
 
 .. admonition:: Example
@@ -164,9 +168,11 @@ This includes the following aspects and their settings in ``cabauw.ini`` and ``c
 Land surface
 ----------------------
 Our Cabauw simulation includes a surface model with an interactive land-surface scheme (:ref:`boundary conditions ``[boundary]```).
-This scheme is similar to HTESSEL (Balsamo et al., 2019, https://doi.org/10.1175/2008JHM1068.1)
+This scheme is similar to HTESSEL (`Balsamo et al., 2019`_)
 The use of this scheme is specified in the ``cabauw.ini`` file by ``swboundary=surface_lsm`` and the settings in the ``[land_surface]`` group.
 The ``cabauw_input.nc`` file contains a ``soil`` group with profiles (of size ``ktot``) of the soil temperature, soil water content, soil type, root fraction and depth of the soil layers.
+
+.. _Balsamo et al., 2019: https://doi.org/10.1175/2008JHM1068.1
 
 .. note::
     The interactive land-surface scheme can only be used in combination with :code:`swthermo=moist` and :code:`swradiation = prescribed, rrtmgp or rrtmgp_rt`
@@ -186,8 +192,10 @@ The ``cabauw_input.nc`` file contains a ``soil`` group with profiles (of size ``
 
 Radiation
 ----------------------
-Our Cabauw case includes radiation calculated with RTE+RRTMGP (Pincus et al., 2019, https://doi.org/10.1029/2019MS001621 ).
+Our Cabauw case includes :ref:`Radiation ``[radiation]``` calculated with RTE+RRTMGP (`Pincus et al., 2019`_).
 The C++ implementation of the code can be found here: https://github.com/microhh/rte-rrtmgp-cpp
+
+.. _Pincus et al., 2019: https://doi.org/10.1029/2019MS001621
 
 The use of the radiation scheme is specified in ``cabauw.ini`` by ``swradiation=rrtmgp``.
 Furthermore, ``cabauw.ini`` specifies the surface albedos for the direct and diffuse radiation (``sfc_alb_dir``, ``sfc_alb_dif``), the surface emissivity (``emis_sfc``) and the radiation time interval (``dt_rad``).
@@ -196,7 +204,7 @@ In addition, the Cabauw case uses a variable solar zenith angle, hence ``swfixed
 | The ``cabauw_input.nc`` file contains a ``radiation`` group with profiles of height, temperature, pressure, H\ :sub:`2`\ O, and O\ :sub:`3` at the ERA5 model levels.
     These profiles are used for calculating radiation in a background column.
     This is one column in which radiation is calculated to determine the incoming radiation at the top of the domain.
-    This is necessary as the domain top is generally far below the top of the atmopshere, hence we need to account for the attenuation of radiation.
+    This is necessary as the domain top is generally far below the top of the atmosphere, hence we need to account for the attenuation of radiation.
 | Furthermore, the ``init`` group of ``cabauw_input.nc`` contains concentrations of H\ :sub:`2`\ O and O\ :sub:`3` at the model levels, for the radiation computations within the domain.
     The concentration of H\ :sub:`2`\ O is only used initially, afterwards the simulated concentration is used.
 
@@ -206,9 +214,9 @@ In addition, the Cabauw case uses a variable solar zenith angle, hence ``swfixed
     and optionally also CO, N\ :sub:`2`, CCl\ :sub:`4`, CFC-11, CFC-12, CFC-22, HFC-143a, HFC-125, HFC-23, HFC-32, HFC-134a, CF\ :sub:`4`, NO\ :sub:`2`
 
 .. note::
-    The ``_input.nc`` file will contain additional profiles when switching flags in ``cabauw_input.py`` to use timedependent gasses (``use_tdep_gasses = True``),
-    timedependent background profiles (``use_tdep_background=true``), constant aerosols (``use_aerosol=true`` and ``use_tdep_aerosols=false``),
-    and/or timedependent aerosols (``use_aerosol=true`` and ``use_tdep_aerosols=false``).
+    The ``_input.nc`` file will contain additional profiles when switching flags in ``cabauw_input.py`` to use time dependent gasses (``use_tdep_gasses = True``),
+    time dependent background profiles (``use_tdep_background=true``), constant aerosols (``use_aerosol=true`` and ``use_tdep_aerosols=false``),
+    and/or time dependent aerosols (``use_aerosol=true`` and ``use_tdep_aerosols=false``).
 
 Apart from the :code:`_input.nc` and :code:`.ini`, additional files are required when using rrtmgp.
 Here you find an overview of available lookup tables that should be present in the directory in which the model is run.
@@ -245,8 +253,10 @@ The ``aerosol_optics.nc`` file is only required when aerosols are included.
 Ray tracing
 ......................
 Instead of the commonly used 2D radiative transfer calculations,
-MicroHH can also be ran with a coupled ray tracer (Veerman et al., 2022, https://doi.org/10.1029/2022GL100808 ) to simulate radiation in 3D.
+MicroHH can also be ran with a coupled ray tracer (`Veerman et al., 2022`_) to simulate radiation in 3D.
 The code, as well as some basic instructions can be found on https://github.com/microhh/rte-rrtmgp-cpp.
+
+.. _Veerman et al., 2022: https://doi.org/10.1029/2022GL100808
 
 To use ray tracing coupled to a MicroHH simulation set ``swradiation=rrtmgp_rt`` in the ``.ini`` file.
 Additionally, the ray tracer uses a null-collision grid, which is a technique to divide the domain into smaller piece for efficient calculations.
@@ -272,7 +282,7 @@ In other words, to apply 3D radiative transfer calculations to a cloud field fro
 Building the stand alone ray tracer is similar to building MicroHH and generates (among others) the executable ``test_rte_rrtmgp_rt_gpu``.
 
 Running the standalone ray tracer requires 3D fields of absolute temperature, specific humidity, cloud water content, ice water content and the essential gasses as listed above.
-In addition, a 3D grid is required, vertical profiles of density and pressure, and values for the surface albedo, surface emissivity, solar zenith angle, zolar azimuth angle.
+In addition, a 3D grid is required, vertical profiles of density and pressure, and values for the surface albedo, surface emissivity, solar zenith angle, solar azimuth angle.
 Optionally, other gasses and aerosols can be added.
 To convert MicroHH output to input for the standalone ray tracer, a python script is available :code:`/python/microhh_to_raytracer_input.py`.
 All available command line options are listed in the code for the `forward ray tracer <https://github.com/microhh/rte-rrtmgp-cpp/blob/a0f96acba099ba9d98d338a4f8f4c71fee0f987f/src_test/test_rte_rrtmgp_rt.cu#L226>`_
