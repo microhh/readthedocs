@@ -1,4 +1,4 @@
-Overview
+LES overview
 ===============================
 
 .. toctree::
@@ -9,7 +9,7 @@ Overview
 Simulation settings
 ---------------------
 
-The decision tree below provides an overview of the main available options in the model.
+The decision tree below provides an overview of the main available options in the model for LES.
 Note that many more (detailed) options are available.
 Therefore, it is advised to check out the complete list of the options in :ref:`ini-file-label` for the classes included in your simulation.
 
@@ -19,7 +19,7 @@ Hence these are not included in the scheme below.
 
 |
 
-.. image:: flowchart.jpeg
+.. image:: figures/flowchart.jpeg
     :width: 800
 
 |

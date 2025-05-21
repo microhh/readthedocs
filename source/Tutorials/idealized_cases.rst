@@ -1,6 +1,6 @@
 .. _idealized-tutorial-label:
 
-Idealized simulations: beyond the drycblles
+Idealized LES: beyond the drycblles
 =============================================
 
 .. toctree::
@@ -42,7 +42,7 @@ However, in other cases, it can hamper the existence of small scale structures a
 .. figure:: figures/advection.png
 
 
-More information about the second order scheme can be found in `Wicker and Skamarock (2002)`_.
+More information about the second order schemes can be found in `Wicker and Skamarock (2002)`_.
 
 .. _Wicker and Skamarock (2002): https://doi.org/10.1175/1520-0493(2002)130<2088:TSMFEM>2.0.CO;2
 
@@ -83,7 +83,7 @@ Diffusion
 .. admonition:: Example
     :class: tip
 
-    The figure below shows the turbulence kinetic energy (tke) in simulations with the Smagorisnky and Deardorf TKE scheme.
+    The figure below shows the variances in the horizontal and vertical velocity in simulations with the Smagorinsky and TKE scheme.
 
 .. figure:: figures/diffusion.png
 
@@ -152,16 +152,15 @@ Thermodynamics
 
 .. note::
     When using the anelastic approximation, the base state used for the moist thermodynamics can optionally be taken constant (``swupdatebasestate=false``).
-    The impact of this setting depends on how strongly your domain average profiles change over time.
+    A time dependent base state is mainly important in cases where the domain mean state changes significantly over time.
+    Updating the base state makes sure that the pressure is in balance with the temperature, which is of influence on the condensation.
+
 
 .. admonition:: Example
     :class: tip
 
-    In cases where the domain average state rapidly changes over time, such as the Weisman Klemp bubble,
-    the choice of a constant or updating base state influences the tendencies.
-    Namely the buoyancy tendency, which depends directly on the difference between the base state virtual potential temperature and the actual virtual potential temperature.
-
-    The figure below shows vertical profiles of the buoyancy driven tendency in the vertical velocity after 1.5 hours.
+    In the Weisman-Klemp case, the domain mean temperature increases over time at most levels.
+    This is visible in the pressure when using a time dependent base state, as is shown in the plot below.
+    In this short and simple example, the changes over time are limited and therefore the condensation is hardly affected.
 
 .. figure:: figures/thermo.png
-    :width: 400

@@ -1,4 +1,4 @@
-Realistic simulations: the cabauw case
+Realistic LES: the cabauw case
 ===========================================
 
 .. toctree::
