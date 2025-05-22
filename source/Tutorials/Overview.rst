@@ -24,11 +24,14 @@ Hence these are not included in the scheme below.
 
 |
 
+..
+    :width: 800 is the width of the text.
+    The width is specified for all images, as it seems that specifying the width creates clickable images
 
 Output
 ------------
 
-In addition to the classes in the decision tree there are classes that control the output settings.
+In addition to the aspects in the decision tree there are classes that control the output settings.
 These are:
 
 1. domain average statistics: :ref:`Statistics ``[Stats]```
@@ -46,12 +49,13 @@ These are:
     :class: tip
 
     The figure below shows examples of different output types (domain average statistics, single columns, and cross sections).
-    The figure shows rain water content in the the Weisman Klemp case. More examples from this case are shown in :ref:`ini-file-label`.
+    The figure shows rain water content in the the Weisman Klemp case. More examples from this case are shown in :ref:`idealized-tutorial-label`.
     On the left, the domain average values.
     In the center, the values in a column, which is located at half the y domain size and 1/3 the x domain size.
     On the right, the values in a xz cross section located at half the y domain size for time = 60 minutes.
 
 .. figure:: figures/stats.png
+    :width: 800
 
 |
 

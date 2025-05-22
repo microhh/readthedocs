@@ -8,14 +8,14 @@ Idealized LES: beyond the drycblles
    :caption: Contents:
 
 
-In :ref:`Running your first case` you ran an LES of a dry convective boundary layer.
+:ref:`Running your first case` describes how to run an LES of a dry convective boundary layer.
 This tutorial explores the building blocks of such a simulation, such as advection and diffusion and the different options that are available (for LES).
 
 This tutorial contains examples from the Weisman Klemp case (`Weisman and Klemp (1982)`_)
 This is a case of an idealized convective storm, which is initiated by releasing a warm bubble close to the surface.
 A video of a MicroHH simulation of this bubble can be found here: https://vimeo.com/901517622.
 For the examples, the y-dimension was reduced to one grid cell, to create a 2D simulation.
-Furthermore, the fifth order advection scheme `swadvec=2i5` and a horizontal resolution of 600 m were used, unless mentioned otherwise.
+Furthermore, the fifth order advection scheme ``swadvec=2i5`` and a horizontal resolution of 600 m were used, unless mentioned otherwise.
 
 .. _Weisman and Klemp (1982): https://doi.org/10.1175/1520-0493(1982)110<0504:TDONSC>2.0.CO;2
 
@@ -33,6 +33,9 @@ The odd ordered schemes have hyperdiffusion included and the ``2i5`` and ``2i62`
 Both the hyperdiffusion and the flux limiters dampen the variance and smooth out sharp gradients.
 In some cases, e.g. when using a coarse resolution, this can be advantageous.
 However, in other cases, it can hamper the existence of small scale structures and result in overly smooth fields.
+More information about the second order schemes can be found in `Wicker and Skamarock (2002)`_.
+
+.. _Wicker and Skamarock (2002): https://doi.org/10.1175/1520-0493(2002)130<2088:TSMFEM>2.0.CO;2
 
 .. admonition:: Example
     :class: tip
@@ -40,11 +43,9 @@ However, in other cases, it can hamper the existence of small scale structures a
     The plot below shows xz cross sections after half an hour of the concentration of a passive scalar that was added to the warm bubble for different advection scheme and two resolutions.
 
 .. figure:: figures/advection.png
+        :width: 800
 
-
-More information about the second order schemes can be found in `Wicker and Skamarock (2002)`_.
-
-.. _Wicker and Skamarock (2002): https://doi.org/10.1175/1520-0493(2002)130<2088:TSMFEM>2.0.CO;2
+|
 
 
 Buffer
@@ -53,20 +54,24 @@ The :ref:`Buffer layer ``[buffer]``` is a layer at the top of the domain that pr
 The buffer layer should be thick enough and the buffer strong enough to dampen the gravity waves before they reach the top of the domain.
 At the same time, a too strong buffer or starting the buffer at a too low level can hamper the convection below the buffer layer.
 
-The strength of the buffer layer can be estimated with :math:`N / (2 \pi)`,
-where N is the Brunt-Vaisala frequency :math:`N = sqrt((g\ \Delta \theta_v) / (\theta_v\ \Delta z))`.
+The strength of the buffer layer can be estimated with :math:`\frac{N}{2 \pi}`,
+where N is the Brunt-Vaisala frequency :math:`N = \sqrt{\frac{g}{\theta_v} \frac{\Delta \theta_v}{\Delta z}}`.
+
 
 .. admonition:: Example
     :class: tip
 
-    For the Weisman Klemp bubble, a rough estimate the buffer strength for the layer between 20 and 25 km is sqrt((10 * 140)/(570 * 5000))/(2 * pi), which is roughly 0.0035.
+    For the Weisman Klemp bubble, a rough estimate the buffer strength for the layer between 20 and 25 km is
+    :math:`\frac{\sqrt{\frac{10}{570} \frac{140}{5000}}}{2 \pi}\ \approx\ 0.0035`.
 
     The figure below shows the domain mean vertical velocity variance averaged between 1 and 1.5 hours.
     The line show different combinations of buffer strength and height. The buffer height is also indicated by the dashed lines.
 
 
 .. figure:: figures/buffer.png
+    :width: 480
 
+|
 
 Diffusion
 ------------
@@ -86,6 +91,9 @@ Diffusion
     The figure below shows the variances in the horizontal and vertical velocity in simulations with the Smagorinsky and TKE scheme.
 
 .. figure:: figures/diffusion.png
+    :width: 800
+
+|
 
 .. note::
     By default, MicroHH uses an adaptive time step. In some cases when a simulation crashes, it can help to enforce a shorter timestep,
@@ -101,11 +109,13 @@ By rerunning a simulation with different random seeds, an ensemble can be formed
 .. admonition:: Example
     :class: tip
 
-    The figure below shows the water paths like in the example for the microphysics with :code:`swmicro=nsw6`.
+    The figure below shows time series of water paths of hydrometeors.
     The individual lines are repetitions of the same simulation with rndseed = 1, 2, and 3, respectively.
 
 .. figure:: figures/fields.png
     :width: 400
+
+|
 
 .. note::
     In most cases, the random perturbations are applied in the model simulation, controlled by the settings in :ref:`Fields ``[fields]```.
@@ -122,11 +132,13 @@ Note that ``swmicro=2mom_warm`` does not include ice processes, only ice created
 .. admonition:: Example
     :class: tip
 
-    The figure below shows time series of water paths of hydrometeors in the 2D Weisman-Klemp bubble.
+    The figure below shows time series of water paths of hydrometeors.
 
 
 .. figure:: figures/microphysics.png
+    :width: 800
 
+|
 
 .. note::
     The most visible difference between the schemes is currently the lack of snow and graupel in the double moment scheme.
@@ -160,7 +172,11 @@ Thermodynamics
     :class: tip
 
     In the Weisman-Klemp case, the domain mean temperature increases over time at most levels.
-    This is visible in the pressure when using a time dependent base state, as is shown in the plot below.
+    This is visible in the pressure when using a time dependent base state.
+    The plot below shows the change in pressure relative to the initial pressure profile.
     In this short and simple example, the changes over time are limited and therefore the condensation is hardly affected.
 
 .. figure:: figures/thermo.png
+    :width: 800
+
+|

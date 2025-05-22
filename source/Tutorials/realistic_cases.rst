@@ -23,7 +23,7 @@ This tutorial shortly describes the steps to take and where to find the relevant
 .. _Inness et al (2019): https://doi.org/10.5194/acp-19-3515-2019
 
 | 1. Download the ERA5 (and CAMS) data.
-|   This is done with the ``download_era5`` function (and the ``download_cams`` function). If the requested data is not done before, these functions submit a request to the ECMWF system and close after submitting the request. Hence, you have to call this function a second time once the request is completed to download the data.
+|   This is done with the ``download_era5`` function (and the ``download_cams`` function).
 | 2. Read the data.
 |   This is done with the ``Read_era5`` class (and the ``Read_cams`` class). For the ERA5 data, this class also calculates some derived quantities such as thl.
 | 3. Calculate large scale forcings.
@@ -42,7 +42,9 @@ This tutorial shortly describes the steps to take and where to find the relevant
     The plot below shows vertical profiles taken and derived from ERA5 using example_era5.py. This example shows 13 UTC on 4 July 2016.
 
 .. figure:: figures/ls2d_era5_profs.png
+    :width: 800
 
+|
 
 .. admonition:: Example
     :class: tip
@@ -50,7 +52,9 @@ This tutorial shortly describes the steps to take and where to find the relevant
     The plot below shows vertical profiles of aerosols mass mixing ratios taken from CAMS using example_cams.py. This example shows 13 UTC on 4 July 2016.
 
 .. figure:: figures/ls2d_cams.png
+    :width: 800
 
+|
 
 .. note::
 
@@ -58,7 +62,7 @@ This tutorial shortly describes the steps to take and where to find the relevant
     2. In :code:`example_cams.py` and :code:`example_era5.py` specify your own directories.
     3. Optionally, specify your own date, time and location in the settings dictionary in :code:`example_cams.py` and :code:`example_era5.py`.
     4. :code:`example_cams.py` and :code:`example_era5.py` stop after the download requests are submitted. Run them again once the data is downloaded to obtain the derived data.
-    5. Optionally, adapt the domain height in :code:`example_cams.py` and :code:`example_era5.py` to be larger than the desired domain height of the MicroHH simulation.
+    5. Optionally, adapt the domain height in :code:`example_cams.py` and :code:`example_era5.py`. This must be larger than the desired domain height of the MicroHH simulation.
 
 
 Creating input for MicroHH
@@ -158,12 +162,14 @@ This includes the following aspects and their settings in ``cabauw.ini`` and ``c
     :class: tip
 
     In cases where there is a mismatch between ERA5 and observations, a better match between MicroHH and observations can sometimes be obtained by manually tweaking the input profiles.
-    An example is shown in the plot below for 4 July 2016 where ERA5 is too dry close to the surface.
+    An example is shown in the plot below for 4 July 2016, which shows timeseries of temperature and humidity at 10 m height and cloud cover.
     A better match with observations is realized by increasing the initial humidity with 10% at the surface, and a linearly decreasing percentage above until 1,000 m
     and by increasing the nudging timescale from 3 to 12 hr in the lowest 2 km.
 
 .. figure:: figures/timeseries_large_scale.png
+    :width: 800
 
+|
 
 Land surface
 ----------------------
@@ -188,7 +194,9 @@ The ``cabauw_input.nc`` file contains a ``soil`` group with profiles (of size ``
     An example is shown below for 4 July 2016 with a 10% reduction in soil moisture.
 
 .. figure:: figures/timeseries_soil.png
+    :width: 800
 
+|
 
 Radiation
 ----------------------
@@ -219,7 +227,7 @@ In addition, the Cabauw case uses a variable solar zenith angle, hence ``swfixed
     and/or time dependent aerosols (``use_aerosol=true`` and ``use_tdep_aerosols=false``).
 
 Apart from the :code:`_input.nc` and :code:`.ini`, additional files are required when using rrtmgp.
-Here you find an overview of available lookup tables that should be present in the directory in which the model is run.
+The table below gives an overview of available lookup tables that should be present in the directory in which the model is run.
 
 +--------------------------------+------------------------------------------------------------------+
 | File name                      | Location of the file                                             |
@@ -247,8 +255,9 @@ The ``aerosol_optics.nc`` file is only required when aerosols are included.
     The figure below shows the components of surface radiation on 15 October 2017 with and without aerosols.
 
 .. figure:: figures/timeseries_aerosols.png
+    :width: 800
 
-
+|
 
 Ray tracing
 ......................
@@ -268,10 +277,13 @@ The most common values for rays per pixel are 64, 128 or 256, with the smaller n
     :class: tip
 
     The figure below shows global radiation at the surface in colors and the cloud contours in black.
-    The figure highlights the difference between 1D and 3D radiation and the difference between 64 and 1024 rays per pixel.
+    The figure highlights the difference between 1D and 3D radiation and the difference between 16 and 1024 rays per pixel.
     The cloud field is taken from a simulation with 1D radiation on 4 July 2016 16 UTC.
 
 .. figure:: figures/radiation.png
+    :width: 800
+
+|
 
 .. note::
     1. Currently, ray tracing is only available for shortwave radiation, requires an equidistant grid structure, and runs only on GPU.
@@ -288,10 +300,8 @@ To convert MicroHH output to input for the standalone ray tracer, a python scrip
 All available command line options are listed in the code for the `forward ray tracer <https://github.com/microhh/rte-rrtmgp-cpp/blob/a0f96acba099ba9d98d338a4f8f4c71fee0f987f/src_test/test_rte_rrtmgp_rt.cu#L226>`_
 
 .. note::
-    | The standalone ray tracer can also be used for backward raytracing (tracing traces rays back from the surface upwards to compute radiances) with the executable ``test_rte_rrtmgp_bw_gpu``
+    | The standalone ray tracer can also be used for backward raytracing (tracing rays back from the surface upwards to compute radiances) with the executable ``test_rte_rrtmgp_bw_gpu``
     |  - The backward ray tracer requires additional information on the camera settings, which can be added with a python script :code:`/rte-rrtmgp-cpp/python/set_virtual_camera.py`
     |  - To visualize the output of the backward ray tracer, a python script is available :code:`/rte-rrtmgp-cpp/python/image_from_xyz.py`
     |  - All available command line options are listed in the code for the `backward ray tracer <https://github.com/microhh/rte-rrtmgp-cpp/blob/812c5fabdbdbe66787d343c7fae46d9302a9bd75/src_test/test_rte_rrtmgp_bw.cu#L235>`_.
-
-
 
