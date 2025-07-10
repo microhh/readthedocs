@@ -43,6 +43,14 @@ These pages provide a documentation for MicroHH 2.0
 
 .. toctree::
    :maxdepth: 2
+   :caption: Tutorials:
+
+   Tutorials/Overview
+   Tutorials/idealized_cases
+   Tutorials/realistic_cases
+
+.. toctree::
+   :maxdepth: 2
    :caption: Contributing:
 
    contributing/documentation

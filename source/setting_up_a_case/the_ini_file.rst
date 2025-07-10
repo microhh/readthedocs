@@ -1,3 +1,5 @@
+.. _ini-file-label:
+
 The ``.ini`` file
 =================
 
@@ -63,15 +65,16 @@ For more details about the 2nd order accurate schemes, see: `<dx.doi.org/10.1175
 Aerosol ``[aerosol]``
 ---------------------
 
-Description: TO-DO Mirjam.
+Description: The ``aerosol`` class reads aerosol mass mixing ratios from the input file and can interpolate these mixing ratios in time.
+Aerosols mass mixing ratios should be provided in the input file for the aerosol types as in the CAMS global reanalysis.
 
-+-----------------------+---------------+--------------------------------------------+
-| Name                  | Default       | Description and options                    |
-+=======================+===============+============================================+
-| ``swaerosol``         | ``false``     | Switch for aerosols in radiation           |
-+-----------------------+---------------+--------------------------------------------+
-| ``swtimedep``         | ``false``     | Switch for time dependent aerosols         |
-+-----------------------+---------------+--------------------------------------------+
++-----------------------+---------------+-------------------------------------------------------+
+| Name                  | Default       | Description and options                               |
++=======================+===============+=======================================================+
+| ``swaerosol``         | ``false``     | Switch for aerosols in radiation                      |
++-----------------------+---------------+-------------------------------------------------------+
+| ``swtimedep``         | ``false``     | Switch for time dependent aerosols in radiation       |
++-----------------------+---------------+-------------------------------------------------------+
 
 ----
 
@@ -232,7 +235,7 @@ Buffer layer ``[buffer]``
 The ``Buffer`` class contains the implementation of the buffer layer in the top of the domain that prevents the reflection of gravity waves back into the domain.
 The strength of the buffering is defined per layer as
 :math:`\sigma ( (z - z_\textrm{start}) / ( z_\textrm{size} - z_\textrm{start}) )^\beta`.
-A logical choice for ``sigma`` is :math:`(2 \pi) / N`, where :math:`N` is the Brunt-Vaisala frequency in the sponge layer.
+A logical choice for ``sigma`` is :math:`N / (2 \pi)`, where :math:`N` is the Brunt-Vaisala frequency in the sponge layer.
 
 +--------------+-----------+---------------------------------------------------------------+
 | Name         | Default   | Description and options                                       |
@@ -585,7 +588,7 @@ The ``Force`` class calculates the tendencies for all forms of large-scale forci
 | ``swlspres``          | ``0``          | | Switch for large-scale pressure force                      |
 |                       |                | | ``geo``: Fixed pressure gradient in x-direction            |
 |                       |                | | ``dpdx``: Rotation of vortices in yz-plane                 |
-|                       |                | | ``uflux``: ixed volume flux through domain                 |
+|                       |                | | ``uflux``: Fixed volume flux through domain                |
 +-----------------------+----------------+--------------------------------------------------------------+
 | ``fc``                | ``None``       | Coriolis parameter (s-1) (if ``swlspres=geo``)               |
 +-----------------------+----------------+--------------------------------------------------------------+
@@ -775,51 +778,49 @@ Radiation ``[radiation]``
 
 For ``rrtmgp`` and ``rrtmgp_rt``, the following settings are available:
 
-+------------------------+----------------+-------------------------------------------------------------------+
-| Name                   | Default        | Description and options                                           |
-+========================+================+===================================================================+
-| ``dt_rad``             | ``None``       | Time interval at which radiation is solved                        |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swshortwave``        | ``true``       | Switch to solve shortwave radiation                               |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swlongwave``         | ``true``       | Switch to solve longwave radiation                                |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``sfc_alb_dir``        | ``None``       | Surface albedo direct radiation                                   |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``sfc_alb_dif``        | ``None``       | Surface albedo diffuse radiation                                  |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swdeltacloud``       | ``false``      | Use delta scaling for clouds                                      |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swdeltaaer``         | ``false``      | Use delta scaling for aerosols                                    |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swfixedsza``         | ``true``       | Switch to use a fixed solar zenith angle                          |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``sza``                | ``None``       | Solar zenith angle (if ``swfixedsza=true``)                       |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``tsi_scaling``        | ``-999?``      | Scaling factor TOD incoming shortwave radiation                   |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``emis_sfc``           | ``None``       | Surface emissivity                                                |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``t_sfc``              | ``None``       | Surface temperature (IS THIS STILL USED?)                         |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swfilterdiffuse``    | ``false``      | 3D parameterization Tijhuis et al (2023, ..)                      |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``sigma_filter``       | ``None``       | Standard deviation of filter width (for ``swfilterdiffuse=true``) |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swupdatecolumn``     | ``false``      | Switch to update the background column                            |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``timedeplist_gas``    | ``Empty list`` | List of gas profiles which vary in time                           |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swclearskystats``    | ``false``      | Output clear sky statistics                                       |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swhomogenizesfc_sw`` | ``false``      | Horizontally homogenize the surface shortwave radiation           |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swhomogenizesfc_lw`` | ``false``      | Horizontally homogenize the surface longwave radiation            |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swhomogenizehr_sw``  | ``false``      | Horizontally homogenize the shortwave heating rates               |
-+------------------------+----------------+-------------------------------------------------------------------+
-| ``swhomogenizehr_lw``  | ``false``      | Horizontally homogenize the longwave heating rates                |
-+------------------------+----------------+-------------------------------------------------------------------+
++---------------------------+----------------+-------------------------------------------------------------------+
+| Name                      | Default        | Description and options                                           |
++===========================+================+===================================================================+
+| ``dt_rad``                | ``None``       | Time interval at which radiation is solved                        |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swshortwave``           | ``true``       | Switch to solve shortwave radiation                               |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swlongwave``            | ``true``       | Switch to solve longwave radiation                                |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``sfc_alb_dir``           | ``None``       | Surface albedo direct radiation                                   |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``sfc_alb_dif``           | ``None``       | Surface albedo diffuse radiation                                  |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swdeltacloud``          | ``false``      | Use delta scaling for clouds                                      |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swdeltaaer``            | ``false``      | Use delta scaling for aerosols                                    |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swfixedsza``            | ``true``       | Switch to use a fixed solar zenith angle                          |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``sza``                   | ``None``       | Solar zenith angle (if ``swfixedsza=true``)                       |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``tsi_scaling``           | ``-999?``      | Scaling factor TOD incoming shortwave radiation                   |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``emis_sfc``              | ``None``       | Surface emissivity                                                |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swfilterdiffuse``       | ``false``      | 3D parameterization Tijhuis et al (2023, ..)                      |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``sigma_filter``          | ``None``       | Standard deviation of filter width (for ``swfilterdiffuse=true``) |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swtimedep_background``  | ``false``      | Switch to update the background column                            |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``timedeplist_gas``       | ``Empty list`` | List of gas profiles which vary in time                           |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swclearskystats``       | ``false``      | Output clear sky statistics                                       |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swhomogenizesfc_sw``    | ``false``      | Horizontally homogenize the surface shortwave radiation           |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swhomogenizesfc_lw``    | ``false``      | Horizontally homogenize the surface longwave radiation            |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swhomogenizehr_sw``     | ``false``      | Horizontally homogenize the shortwave heating rates               |
++---------------------------+----------------+-------------------------------------------------------------------+
+| ``swhomogenizehr_lw``     | ``false``      | Horizontally homogenize the longwave heating rates                |
++---------------------------+----------------+-------------------------------------------------------------------+
 
 ``rrtmgp_rt`` has the following additional settings:
 

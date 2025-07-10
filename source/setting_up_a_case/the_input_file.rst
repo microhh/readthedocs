@@ -44,7 +44,7 @@ The ``init`` group provides the initial vertical profiles of the prognostic vari
 | ``u_geo``    | ``[z]`` | ``m s-1``  | | Zonal component geostrophic wind                           |
 |              |         |            | | (if ``swlspres=geo`` and ``swtimedep_geo=0``)              |
 +--------------+---------+------------+--------------------------------------------------------------+
-| ``u_geo``    | ``[z]`` | ``m s-1)`` | | Meridional component geostrophic wind                      |
+| ``v_geo``    | ``[z]`` | ``m s-1)`` | | Meridional component geostrophic wind                      |
 |              |         |            | | (if ``swlspres=geo`` and ``swtimedep_geo=0``)              |
 +--------------+---------+------------+--------------------------------------------------------------+
 | ``w_ls``     | ``[z]`` | ``m s-1``  | Subsidence velocity (if ``swwls=1`` and ``swtimedep_wls=0``) |
@@ -93,35 +93,35 @@ Note 1: the units of the scalar boundary conditions (BCs) depend on the boundary
 
 The ``radiation`` group defines background profiles, used by RRTMGP to calculate the radiation boundary conditions at the top of the LES domain. The input is specified at full (dimension ``lay``) and half (dimension ``lev``) pressure levels, and typically should extend to the top of the atmosphere (TOA).
 
-+-----------+-----------+---------+---------------------------------+
-| Variable  | Dims      | Unit    | Description                     |
-+===========+===========+=========+=================================+
-| ``p_lay`` | ``[lay]`` | ``Pa``  | Full level pressure             |
-+-----------+-----------+---------+---------------------------------+
-| ``p_lev`` | ``[lev]`` | ``Pa``  | Half level pressure             |
-+-----------+-----------+---------+---------------------------------+
-| ``z_lay`` | ``[lay]`` | ``m``   | Full level height               |
-+-----------+-----------+---------+---------------------------------+
-| ``z_lev`` | ``[lev]`` | ``m``   | Half level height               |
-+-----------+-----------+---------+---------------------------------+
-| ``t_lay`` | ``[lay]`` | ``K``   | Full level absolute temperature |
-+-----------+-----------+---------+---------------------------------+
-| ``t_lev`` | ``[lev]`` | ``K``   | Half level absolute temperature |
-+-----------+-----------+---------+---------------------------------+
-| ``h2o``   | ``[lay]`` | ``??``  | Water vapour mixing ratio ??    |
-+-----------+-----------+---------+---------------------------------+
-| ``co2``   | ``[lay]`` | ``ppm`` | Carbon dioxide mixing ratio     |
-+-----------+-----------+---------+---------------------------------+
-| ``ch4``   | ``[lay]`` | ``ppb`` | Methane mixing ratio            |
-+-----------+-----------+---------+---------------------------------+
-| ``n2o``   | ``[lay]`` | ``ppb`` | Nitrous oxide mixing ratio      |
-+-----------+-----------+---------+---------------------------------+
-| ``n2``    | ``[lay]`` | ``??``  | Dinitrogen mixing ratio         |
-+-----------+-----------+---------+---------------------------------+
-| ``o2``    | ``[lay]`` | ``??``  | Oxygen mixing ratio             |
-+-----------+-----------+---------+---------------------------------+
-| ``o3``    | ``[lay]`` | ``??``  | Ozone mixing ratio              |
-+-----------+-----------+---------+---------------------------------+
++-----------+-----------+----------------+------------------------------------+
+| Variable  | Dims      | Unit           | Description                        |
++===========+===========+================+====================================+
+| ``p_lay`` | ``[lay]`` | ``Pa``         | Full level pressure                |
++-----------+-----------+----------------+------------------------------------+
+| ``p_lev`` | ``[lev]`` | ``Pa``         | Half level pressure                |
++-----------+-----------+----------------+------------------------------------+
+| ``z_lay`` | ``[lay]`` | ``m``          | Full level height                  |
++-----------+-----------+----------------+------------------------------------+
+| ``z_lev`` | ``[lev]`` | ``m``          | Half level height                  |
++-----------+-----------+----------------+------------------------------------+
+| ``t_lay`` | ``[lay]`` | ``K``          | Full level absolute temperature    |
++-----------+-----------+----------------+------------------------------------+
+| ``t_lev`` | ``[lev]`` | ``K``          | Half level absolute temperature    |
++-----------+-----------+----------------+------------------------------------+
+| ``h2o``   | ``[lay]`` | ``mol mol-1``  | Water vapour volume mixing ratio   |
++-----------+-----------+----------------+------------------------------------+
+| ``co2``   | ``[lay]`` | ``mol mol-1``  | Carbon dioxide volume mixing ratio |
++-----------+-----------+----------------+------------------------------------+
+| ``ch4``   | ``[lay]`` | ``mol mol-1``  | Methane volume mixing ratio        |
++-----------+-----------+----------------+------------------------------------+
+| ``n2o``   | ``[lay]`` | ``mol mol-1``  | Nitrous oxide volume mixing ratio  |
++-----------+-----------+----------------+------------------------------------+
+| ``n2``    | ``[lay]`` | ``mol mol-1``  | Dinitrogen volume mixing ratio     |
++-----------+-----------+----------------+------------------------------------+
+| ``o2``    | ``[lay]`` | ``mol mol-1``  | Oxygen volume mixing ratio         |
++-----------+-----------+----------------+------------------------------------+
+| ``o3``    | ``[lay]`` | ``mol mol-1``  | Ozone volume mixing ratio          |
++-----------+-----------+----------------+------------------------------------+
 
 
 
