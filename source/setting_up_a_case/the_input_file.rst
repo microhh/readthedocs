@@ -49,7 +49,7 @@ The ``init`` group provides the initial vertical profiles of the prognostic vari
 +--------------+---------+------------+--------------------------------------------------------------+
 | ``w_ls``     | ``[z]`` | ``m s-1``  | Subsidence velocity (if ``swwls=1`` and ``swtimedep_wls=0``) |
 +--------------+---------+------------+--------------------------------------------------------------+
-| ``nudgefac`` | ``[z]`` | ``s``      | Nudging time scale (if ``swnudge=1``)                        |
+| ``nudgefac`` | ``[z]`` | ``s-1``    | Nudging factor, 1/(time scale) (if ``swnudge=1``)            |
 +--------------+---------+------------+--------------------------------------------------------------+
 
 
