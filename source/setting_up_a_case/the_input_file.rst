@@ -65,7 +65,7 @@ The ``timedep`` group specifies the time dependent surface boundary conditions a
 +------------------+--------------------+-----------+------------------------------------------------------------+
 | ``*_sbot``       | ``[time_surface]`` | note 1    | Surface boundary conditions of prognostic scalar variables |
 +------------------+--------------------+-----------+------------------------------------------------------------+
-| ``p_bot``        | ``[time_surface]`` | ``Pa``    | Surface pressure                                           |
+| ``p_sbot``       | ``[time_surface]`` | ``Pa``    | Surface pressure                                           |
 +------------------+--------------------+-----------+------------------------------------------------------------+
 | ``time_ls``      | ``[time_ls]``      | ``s``     | Input time of large scale forcings                         |
 +------------------+--------------------+-----------+------------------------------------------------------------+
